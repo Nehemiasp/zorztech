@@ -1,0 +1,213 @@
+@import "tailwindcss";
+
+/*
+ * Tokens de diseño de ZorzTech (sección 4 del brief).
+ * Es el único lugar donde viven los valores: ningún componente usa hex sueltos.
+ * Tailwind genera las utilidades desde aquí (bg-brand-primary, text-text-muted, rounded-md…).
+ */
+@theme {
+  /* Marca */
+  --color-brand-primary: #0563f1;
+  --color-brand-primary-strong: #0450c4; /* hover del botón principal; texto de enlace sobre claro (7.1:1) */
+  --color-brand-primary-deep: #033d96; /* botón presionado */
+  --color-brand-bright: #017dfb;
+  --color-brand-accent: #4cb5fb;
+  --color-brand-black: #000000;
+  --color-brand-navy: #0b1728;
+  --color-brand-white: #ffffff; /* provisional: falta el hex exacto del blanco de la marca */
+
+  /* Superficies */
+  --color-surface-dark: #000000; /* zonas de marca */
+  --color-surface-dark-alt: #0b1728;
+  --color-surface-dark-raised: #13243d; /* campos y bloques sobre el azul marino */
+  --color-surface-light: #ffffff; /* zonas de compra */
+  --color-surface-light-alt: #f2f5fa;
+
+  /* Texto */
+  --color-text-on-dark: #ffffff;
+  --color-text-on-dark-muted: #9aa8bf; /* 7.5:1 sobre azul marino */
+  --color-text-on-light: #0a1220; /* 18.7:1 sobre blanco */
+  --color-text-muted: #55627a; /* 6.2:1 sobre blanco, 5.6:1 sobre gris claro */
+
+  /* Líneas */
+  --color-border: #d9dfea; /* divisores decorativos */
+  --color-border-strong: #6b7a94; /* borde de campos: ≥3:1 sobre blanco */
+  --color-border-on-dark: #1b2b44;
+  --color-border-strong-on-dark: #5b6e8c; /* borde de campos sobre oscuro: ≥3:1 */
+
+  /* Estados (texto sobre blanco ≥4.5:1; siempre acompañados de texto) */
+  --color-state-success: #0b7a4b;
+  --color-state-warning: #8a5200;
+  --color-state-error: #c4262e;
+  --color-state-info: #0450c4;
+
+  /* Foco: cambia según la zona */
+  --color-focus: #0563f1;
+
+  /* Tipografía: escala 1.25 sobre 16 px */
+  --font-display: var(--font-sora), ui-sans-serif, system-ui, sans-serif;
+  --font-body: var(--font-plex), ui-sans-serif, system-ui, sans-serif;
+  --text-sm: 0.875rem;
+  --text-sm--line-height: 1.5;
+  --text-base: 1rem;
+  --text-base--line-height: 1.55;
+  --text-lg: 1.25rem;
+  --text-lg--line-height: 1.4;
+  --text-xl: 1.5625rem;
+  --text-xl--line-height: 1.25;
+  --text-2xl: 1.953rem;
+  --text-2xl--line-height: 1.15;
+  --text-3xl: 2.441rem;
+  --text-3xl--line-height: 1.1;
+  --text-4xl: 3.052rem;
+  --text-4xl--line-height: 1.05;
+
+  /* Radios: de las esquinas suaves del logotipo, por jerarquía */
+  --radius-sm: 4px; /* campos, etiquetas */
+  --radius-md: 8px; /* botones, tarjetas */
+  --radius-lg: 14px; /* bloques grandes */
+
+  /* Espaciado: múltiplos de 4 px (escala por defecto de Tailwind, 1 = 4 px) */
+  --spacing: 0.25rem;
+
+  --container-page: 80rem;
+}
+
+@layer base {
+  html {
+    font-family: var(--font-body);
+    color: var(--color-text-on-light);
+    background: var(--color-surface-light);
+    font-variant-numeric: tabular-nums;
+    scroll-behavior: smooth;
+    -webkit-text-size-adjust: 100%;
+  }
+
+  body {
+    min-height: 100dvh;
+    font-size: var(--text-base);
+    line-height: var(--text-base--line-height);
+  }
+
+  h1,
+  h2,
+  h3 {
+    font-family: var(--font-display);
+    font-weight: 600;
+    letter-spacing: -0.01em;
+    text-wrap: balance;
+  }
+
+  :focus-visible {
+    outline: 2px solid var(--color-focus);
+    outline-offset: 2px;
+  }
+
+  /* En zonas oscuras el foco usa el celeste de la marca */
+  .zone-dark {
+    --color-focus: var(--color-brand-accent);
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    html {
+      scroll-behavior: auto;
+    }
+  }
+}
+
+@layer components {
+  /* Ángulo de la diagonal de la "Z" del logotipo (~38° respecto a la vertical) */
+  .z-slant {
+    --z-skew: -38deg;
+  }
+
+  /* Marcador de dato pendiente que debe entregar el dueño */
+  .marker {
+    border-bottom: 1px dashed currentColor;
+    white-space: nowrap;
+  }
+
+  /* Secuencia de entrada del hero: la única animación orquestada del sitio */
+  @keyframes hero-rise {
+    from {
+      opacity: 0;
+      transform: translateY(12px);
+    }
+    to {
+      opacity: 1;
+      transform: none;
+    }
+  }
+
+  @keyframes hero-panel-in {
+    from {
+      opacity: 0;
+      transform: translateX(32px);
+    }
+    to {
+      opacity: 1;
+      transform: none;
+    }
+  }
+
+  .hero-step {
+    animation: hero-rise 280ms ease-out both;
+    animation-delay: calc(var(--step, 0) * 90ms);
+  }
+
+  .hero-panel-in {
+    animation: hero-panel-in 300ms ease-out 120ms both;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .hero-step,
+    .hero-panel-in {
+      animation: none;
+    }
+  }
+}
+
+@layer components {
+  /* Panel inclinado del hero, con el ángulo de la diagonal de la Z */
+  .hero-slant::before {
+    content: "";
+    position: absolute;
+    inset: 0 -40% 0 0;
+    background: var(--color-surface-dark-alt);
+    transform: skewX(var(--z-skew, -38deg));
+    transform-origin: 0 0;
+  }
+
+  /* En móvil el bloque del producto es una banda azul marino con borde superior inclinado */
+  .hero-visual {
+    background: var(--color-surface-dark-alt);
+    clip-path: polygon(0 3.5rem, 100% 0, 100% 100%, 0 100%);
+    padding-top: 2.5rem;
+  }
+
+  @media (min-width: 1024px) {
+    .hero-visual {
+      background: none;
+      clip-path: none;
+      padding-top: 0;
+    }
+  }
+
+  .hero-glow {
+    position: relative;
+  }
+
+  /* Único brillo del sitio, permitido por la marca en el hero */
+  .hero-glow::before {
+    content: "";
+    position: absolute;
+    inset: -12%;
+    z-index: -1;
+    background: radial-gradient(closest-side, color-mix(in srgb, var(--color-brand-accent) 24%, transparent), transparent);
+  }
+
+  /* Esquina inferior derecha cortada con la inclinación de la Z (38° respecto a la vertical) */
+  .cut-corner {
+    clip-path: polygon(0 0, 100% 0, 100% calc(100% - 2.25rem), calc(100% - 1.75rem) 100%, 0 100%);
+  }
+}

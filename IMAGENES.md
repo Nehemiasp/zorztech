@@ -13,7 +13,10 @@
 | `public/img/placeholder/categoria-accesorios-4x3.svg` | Inicio, categorías | Placeholder | — | Ídem |
 | `public/img/placeholder/categoria-gaming-4x3.svg` | Inicio, categorías | Placeholder | — | Ídem |
 | `public/img/placeholder/categoria-hogar-inteligente-4x3.svg` | Inicio, categorías | Placeholder | — | Ídem |
-| `public/img/placeholder/producto-1x1.svg` | Tarjetas y fichas de producto (seed) | Placeholder | — | Fotos reales de cada producto, 1:1, subidas desde el panel |
+| `public/img/placeholder/producto-1x1.svg` | Tarjetas y galería de la ficha, vista frontal (seed) | Placeholder | — | Fotos reales de cada producto, 1:1, subidas desde el panel |
+| `public/img/placeholder/producto-lateral-1x1.svg` | Galería de la ficha, vista lateral (seed) | Placeholder | — | Foto real, vista lateral, 1:1 |
+| `public/img/placeholder/producto-detalle-1x1.svg` | Galería de la ficha, detalle (seed) | Placeholder | — | Foto real de detalle, 1:1 |
+| `public/img/placeholder/producto-variante-1x1.svg` | Foto propia de una variante (audífonos blancos, seed) | Placeholder | — | Foto real de la variante, 1:1 |
 
 Las fotos reales de producto no viven en el código: se suben desde el panel (fase 4) y cambian el campo `url` de `ProductImage`.
 

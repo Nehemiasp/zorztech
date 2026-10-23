@@ -1,5 +1,5 @@
-import { db } from "./db";
-import { productAvailability, type Availability } from "./availability";
+import { db } from "../db";
+import { productAvailability, type Availability } from "../availability";
 
 export interface CategoryTileData {
   id: string;
@@ -30,20 +30,21 @@ export async function getNavCategories(): Promise<CategoryTileData[]> {
   });
 }
 
-const cardSelect = {
+export const cardSelect = {
   id: true,
   slug: true,
   name: true,
   isSample: true,
   brand: { select: { name: true } },
-  images: { orderBy: { order: "asc" }, take: 1, select: { url: true, alt: true } },
+  // En las tarjetas solo van fotos del producto, no las propias de una variante.
+  images: { where: { variantId: null }, orderBy: { order: "asc" }, take: 1, select: { url: true, alt: true } },
   variants: {
     where: { isActive: true },
     select: { price: true, compareAtPrice: true, stock: true, reservedStock: true, lowStockThreshold: true },
   },
 } as const;
 
-type CardRow = {
+export type CardRow = {
   id: string;
   slug: string;
   name: string;
@@ -59,7 +60,7 @@ type CardRow = {
   }[];
 };
 
-function toCard(p: CardRow): ProductCardData | null {
+export function toCard(p: CardRow): ProductCardData | null {
   if (p.variants.length === 0) return null;
   const cheapest = p.variants.reduce((a, b) => (b.price < a.price ? b : a));
   return {

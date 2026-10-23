@@ -8,7 +8,7 @@ Tienda en línea de tecnología. El brief completo está en [`CLAUDE.md`](CLAUDE
 npm install
 cp .env.example .env        # completa DATABASE_URL con una base PostgreSQL
 npx prisma migrate deploy   # crea las tablas
-npm run db:seed             # categorías y productos de ejemplo
+npm run db:seed             # categorías, subcategorías y productos de ejemplo
 npm run dev
 ```
 
@@ -25,4 +25,5 @@ npm run dev
 
 ## Estado
 
-Fase 1 (base) lista para revisión. Ver [`docs/fase-1-reporte.md`](docs/fase-1-reporte.md).
+- Fase 1 (base): aprobada. [`docs/fase-1-reporte.md`](docs/fase-1-reporte.md).
+- Fase 2 (catálogo): lista para revisión. [`docs/fase-2-reporte.md`](docs/fase-2-reporte.md).

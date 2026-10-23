@@ -1,7 +1,7 @@
 import Link from "next/link";
 import { availabilityLabel } from "@/lib/availability";
 import { cn } from "@/lib/cn";
-import type { ProductCardData } from "@/lib/catalog";
+import type { ProductCardData } from "@/lib/catalog/cards";
 import { discountPercent, formatGTQ } from "@/lib/money";
 import { CatalogImage } from "./catalog-image";
 

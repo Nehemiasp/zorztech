@@ -2,7 +2,7 @@ import { CategoryTile } from "@/components/category-tile";
 import { Hero } from "@/components/home/hero";
 import { TrustStrip } from "@/components/home/trust-strip";
 import { ProductCard } from "@/components/product-card";
-import { getBestSellers, getFeaturedProducts, getNavCategories } from "@/lib/catalog";
+import { getBestSellers, getFeaturedProducts, getNavCategories } from "@/lib/catalog/cards";
 import { siteConfig } from "@/lib/site";
 
 export const revalidate = 60;

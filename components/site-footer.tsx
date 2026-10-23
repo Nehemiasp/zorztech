@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { getNavCategories } from "@/lib/catalog";
+import { getNavCategories } from "@/lib/catalog/cards";
 import { pendingData, siteConfig } from "@/lib/site";
 import { Logo } from "./logo";
 import { Marker } from "./marker";

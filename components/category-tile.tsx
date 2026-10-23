@@ -1,5 +1,5 @@
 import Link from "next/link";
-import type { CategoryTileData } from "@/lib/catalog";
+import type { CategoryTileData } from "@/lib/catalog/cards";
 import { CatalogImage } from "./catalog-image";
 
 export function CategoryTile({ category }: { category: CategoryTileData }) {

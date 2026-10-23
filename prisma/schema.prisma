@@ -119,6 +119,8 @@ model Product {
   isFeatured  Boolean          @default(false)
   // Producto de ejemplo del seed; el panel lo marca y se muestra como tal en la tienda.
   isSample    Boolean          @default(false)
+  // Texto normalizado (sin tildes) en el que busca la tienda. Se recalcula con buildSearchText (lib/search.ts).
+  searchText  String           @default("")
   createdAt   DateTime         @default(now())
   updatedAt   DateTime         @updatedAt
   variants    ProductVariant[]

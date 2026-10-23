@@ -1,4 +1,4 @@
-import { getNavCategories } from "@/lib/catalog";
+import { getNavCategories } from "@/lib/catalog/cards";
 import { HeaderShell } from "./header-shell";
 
 export async function SiteHeader() {

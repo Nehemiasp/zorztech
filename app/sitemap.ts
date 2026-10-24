@@ -2,7 +2,8 @@ import type { MetadataRoute } from "next";
 import { db } from "@/lib/db";
 import { siteConfig } from "@/lib/site";
 
-export const revalidate = 3600;
+// Lee la base de datos: se genera por petición, no durante el build.
+export const dynamic = "force-dynamic";
 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const [categories, products] = await Promise.all([

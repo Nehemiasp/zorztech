@@ -57,7 +57,7 @@ Nota sobre el rendimiento: se midió contra el servidor de producción local con
 
 - **Datos de ejemplo** que hay que reemplazar antes de vender: 12 productos (24 variantes), 22 tarifas de envío, la tienda de ejemplo y el cupón `EJEMPLO10`. El panel los marca.
 - **Límite de intentos**: vive en memoria de cada instancia de Vercel. Con tráfico real conviene moverlo a un almacén compartido.
-- **Cron de Vercel**: `vercel.json` expira reservas cada 10 minutos; los planes gratuitos solo permiten una vez al día. Hay que revisar el plan o usar otro disparador.
+- **Cron de Vercel**: `vercel.json` corre una vez al día (5:00 UTC) porque el plan Hobby no admite más. Las reservas vencidas igualmente se liberan al ver el carrito, una categoría o una ficha, al crear un pedido y al abrir una confirmación; el cron es solo la red de seguridad. Con plan Pro se puede volver a `*/10 * * * *`.
 - **Variables de entorno** necesarias en producción: `DATABASE_URL`, `AUTH_SECRET`, `NEXT_PUBLIC_SITE_URL`, `PAYMENT_PROVIDER`, `RESEND_API_KEY`, `BLOB_READ_WRITE_TOKEN`, `CRON_SECRET`. Sin `RESEND_API_KEY` los correos solo se escriben en el registro del servidor.
 - El administrador no edita aún los colores ni el logo de la marca (por tokens, en código).
 - Proveedores de pago de tipo `embedded` necesitan interfaz en el checkout (descrito en la guía).

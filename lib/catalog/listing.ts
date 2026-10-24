@@ -1,3 +1,4 @@
+import { sweepIfDue } from "../orders/expiry";
 import { cache } from "react";
 import { Prisma } from "../generated/prisma/client";
 import { db } from "../db";
@@ -119,6 +120,7 @@ export interface ListingResult {
 }
 
 export async function listProducts(scope: Scope, filters: ListingFilters): Promise<ListingResult> {
+  await sweepIfDue(); // sin cron frecuente, la disponibilidad que se muestra no puede depender de reservas vencidas
   const conditions = where([...scopeConditions(scope), ...filterConditions(filters)]);
   const offset = (filters.pagina - 1) * PAGE_SIZE;
 

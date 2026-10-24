@@ -1,3 +1,4 @@
+import { sweepIfDue } from "@/lib/orders/expiry";
 import type { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
@@ -50,6 +51,7 @@ const schemaAvailability = (available: number) =>
 
 export default async function ProductPage({ params, searchParams }: Props) {
   const { slug } = await params;
+  await sweepIfDue();
   const product = await getProductBySlug(slug);
   if (!product) notFound();
 

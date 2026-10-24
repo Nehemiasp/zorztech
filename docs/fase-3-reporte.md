@@ -61,7 +61,7 @@ Errores que encontré y corregí al probar: la revisión del checkout tenía una
 ## Checklist: casillas pendientes y por qué
 
 - **Límite de peticiones:** está en memoria de cada instancia; con varias instancias en Vercel cada una cuenta por separado. Para un límite global habría que usar Redis o la base de datos.
-- **Cron cada 10 minutos:** el plan gratuito de Vercel solo permite cron diario. No es un problema para el stock porque además se expira al consultar el carrito o crear un pedido, pero conviene un plan que permita el intervalo.
+- **Cron diario:** el plan gratuito de Vercel solo permite cron diario (ver fase 5). No es un problema para el stock porque además se expira al consultar el carrito o crear un pedido, pero conviene un plan que permita el intervalo.
 - **Cabecera CSP:** va en la fase 5.
 - **Correos reales:** necesitan `RESEND_API_KEY` y un dominio verificado en `EMAIL_FROM`; hasta entonces se imprimen en la consola.
 - **Formulario embebido de la pasarela:** el proveedor simulado usa redirección. Si la pasarela real usa formulario embebido (`kind: 'embedded'`), hay que construir esa pantalla en la fase 6.

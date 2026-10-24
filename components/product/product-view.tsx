@@ -14,6 +14,7 @@ import {
 } from "@/lib/catalog/variants";
 import { cn } from "@/lib/cn";
 import { discountPercent, formatGTQ } from "@/lib/money";
+import { useCart } from "@/components/cart/cart-provider";
 import { Gallery, type GalleryImage } from "./gallery";
 
 interface Props {
@@ -21,6 +22,7 @@ interface Props {
   images: (GalleryImage & { variantId: string | null })[];
   /** Foto de reserva cuando el producto no tiene ninguna. */
   fallbackImage: GalleryImage;
+  productName: string;
   initialSku: string | null;
   /** Contenido renderizado en el servidor: título y datos de entrega y garantía. */
   titleSlot: React.ReactNode;
@@ -40,12 +42,15 @@ const availabilityColor: Record<Availability, string> = {
   agotado: "text-state-error",
 };
 
-export function ProductView({ variants: rawVariants, images, fallbackImage, initialSku, titleSlot, infoSlot }: Props) {
+export function ProductView({ variants: rawVariants, images, fallbackImage, productName, initialSku, titleSlot, infoSlot }: Props) {
   const variants = useMemo(() => withSelectableAttributes(rawVariants), [rawVariants]);
   const groups = useMemo(() => attributeGroups(variants), [variants]);
   const [variant, setVariant] = useState(() => initialVariant(variants, initialSku));
   const [quantity, setQuantity] = useState(1);
   const buyRef = useRef<HTMLButtonElement>(null);
+  const { add } = useCart();
+  const [adding, setAdding] = useState(false);
+  const [addError, setAddError] = useState<string | null>(null);
   const [buyVisible, setBuyVisible] = useState(true);
 
   // La variante elegida queda en la URL para poder compartirla, sin recargar la página.
@@ -83,7 +88,15 @@ export function ProductView({ variants: rawVariants, images, fallbackImage, init
     setQuantity(1);
   };
 
-  const buyLabel = unavailable ? "Agotado" : "Agregar al carrito";
+  const buyLabel = unavailable ? "Agotado" : adding ? "Agregando…" : "Agregar al carrito";
+
+  const addToCart = async () => {
+    setAdding(true);
+    setAddError(null);
+    const result = await add(variant.id, quantityValue, productName);
+    if (!result.ok) setAddError(result.message ?? "No pudimos agregar el producto.");
+    setAdding(false);
+  };
 
   return (
     <div className="grid gap-8 lg:grid-cols-[minmax(0,1.1fr)_minmax(0,1fr)] lg:gap-12">
@@ -190,11 +203,21 @@ export function ProductView({ variants: rawVariants, images, fallbackImage, init
             </div>
           </div>
 
-          {/* El carrito llega en la fase 3: hasta entonces el botón se ve pero no actúa. */}
-          <button ref={buyRef} type="button" disabled className={cn(buttonStyles("primary"), "min-w-56 flex-1")}>
+          <button
+            ref={buyRef}
+            type="button"
+            disabled={unavailable || adding}
+            onClick={addToCart}
+            className={cn(buttonStyles("primary"), "min-w-56 flex-1")}
+          >
             {buyLabel}
           </button>
         </div>
+        {addError && (
+          <p role="alert" className="mt-2 text-state-error">
+            {addError}
+          </p>
+        )}
 
         {infoSlot}
       </div>
@@ -207,7 +230,13 @@ export function ProductView({ variants: rawVariants, images, fallbackImage, init
         )}
       >
         <p className="text-lg font-medium">{formatGTQ(variant.price)}</p>
-        <button type="button" disabled tabIndex={buyVisible ? -1 : 0} className={cn(buttonStyles("primary"), "flex-1 sm:flex-none sm:min-w-56")}>
+        <button
+          type="button"
+          disabled={unavailable || adding}
+          onClick={addToCart}
+          tabIndex={buyVisible ? -1 : 0}
+          className={cn(buttonStyles("primary"), "flex-1 sm:flex-none sm:min-w-56")}
+        >
           {buyLabel}
         </button>
       </div>

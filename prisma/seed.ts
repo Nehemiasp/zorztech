@@ -4,6 +4,8 @@
 import "dotenv/config";
 import { PrismaPg } from "@prisma/adapter-pg";
 import { PrismaClient } from "../lib/generated/prisma/client";
+import { hashPassword } from "../lib/auth/password";
+import { departamentos } from "../lib/geo/departamentos";
 import { buildSearchText } from "../lib/search";
 
 const db = new PrismaClient({ adapter: new PrismaPg({ connectionString: process.env.DATABASE_URL }) });
@@ -216,6 +218,61 @@ const products: SeedProduct[] = [
   },
 ];
 
+// Tarifas de ejemplo por departamento (centavos y días). El dueño las reemplaza desde el panel.
+const sampleRates: Record<string, [number, number]> = {
+  Guatemala: [q(35), 1],
+  Sacatepéquez: [q(45), 2],
+  Chimaltenango: [q(45), 2],
+  Escuintla: [q(45), 2],
+  "El Progreso": [q(55), 2],
+  "Santa Rosa": [q(55), 2],
+  Jalapa: [q(55), 3],
+  Jutiapa: [q(55), 3],
+  Zacapa: [q(60), 3],
+  Chiquimula: [q(60), 3],
+  Quetzaltenango: [q(60), 3],
+  Retalhuleu: [q(60), 3],
+  Suchitepéquez: [q(60), 3],
+  Sololá: [q(60), 3],
+  Totonicapán: [q(60), 3],
+  "Baja Verapaz": [q(60), 3],
+  "Alta Verapaz": [q(65), 4],
+  Quiché: [q(65), 4],
+  "San Marcos": [q(65), 4],
+  Izabal: [q(75), 4],
+  Huehuetenango: [q(75), 4],
+  Petén: [q(85), 5],
+};
+
+async function seedStoreData() {
+  for (const departamento of departamentos) {
+    const [price, estimatedDays] = sampleRates[departamento];
+    await db.shippingRate.upsert({
+      where: { departamento },
+      update: { price, estimatedDays },
+      create: { departamento, price, estimatedDays },
+    });
+  }
+  const existing = await db.pickupLocation.findFirst({ where: { name: "Tienda de ejemplo" } });
+  if (!existing) {
+    await db.pickupLocation.create({
+      data: { name: "Tienda de ejemplo", address: "[Dirección de la tienda]", hours: "[Horario de atención]" },
+    });
+  }
+
+  const email = process.env.SEED_ADMIN_EMAIL?.trim().toLowerCase();
+  const password = process.env.SEED_ADMIN_PASSWORD;
+  if (email && password) {
+    const passwordHash = await hashPassword(password);
+    await db.user.upsert({
+      where: { email },
+      update: { role: "admin", passwordHash },
+      create: { email, name: "Administrador", role: "admin", passwordHash },
+    });
+    console.log(`Administrador listo: ${email}`);
+  }
+}
+
 async function main() {
   for (const [order, c] of categories.entries()) {
     await db.category.upsert({
@@ -312,6 +369,8 @@ async function main() {
       },
     });
   }
+
+  await seedStoreData();
 
   const variantCount = await db.productVariant.count();
   console.log(`Seed listo: ${categories.length} categorías, ${products.length} productos, ${variantCount} variantes.`);

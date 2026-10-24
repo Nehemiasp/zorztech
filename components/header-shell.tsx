@@ -2,20 +2,23 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
+import { useSession } from "next-auth/react";
 import { useEffect, useRef, useState } from "react";
 import { Menu, Search, ShoppingCart, User, X } from "lucide-react";
+import { useCart } from "./cart/cart-provider";
 import { Logo } from "./logo";
 import { SearchForm } from "./search-form";
 
 interface Props {
   categories: { name: string; slug: string }[];
-  cartCount: number;
 }
 
 const iconButton =
   "relative inline-flex size-11 items-center justify-center rounded-md text-text-on-dark transition-colors duration-150 ease-out hover:bg-surface-dark-raised active:bg-surface-dark-alt";
 
-export function HeaderShell({ categories, cartCount }: Props) {
+export function HeaderShell({ categories }: Props) {
+  const cartCount = useCart().cart.count;
+  const signedIn = useSession().status === "authenticated";
   const pathname = usePathname();
   const menuRef = useRef<HTMLDialogElement>(null);
   // La búsqueda móvil se abre "en" una ruta: al navegar a otra se considera cerrada.
@@ -67,11 +70,11 @@ export function HeaderShell({ categories, cartCount }: Props) {
           </button>
 
           <Link
-            href="/ingresar"
+            href={signedIn ? "/cuenta" : "/ingresar"}
             className="hidden min-h-11 items-center gap-2 rounded-md px-3 text-base transition-colors duration-150 ease-out hover:bg-surface-dark-raised active:bg-surface-dark-alt md:inline-flex"
           >
             <User aria-hidden size={20} strokeWidth={1.75} />
-            Ingresar
+            {signedIn ? "Mi cuenta" : "Ingresar"}
           </Link>
 
           {cartLink}
@@ -128,9 +131,9 @@ export function HeaderShell({ categories, cartCount }: Props) {
           </ul>
           <ul className="mt-6 space-y-1 text-text-on-dark-muted">
             <li>
-              <Link href="/ingresar" className="flex min-h-11 items-center gap-2">
+              <Link href={signedIn ? "/cuenta" : "/ingresar"} className="flex min-h-11 items-center gap-2">
                 <User aria-hidden size={20} strokeWidth={1.75} />
-                Ingresar o crear cuenta
+                {signedIn ? "Mi cuenta" : "Ingresar o crear cuenta"}
               </Link>
             </li>
             <li>

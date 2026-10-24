@@ -107,6 +107,7 @@ export default async function ProductPage({ params, searchParams }: Props) {
           variants={product.variants}
           images={product.images}
           fallbackImage={FALLBACK_IMAGE}
+          productName={product.name}
           initialSku={typeof sku === "string" ? sku : null}
           titleSlot={
             <>

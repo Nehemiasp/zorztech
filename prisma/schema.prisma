@@ -48,19 +48,37 @@ enum CouponType {
 }
 
 model User {
-  id           String    @id @default(cuid())
-  email        String    @unique
+  id           String               @id @default(cuid())
+  email        String               @unique
   passwordHash String?
   name         String
   phone        String?
-  role         Role      @default(cliente)
-  createdAt    DateTime  @default(now())
-  updatedAt    DateTime  @updatedAt
+  role         Role                 @default(cliente)
+  // Límite de intentos: tras varios fallos seguidos la cuenta se bloquea unos minutos.
+  failedLogins Int                  @default(0)
+  lockedUntil  DateTime?
+  createdAt    DateTime             @default(now())
+  updatedAt    DateTime             @updatedAt
+  resetTokens  PasswordResetToken[]
   addresses    Address[]
   carts        Cart[]
   orders       Order[]
 
   @@map("users")
+}
+
+// Solo se guarda el hash del enlace de recuperación; el enlace en sí viaja por correo.
+model PasswordResetToken {
+  id        String    @id @default(cuid())
+  userId    String
+  user      User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  tokenHash String    @unique
+  expiresAt DateTime
+  usedAt    DateTime?
+  createdAt DateTime  @default(now())
+
+  @@index([userId])
+  @@map("password_reset_tokens")
 }
 
 model Address {
@@ -180,12 +198,14 @@ model Cart {
 }
 
 model CartItem {
-  id        String         @id @default(cuid())
-  cartId    String
-  cart      Cart           @relation(fields: [cartId], references: [id], onDelete: Cascade)
-  variantId String
-  variant   ProductVariant @relation(fields: [variantId], references: [id], onDelete: Cascade)
-  quantity  Int
+  id         String         @id @default(cuid())
+  cartId     String
+  cart       Cart           @relation(fields: [cartId], references: [id], onDelete: Cascade)
+  variantId  String
+  variant    ProductVariant @relation(fields: [variantId], references: [id], onDelete: Cascade)
+  quantity   Int
+  // Precio que el cliente vio al agregar: si cambia, se le avisa antes de pagar.
+  priceAtAdd Int
 
   @@unique([cartId, variantId])
   @@map("cart_items")
@@ -195,6 +215,11 @@ model Order {
   id                   String          @id @default(cuid())
   // Código legible que ve el cliente (ej. ZT-4K7P2Q).
   code                 String          @unique
+  customerName         String
+  // Carrito del que salió el pedido; se vacía cuando el pago se aprueba.
+  cartId               String?
+  // Clave que genera el navegador por intento de compra: repetir la petición no crea otro pedido.
+  idempotencyKey       String?         @unique
   userId               String?
   user                 User?           @relation(fields: [userId], references: [id], onDelete: SetNull)
   email                String
@@ -225,6 +250,7 @@ model Order {
   events               OrderEvent[]
 
   @@index([userId])
+  @@index([cartId])
   @@index([email])
   @@index([status, createdAt])
   @@index([status, reservationExpiresAt])

@@ -20,6 +20,8 @@ export interface ProductCardData {
   compareAtPrice: number | null;
   hasPriceRange: boolean;
   availability: Availability;
+  /** Si el producto tiene una sola variante, se puede agregar al carrito desde la tarjeta. */
+  singleVariantId: string | null;
 }
 
 export async function getNavCategories(): Promise<CategoryTileData[]> {
@@ -40,7 +42,7 @@ export const cardSelect = {
   images: { where: { variantId: null }, orderBy: { order: "asc" }, take: 1, select: { url: true, alt: true } },
   variants: {
     where: { isActive: true },
-    select: { price: true, compareAtPrice: true, stock: true, reservedStock: true, lowStockThreshold: true },
+    select: { id: true, price: true, compareAtPrice: true, stock: true, reservedStock: true, lowStockThreshold: true },
   },
 } as const;
 
@@ -52,6 +54,7 @@ export type CardRow = {
   brand: { name: string } | null;
   images: { url: string; alt: string }[];
   variants: {
+    id: string;
     price: number;
     compareAtPrice: number | null;
     stock: number;
@@ -74,6 +77,7 @@ export function toCard(p: CardRow): ProductCardData | null {
     compareAtPrice: cheapest.compareAtPrice,
     hasPriceRange: p.variants.some((v) => v.price !== cheapest.price),
     availability: productAvailability(p.variants),
+    singleVariantId: p.variants.length === 1 ? p.variants[0].id : null,
   };
 }
 

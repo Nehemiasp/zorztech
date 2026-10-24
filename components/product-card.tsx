@@ -3,6 +3,8 @@ import { availabilityLabel } from "@/lib/availability";
 import { cn } from "@/lib/cn";
 import type { ProductCardData } from "@/lib/catalog/cards";
 import { discountPercent, formatGTQ } from "@/lib/money";
+import { AddToCartButton } from "./cart/add-to-cart-button";
+import { buttonStyles } from "./ui/button";
 import { CatalogImage } from "./catalog-image";
 
 const availabilityColor = {
@@ -61,6 +63,21 @@ export function ProductCard({ product }: { product: ProductCardData }) {
         <p className={cn("text-sm", availabilityColor[product.availability])}>
           {availabilityLabel[product.availability]}
         </p>
+      </div>
+
+      {/* Por encima del enlace que cubre toda la tarjeta, para que el botón reciba el clic */}
+      <div className="relative z-10 mt-3">
+        {product.availability === "agotado" ? (
+          <button type="button" disabled className={cn(buttonStyles("secondary-light"), "w-full")}>
+            Agotado
+          </button>
+        ) : product.singleVariantId ? (
+          <AddToCartButton variantId={product.singleVariantId} productName={product.name} className="w-full" />
+        ) : (
+          <Link href={`/productos/${product.slug}`} className={cn(buttonStyles("secondary-light"), "w-full")}>
+            Elegir opciones
+          </Link>
+        )}
       </div>
     </article>
   );

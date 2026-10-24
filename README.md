@@ -31,3 +31,5 @@ npm run dev
 - Fase 2 (catálogo): [`docs/fase-2-reporte.md`](docs/fase-2-reporte.md).
 - Fase 3 (compra): [`docs/fase-3-reporte.md`](docs/fase-3-reporte.md).
 - Fase 4 (administración): [`docs/fase-4-reporte.md`](docs/fase-4-reporte.md).
+- Fase 5 (cierre): [`docs/fase-5-reporte.md`](docs/fase-5-reporte.md).
+- Fase 6 (pasarela real): pendiente de que exista la API del proveedor. Pasos en [`docs/conectar-pasarela.md`](docs/conectar-pasarela.md).

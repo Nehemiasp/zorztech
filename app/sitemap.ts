@@ -14,8 +14,11 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     }),
   ]);
 
+  const info = ["envios", "garantias", "devoluciones", "preguntas-frecuentes", "contacto", "terminos", "privacidad"];
+
   return [
     { url: siteConfig.url, changeFrequency: "daily", priority: 1 },
+    ...info.map((slug) => ({ url: `${siteConfig.url}/${slug}`, changeFrequency: "monthly" as const, priority: 0.3 })),
     ...categories.map((c) => ({
       url: `${siteConfig.url}/categorias/${c.slug}`,
       changeFrequency: "daily" as const,

@@ -11,6 +11,7 @@ const infoLinks = [
   { href: "/devoluciones", label: "Devoluciones" },
   { href: "/preguntas-frecuentes", label: "Preguntas frecuentes" },
   { href: "/pedido/seguimiento", label: "Seguir mi pedido" },
+  { href: "/contacto", label: "Contacto" },
 ];
 
 const legalLinks = [

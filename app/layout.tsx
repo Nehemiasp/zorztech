@@ -12,6 +12,9 @@ const plex = IBM_Plex_Sans({
   variable: "--font-plex",
 });
 
+// El CSP lleva un nonce distinto en cada petición (proxy.ts), así que ninguna página puede prerenderse.
+export const dynamic = "force-dynamic";
+
 export const metadata: Metadata = {
   metadataBase: new URL(siteConfig.url),
   title: {

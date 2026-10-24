@@ -3,15 +3,17 @@ import { Hero } from "@/components/home/hero";
 import { TrustStrip } from "@/components/home/trust-strip";
 import { ProductCard } from "@/components/product-card";
 import { getBestSellers, getFeaturedProducts, getNavCategories } from "@/lib/catalog/cards";
+import { getHero } from "@/lib/settings";
 import { siteConfig } from "@/lib/site";
 
 export const revalidate = 60;
 
 export default async function HomePage() {
-  const [categories, featured, bestSellers] = await Promise.all([
+  const [categories, featured, bestSellers, hero] = await Promise.all([
     getNavCategories(),
     getFeaturedProducts(8),
     getBestSellers(4),
+    getHero(),
   ]);
 
   const organization = {
@@ -28,7 +30,7 @@ export default async function HomePage() {
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(organization) }}
       />
-      <Hero />
+      <Hero hero={hero} />
 
       <section id="categorias" aria-labelledby="categorias-titulo" className="scroll-mt-4 bg-surface-light">
         <div className="mx-auto max-w-page px-4 py-14 md:px-6 md:py-20">

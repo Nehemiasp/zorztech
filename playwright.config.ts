@@ -15,6 +15,8 @@ export default defineConfig({
   use: {
     baseURL: process.env.E2E_BASE_URL ?? "http://localhost:3000",
     trace: "retain-on-failure",
+    // Los recorridos usan la preferencia «reducir movimiento»: la página no se desplaza con animación mientras se hace clic.
+    contextOptions: { reducedMotion: "reduce" },
     launchOptions: { executablePath },
   },
   projects: [

@@ -4,8 +4,8 @@ import type { OrderStatus } from "../generated/prisma/client";
 const transitions: Record<OrderStatus, OrderStatus[]> = {
   pendiente_pago: ["pagado", "pago_fallido", "expirado", "cancelado"],
   pago_fallido: ["pagado", "expirado", "cancelado"],
-  // Un pago aprobado que llega tarde puede revivir un pedido expirado.
-  expirado: ["pagado"],
+  // Un pago aprobado que llega tarde puede revivir un pedido expirado o, si no hay stock, cancelarse para reembolsarlo.
+  expirado: ["pagado", "cancelado"],
   pagado: ["en_preparacion", "cancelado"],
   en_preparacion: ["enviado", "listo_para_recoger", "cancelado"],
   enviado: ["entregado"],

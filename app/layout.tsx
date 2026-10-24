@@ -1,11 +1,5 @@
 import type { Metadata, Viewport } from "next";
 import { IBM_Plex_Sans, Sora } from "next/font/google";
-import { CartDrawer } from "@/components/cart/cart-drawer";
-import { CartProvider } from "@/components/cart/cart-provider";
-import { CartStatus } from "@/components/cart/cart-status";
-import { SessionProvider } from "next-auth/react";
-import { SiteFooter } from "@/components/site-footer";
-import { SiteHeader } from "@/components/site-header";
 import { siteConfig } from "@/lib/site";
 import "./globals.css";
 
@@ -49,15 +43,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         >
           Saltar al contenido
         </a>
-        <SessionProvider>
-          <CartProvider>
-            <SiteHeader />
-            <main id="contenido">{children}</main>
-            <SiteFooter />
-            <CartDrawer />
-            <CartStatus />
-          </CartProvider>
-        </SessionProvider>
+        {children}
       </body>
     </html>
   );

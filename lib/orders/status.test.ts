@@ -44,3 +44,9 @@ test("la línea de tiempo cambia según la entrega", () => {
   assert.equal(timelineIndex("listo_para_recoger"), 2);
   assert.equal(timelineIndex("cancelado"), -1);
 });
+
+test("un pedido expirado con pago tardío se puede cancelar para reembolsarlo", () => {
+  assert.ok(canTransition("expirado", "cancelado"));
+  assert.ok(canTransition("cancelado", "reembolsado"));
+  assert.ok(!canTransition("expirado", "enviado"));
+});

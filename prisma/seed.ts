@@ -260,6 +260,13 @@ async function seedStoreData() {
     });
   }
 
+  // Cupón de ejemplo para probar el flujo; el dueño lo borra o lo reemplaza desde el panel.
+  await db.coupon.upsert({
+    where: { code: "EJEMPLO10" },
+    update: {},
+    create: { code: "EJEMPLO10", type: "porcentaje", value: 10, minSubtotal: q(100) },
+  });
+
   const email = process.env.SEED_ADMIN_EMAIL?.trim().toLowerCase();
   const password = process.env.SEED_ADMIN_PASSWORD;
   if (email && password) {

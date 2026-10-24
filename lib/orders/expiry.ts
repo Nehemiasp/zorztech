@@ -32,6 +32,10 @@ export async function expireStaleReservations(now = new Date()): Promise<number>
       const rows = await tx.$queryRaw<{ status: string }[]>`SELECT status FROM orders WHERE id = ${id} FOR UPDATE`;
       if (!rows[0] || !(reservedStatuses as string[]).includes(rows[0].status)) return;
       await releaseReservation(tx, id);
+      const expiring = await tx.order.findUnique({ where: { id }, select: { couponId: true } });
+      if (expiring?.couponId) {
+        await tx.$executeRaw`UPDATE coupons SET "usedCount" = GREATEST("usedCount" - 1, 0) WHERE id = ${expiring.couponId}`;
+      }
       await tx.order.update({ where: { id }, data: { status: "expirado", reservationExpiresAt: null } });
       await tx.orderEvent.create({
         data: { orderId: id, type: "estado", fromStatus: rows[0].status as never, toStatus: "expirado", note: "No se pagó a tiempo. Stock liberado." },

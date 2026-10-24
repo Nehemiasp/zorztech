@@ -1,7 +1,13 @@
 // Textos del inicio. Propuesta de redacción: el dueño debe validarlos.
-// El hero es editable desde el panel (fase 4); mientras tanto vive aquí.
+// El hero se edita desde el panel (Configuración). Estos son los valores por defecto cuando no hay un banner activo.
 
-export const hero = {
+export const hero: {
+  title: string;
+  body: string;
+  primaryCta: { label: string; href: string };
+  secondaryCta: { label: string; href: string };
+  image: { src: string; alt: string };
+} = {
   title: "Compra tecnología sabiendo qué pagas y cuándo llega",
   body: "Celulares, laptops, audio, gaming y hogar inteligente. Precios en quetzales, entrega a domicilio o recogida en tienda.",
   primaryCta: { label: "Explorar categorías", href: "#categorias" },
@@ -10,7 +16,7 @@ export const hero = {
     src: "/img/placeholder/hero-producto-1x1.svg",
     alt: "Espacio reservado para la foto del producto de la promoción",
   },
-} as const;
+};
 
 export const trust = [
   {

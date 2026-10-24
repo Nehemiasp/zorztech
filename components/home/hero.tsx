@@ -1,8 +1,8 @@
-import Image from "next/image";
+import { CatalogImage } from "@/components/catalog-image";
 import { LinkButton } from "@/components/ui/button";
-import { hero } from "@/lib/content/home";
+import type { getHero } from "@/lib/settings";
 
-export function Hero() {
+export function Hero({ hero }: { hero: Awaited<ReturnType<typeof getHero>> }) {
   return (
     <section
       aria-labelledby="hero-titulo"
@@ -32,15 +32,14 @@ export function Hero() {
 
         <div className="hero-visual hero-panel-in -mx-4 md:-mx-6 lg:col-span-5 lg:col-start-8 lg:mx-0">
           <div className="hero-glow mx-auto w-full max-w-[22rem] py-10 lg:max-w-[28rem] lg:py-0">
-            <Image
+            <CatalogImage
               src={hero.image.src}
               alt={hero.image.alt}
               width={900}
               height={900}
               priority
-              unoptimized
               sizes="(min-width: 1024px) 28rem, 22rem"
-              className="aspect-square w-full rounded-lg"
+              className="aspect-square w-full rounded-lg object-cover"
             />
           </div>
         </div>

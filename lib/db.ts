@@ -11,6 +11,15 @@ function createClient() {
   return new PrismaClient({ adapter: new PrismaPg({ connectionString }) });
 }
 
-export const db = globalForPrisma.prisma ?? createClient();
+function client(): PrismaClient {
+  globalForPrisma.prisma ??= createClient();
+  return globalForPrisma.prisma;
+}
 
-if (process.env.NODE_ENV !== "production") globalForPrisma.prisma = db;
+/**
+ * Cliente de la base de datos. Se crea en la primera consulta, no al importar el módulo:
+ * así el código que solo valida datos (esquemas, utilidades) se puede cargar y probar sin base de datos.
+ */
+export const db = new Proxy({} as PrismaClient, {
+  get: (_target, property) => Reflect.get(client(), property),
+});

@@ -1,8 +1,9 @@
 import { Marker } from "@/components/marker";
 import { trust } from "@/lib/content/home";
-import { pendingData } from "@/lib/site";
+import { contactOrMarker, getStoreSettings } from "@/lib/settings";
 
-export function TrustStrip() {
+export async function TrustStrip() {
+  const contact = contactOrMarker((await getStoreSettings()).contact);
   return (
     <section aria-labelledby="confianza-titulo" className="border-y border-border bg-surface-light-alt">
       <div className="mx-auto max-w-page px-4 py-10 md:px-6">
@@ -18,7 +19,7 @@ export function TrustStrip() {
                 {"pending" in item && (
                   <>
                     {" "}
-                    <Marker>{pendingData[item.pending]}</Marker>
+                    {contact[item.pending].pending ? <Marker>{contact[item.pending].value}</Marker> : contact[item.pending].value}
                   </>
                 )}
               </dd>

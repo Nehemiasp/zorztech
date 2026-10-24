@@ -21,7 +21,7 @@ npm run dev
 | `npm run lint` / `npm run typecheck` | Revisión de código y tipos |
 | `npm test` | Pruebas unitarias (`lib/**/*.test.ts`) |
 | `npm run test:integration` | Compra, pagos e inventario contra la base de datos de desarrollo |
-| `npm run test:e2e` | Recorridos en navegador (Playwright). Con la app en marcha: `RATE_LIMIT_OFF=1 npm start` |
+| `npm run test:e2e` | Recorridos en navegador (Playwright). Con la app en marcha: `RATE_LIMIT_OFF=1 ALLOW_LOCAL_UPLOADS=1 npm start` |
 | `npm run db:migrate` | Nueva migración en desarrollo |
 | `npm run db:seed` | Datos de ejemplo (se puede repetir sin duplicar) |
 
@@ -30,3 +30,4 @@ npm run dev
 - Fase 1 (base): aprobada. [`docs/fase-1-reporte.md`](docs/fase-1-reporte.md).
 - Fase 2 (catálogo): [`docs/fase-2-reporte.md`](docs/fase-2-reporte.md).
 - Fase 3 (compra): [`docs/fase-3-reporte.md`](docs/fase-3-reporte.md).
+- Fase 4 (administración): [`docs/fase-4-reporte.md`](docs/fase-4-reporte.md).

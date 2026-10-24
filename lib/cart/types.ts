@@ -25,12 +25,17 @@ export interface CartView {
   /** Número de unidades en el carrito. */
   count: number;
   subtotal: number;
+  /** Descuento del cupón aplicado, en centavos (0 si no hay cupón). */
+  discount: number;
+  coupon: { code: string; label: string } | null;
+  /** Si el cupón dejó de ser válido, se quita y aquí queda el motivo para avisar al cliente. */
+  couponNotice?: string;
   /** Hay productos que impiden pagar (sin stock, sin existencias suficientes o retirados). */
   blocking: boolean;
   priceChanged: boolean;
 }
 
-export const emptyCart: CartView = { lines: [], count: 0, subtotal: 0, blocking: false, priceChanged: false };
+export const emptyCart: CartView = { lines: [], count: 0, subtotal: 0, discount: 0, coupon: null, blocking: false, priceChanged: false };
 
 export const issueMessage: Record<CartIssue, string> = {
   precio_cambio: "El precio cambió desde que lo agregaste.",

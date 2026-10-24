@@ -59,6 +59,12 @@ export function CartDrawer() {
               <span>Subtotal</span>
               <span className="font-medium">{formatGTQ(cart.subtotal)}</span>
             </p>
+            {cart.discount > 0 && (
+              <p className="flex items-baseline justify-between text-state-success">
+                <span>Cupón {cart.coupon?.code}</span>
+                <span>-{formatGTQ(cart.discount)}</span>
+              </p>
+            )}
             <p className="mt-1 text-sm text-text-muted">El envío se calcula en el siguiente paso.</p>
             <div className="mt-4 grid gap-2">
               <LinkButton href="/checkout" onClick={closeDrawer} aria-disabled={cart.blocking}>

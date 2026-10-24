@@ -113,7 +113,7 @@ function CheckoutForm({ cart, rates, pickups, addresses, methods, user, restored
 
   const rate = useMemo(() => rates.find((r) => r.departamento === draft.home.departamento), [rates, draft.home.departamento]);
   const shipping = draft.method === "recogida" ? 0 : (rate?.price ?? null);
-  const total = cart.subtotal + (shipping ?? 0);
+  const total = cart.subtotal - cart.discount + (shipping ?? 0);
   const pickup = pickups.find((p) => p.id === draft.pickupLocationId);
 
   const setContact = (k: keyof Draft["contact"], v: string) => setDraft((d) => ({ ...d, contact: { ...d.contact, [k]: v } }));
@@ -267,6 +267,12 @@ function CheckoutForm({ cart, rates, pickups, addresses, methods, user, restored
           <dt>Subtotal</dt>
           <dd>{formatGTQ(cart.subtotal)}</dd>
         </div>
+        {cart.discount > 0 && (
+          <div className="flex justify-between text-state-success">
+            <dt>Cupón {cart.coupon?.code}</dt>
+            <dd>-{formatGTQ(cart.discount)}</dd>
+          </div>
+        )}
         <div className="flex justify-between">
           <dt>Envío</dt>
           <dd>{draft.method === "recogida" ? "Sin costo" : shipping !== null ? formatGTQ(shipping) : "Elige tu departamento"}</dd>

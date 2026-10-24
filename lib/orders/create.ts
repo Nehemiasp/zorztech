@@ -1,5 +1,6 @@
 import { db } from "../db";
 import { loadCartView } from "../cart/view";
+import { evaluateCoupon } from "../coupons";
 import type { CheckoutInput } from "../checkout/schema";
 import { Prisma, type Order } from "../generated/prisma/client";
 import { getPaymentProvider } from "../payments";
@@ -21,7 +22,7 @@ export type CreateOrderResult =
   | { ok: true; code: string; payment: PaymentRedirect }
   | {
       ok: false;
-      error: "carrito_vacio" | "carrito_con_problemas" | "sin_tarifa" | "sin_tienda" | "sin_stock" | "total_cambio" | "pago";
+      error: "carrito_vacio" | "carrito_con_problemas" | "sin_tarifa" | "sin_tienda" | "sin_stock" | "total_cambio" | "cupon" | "pago";
       message: string;
       /** El pedido ya existe y puede reintentarse (el proveedor falló al iniciar el pago). */
       code?: string;
@@ -32,6 +33,8 @@ class TotalChanged extends Error {
     super("total");
   }
 }
+
+class CouponProblem extends Error {}
 
 class StockShortage extends Error {
   constructor(public productName: string) {
@@ -185,10 +188,27 @@ export async function createOrderFromCart(input: CheckoutInput, userId: string |
         if (reserved === 0) throw new StockShortage(item.variant.product.name);
       }
 
-      const totals = calculateTotals(
-        items.map((i) => ({ unitPrice: i.variant.price, quantity: i.quantity })),
-        shippingCost,
-      );
+      const lines = items.map((i) => ({ unitPrice: i.variant.price, quantity: i.quantity }));
+      const subtotal = lines.reduce((n, l) => n + l.unitPrice * l.quantity, 0);
+
+      // Cupón: se bloquea su fila, se valida con el subtotal real y se cuenta el uso en la misma transacción.
+      let couponId: string | undefined;
+      let discount = 0;
+      const withCoupon = await tx.cart.findUnique({ where: { id: cart.id }, select: { couponCode: true } });
+      if (withCoupon?.couponCode) {
+        await tx.$queryRaw`SELECT id FROM coupons WHERE code = ${withCoupon.couponCode} FOR UPDATE`;
+        const coupon = await tx.coupon.findUnique({ where: { code: withCoupon.couponCode } });
+        const check = evaluateCoupon(coupon, subtotal);
+        if (!check.ok || !coupon) throw new CouponProblem(check.ok ? "Ese cupón ya no está disponible." : check.message);
+        const used = await tx.$executeRaw`
+          UPDATE coupons SET "usedCount" = "usedCount" + 1
+          WHERE id = ${coupon.id} AND ("usageLimit" IS NULL OR "usedCount" < "usageLimit")`;
+        if (used === 0) throw new CouponProblem("Ese cupón ya se usó el máximo de veces.");
+        couponId = coupon.id;
+        discount = check.discount;
+      }
+
+      const totals = calculateTotals(lines, shippingCost, discount);
       if (totals.total !== input.expectedTotal) throw new TotalChanged(totals.total);
       const created = await tx.order.create({
         data: {
@@ -202,6 +222,7 @@ export async function createOrderFromCart(input: CheckoutInput, userId: string |
           status: "pendiente_pago",
           paymentStatus: "pending",
           ...totals,
+          couponId,
           shippingMethod: input.delivery.method,
           shippingAddress,
           pickupLocationId,
@@ -233,6 +254,9 @@ export async function createOrderFromCart(input: CheckoutInput, userId: string |
         error: "total_cambio",
         message: `El total cambió a ${formatGTQ(error.total)} porque se actualizó un precio. Revisa tu pedido y vuelve a pagar.`,
       };
+    }
+    if (error instanceof CouponProblem) {
+      return { ok: false, error: "cupon", message: `${error.message} Revisa tu carrito: quitamos el cupón.` };
     }
     if (error instanceof StockShortage) {
       return { ok: false, error: "sin_stock", message: `Ya no hay unidades suficientes de «${error.productName}». Ajusta tu carrito e inténtalo otra vez.` };

@@ -31,7 +31,7 @@ test("lee filtros repetidos, precios y atributos", () => {
 });
 
 test("descarta valores inválidos en vez de fallar", () => {
-  const f = parseFilters({ orden: "al-azar", pagina: "-4", desde: "abc", a_Mal_Nombre: "x", "a_x y": "z" });
+  const f = parseFilters({ orden: "al-azar", pagina: "-4", desde: "abc", "a_x y": "z", "a_x/y": "z" });
   assert.equal(f.orden, "relevancia");
   assert.equal(f.pagina, 1);
   assert.equal(f.desde, null);
@@ -61,4 +61,11 @@ test("un precio vacío no es un filtro", () => {
   assert.equal(f.desde, null);
   assert.equal(f.hasta, null);
   assert.equal(hasActiveFilters(f), false);
+});
+
+test("acepta claves de atributo con tildes", () => {
+  const f = parseFilters({ "a_resolución": "2K" });
+  assert.deepEqual(f.atributos, { "resolución": ["2K"] });
+  const back = parseFilters(Object.fromEntries(new URLSearchParams(filtersToQuery(f))));
+  assert.deepEqual(back, f);
 });

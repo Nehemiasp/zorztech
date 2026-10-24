@@ -1,7 +1,7 @@
 "use client";
 
 import { useActionState } from "react";
-import { trackOrder, type TrackingState } from "@/app/pedido/seguimiento/actions";
+import { trackOrder, type TrackingState } from "@/app/(tienda)/pedido/seguimiento/actions";
 import { buttonStyles } from "@/components/ui/button";
 import { TextField } from "@/components/ui/field";
 

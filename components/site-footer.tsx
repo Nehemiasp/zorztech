@@ -1,6 +1,7 @@
 import Link from "next/link";
 import { getNavCategories } from "@/lib/catalog/cards";
-import { pendingData, siteConfig } from "@/lib/site";
+import { contactOrMarker, getStoreSettings } from "@/lib/settings";
+import { siteConfig } from "@/lib/site";
 import { Logo } from "./logo";
 import { Marker } from "./marker";
 
@@ -20,7 +21,9 @@ const legalLinks = [
 const linkClass = "inline-flex min-h-11 items-center text-text-on-dark-muted transition-colors duration-150 ease-out hover:text-text-on-dark";
 
 export async function SiteFooter() {
-  const categories = await getNavCategories();
+  const [categories, settings] = await Promise.all([getNavCategories(), getStoreSettings()]);
+  const contact = contactOrMarker(settings.contact);
+  const show = (item: { value: string; pending: boolean }) => (item.pending ? <Marker>{item.value}</Marker> : item.value);
 
   return (
     <footer className="zone-dark bg-surface-dark-alt text-text-on-dark">
@@ -61,23 +64,13 @@ export async function SiteFooter() {
         <div>
           <h2 className="text-lg">Contacto</h2>
           <ul className="mt-3 space-y-2 text-text-on-dark-muted">
-            <li>
-              <Marker>{pendingData.phone}</Marker>
-            </li>
-            <li>
-              <Marker>{pendingData.email}</Marker>
-            </li>
-            <li>
-              <Marker>{pendingData.hours}</Marker>
-            </li>
-            <li>
-              <Marker>{pendingData.socials}</Marker>
-            </li>
+            <li>{contact.phone.pending ? show(contact.phone) : <a href={`tel:${contact.phone.value.replace(/[^+\d]/g, "")}`} className="underline underline-offset-2">{contact.phone.value}</a>}</li>
+            <li>{contact.email.pending ? show(contact.email) : <a href={`mailto:${contact.email.value}`} className="underline underline-offset-2">{contact.email.value}</a>}</li>
+            <li>{show(contact.hours)}</li>
+            <li>{show(contact.socials)}</li>
           </ul>
           <h2 className="mt-6 text-lg">Formas de pago</h2>
-          <p className="mt-3 text-text-on-dark-muted">
-            <Marker>{pendingData.paymentMethods}</Marker>
-          </p>
+          <p className="mt-3 text-text-on-dark-muted">{show(contact.paymentMethods)}</p>
         </div>
       </div>
 

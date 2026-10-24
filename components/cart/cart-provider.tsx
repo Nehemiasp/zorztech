@@ -23,6 +23,8 @@ interface CartContextValue {
   setQuantity: (itemId: string, quantity: number) => Promise<void>;
   remove: (itemId: string) => Promise<void>;
   confirmPrices: () => Promise<void>;
+  applyCoupon: (code: string) => Promise<ActionResult>;
+  removeCoupon: () => Promise<void>;
   /** Sincroniza el estado con el carrito que la página ya cargó en el servidor. */
   hydrate: (cart: CartView) => void;
 }
@@ -120,6 +122,24 @@ export function CartProvider({ children }: { children: React.ReactNode }) {
     setBusy(false);
   }, [apply]);
 
+  const applyCoupon = useCallback<CartContextValue["applyCoupon"]>(
+    async (code) => {
+      setBusy(true);
+      const res = await request("/api/carrito/cupon", { method: "POST", body: JSON.stringify({ codigo: code }) });
+      setBusy(false);
+      if (!res.ok) return { ok: false, message: res.error ?? "No pudimos aplicar el cupón." };
+      apply(res);
+      return { ok: true };
+    },
+    [apply],
+  );
+
+  const removeCoupon = useCallback(async () => {
+    setBusy(true);
+    apply(await request("/api/carrito/cupon", { method: "DELETE" }));
+    setBusy(false);
+  }, [apply]);
+
   const hydrate = useCallback((initial: CartView) => {
     latest.current++;
     setCart(initial);
@@ -139,9 +159,11 @@ export function CartProvider({ children }: { children: React.ReactNode }) {
       setQuantity,
       remove,
       confirmPrices,
+      applyCoupon,
+      removeCoupon,
       hydrate,
     }),
-    [cart, ready, busy, drawerOpen, notice, add, setQuantity, remove, confirmPrices, hydrate],
+    [cart, ready, busy, drawerOpen, notice, add, setQuantity, remove, confirmPrices, applyCoupon, removeCoupon, hydrate],
   );
 
   return <CartContext.Provider value={value}>{children}</CartContext.Provider>;

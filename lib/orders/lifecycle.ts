@@ -59,6 +59,20 @@ export async function applyTransition(
     else if (paidStatuses.includes(from) && from !== "enviado" && from !== "entregado") await moveStock(tx, orderId, "restaurar");
   }
 
+  // Un pedido que se cancela o expira devuelve el uso de su cupón (si venía de expirado ya se devolvió).
+  if ((to === "cancelado" || to === "expirado") && from !== "expirado") {
+    const order = await tx.order.findUnique({ where: { id: orderId }, select: { couponId: true } });
+    if (order?.couponId) {
+      await tx.$executeRaw`UPDATE coupons SET "usedCount" = GREATEST("usedCount" - 1, 0) WHERE id = ${order.couponId}`;
+    }
+  }
+
+  // Un pago tardío que revive un pedido expirado vuelve a contar el uso de su cupón.
+  if (from === "expirado" && to === "pagado") {
+    const order = await tx.order.findUnique({ where: { id: orderId }, select: { couponId: true } });
+    if (order?.couponId) await tx.$executeRaw`UPDATE coupons SET "usedCount" = "usedCount" + 1 WHERE id = ${order.couponId}`;
+  }
+
   const data: Prisma.OrderUpdateInput = { status: to };
   if (to === "pagado") {
     data.paidAt = new Date();

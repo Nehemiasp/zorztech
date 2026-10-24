@@ -29,7 +29,8 @@ export interface ListingFilters {
 export type RawSearchParams = Record<string, string | string[] | undefined>;
 
 const ATTR_PREFIX = "a_";
-const ATTR_KEY = /^[a-z0-9_-]{1,30}$/;
+// Letras (con tildes), números, guion y guion bajo: las claves las escribe el dueño, p. ej. "resolución".
+const ATTR_KEY = /^[\p{L}\p{N}_-]{1,30}$/u;
 
 const text = (max: number) => z.string().trim().max(max);
 const list = (max: number, items = 20) => z.array(text(max).min(1)).max(items);

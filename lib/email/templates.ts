@@ -129,3 +129,14 @@ export function passwordResetEmail(to: string, name: string, url: string): Email
     text: `${text}\n\nElegir nueva contraseña: ${url}`,
   };
 }
+
+export function restockEmail(to: string, productName: string, variantName: string, url: string): EmailMessage {
+  const label = variantName ? `${productName} (${variantName})` : productName;
+  const text = `Ya hay unidades de ${label}. Las existencias son limitadas: si lo quieres, no esperes mucho.`;
+  return {
+    to,
+    subject: `Ya llegó: ${productName}`,
+    html: layout("Ya llegó lo que esperabas", `<p style="margin:0;line-height:1.5">${esc(text)}</p>${button(url, "Ver el producto")}<p style="font-size:13px;color:${color.muted};margin:16px 0 0">Te escribimos solo esta vez porque pediste que te avisáramos.</p>`),
+    text: `${text}\n\nVer el producto: ${url}\nTe escribimos solo esta vez porque pediste que te avisáramos.`,
+  };
+}

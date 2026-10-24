@@ -16,6 +16,7 @@ import { cn } from "@/lib/cn";
 import { discountPercent, formatGTQ } from "@/lib/money";
 import { useCart } from "@/components/cart/cart-provider";
 import { Gallery, type GalleryImage } from "./gallery";
+import { StockAlertForm } from "./stock-alert-form";
 
 interface Props {
   variants: VariantView[];
@@ -218,6 +219,7 @@ export function ProductView({ variants: rawVariants, images, fallbackImage, prod
             {addError}
           </p>
         )}
+        {unavailable && <StockAlertForm key={variant.id} variantId={variant.id} />}
 
         {infoSlot}
       </div>

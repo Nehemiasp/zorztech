@@ -167,6 +167,7 @@ model ProductVariant {
   images            ProductImage[]
   cartItems         CartItem[]
   orderItems        OrderItem[]
+  stockAlerts       StockAlert[]
 
   @@index([productId])
   @@map("product_variants")
@@ -187,12 +188,14 @@ model ProductImage {
 }
 
 model Cart {
-  id        String     @id @default(cuid())
-  userId    String?    @unique
-  user      User?      @relation(fields: [userId], references: [id], onDelete: Cascade)
-  sessionId String?    @unique
-  updatedAt DateTime   @updatedAt
-  items     CartItem[]
+  id         String     @id @default(cuid())
+  userId     String?    @unique
+  user       User?      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  sessionId  String?    @unique
+  // Cupón que el cliente aplicó; se vuelve a validar cada vez que se lee el carrito.
+  couponCode String?
+  updatedAt  DateTime   @updatedAt
+  items      CartItem[]
 
   @@map("carts")
 }
@@ -340,7 +343,49 @@ model Coupon {
   endsAt      DateTime?
   usageLimit  Int?
   usedCount   Int        @default(0)
+  isActive    Boolean    @default(true)
   orders      Order[]
 
   @@map("coupons")
+}
+
+// Avisos de "Avisarme cuando llegue" para variantes agotadas.
+model StockAlert {
+  id         String         @id @default(cuid())
+  variantId  String
+  variant    ProductVariant @relation(fields: [variantId], references: [id], onDelete: Cascade)
+  email      String
+  createdAt  DateTime       @default(now())
+  notifiedAt DateTime?
+
+  @@unique([variantId, email])
+  @@index([variantId, notifiedAt])
+  @@map("stock_alerts")
+}
+
+// Banners editables del inicio (hoy solo el hero).
+model Banner {
+  id        String   @id @default(cuid())
+  slot      String
+  title     String
+  body      String
+  ctaLabel  String
+  ctaHref   String
+  imageUrl  String?
+  imageAlt  String   @default("")
+  isActive  Boolean  @default(true)
+  order     Int      @default(0)
+  updatedAt DateTime @updatedAt
+
+  @@index([slot, isActive, order])
+  @@map("banners")
+}
+
+// Datos que edita el dueño sin tocar código: contacto, horarios, redes, formas de pago, umbrales.
+model StoreSetting {
+  key       String   @id
+  value     Json
+  updatedAt DateTime @updatedAt
+
+  @@map("store_settings")
 }

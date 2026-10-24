@@ -50,8 +50,11 @@ export function TextField({ label, error, hint, className, ...props }: InputProp
   );
 }
 
-type SelectProps = BaseProps & Omit<React.SelectHTMLAttributes<HTMLSelectElement>, "className"> & { options: string[]; placeholder?: string };
+type SelectOption = string | { value: string; label: string };
+type SelectProps = BaseProps &
+  Omit<React.SelectHTMLAttributes<HTMLSelectElement>, "className"> & { options: SelectOption[]; placeholder?: string };
 
+/** Lista desplegable con etiqueta explícita (la etiqueta no envuelve al campo: su nombre no incluye las opciones). */
 export function SelectField({ label, error, hint, className, options, placeholder = "Elige una opción", ...props }: SelectProps) {
   const id = useId();
   return (
@@ -63,13 +66,53 @@ export function SelectField({ label, error, hint, className, options, placeholde
         className={cn(control, error ? "border-state-error" : "border-border-strong")}
         {...props}
       >
-        <option value="">{placeholder}</option>
-        {options.map((o) => (
-          <option key={o} value={o}>
-            {o}
-          </option>
-        ))}
+        {placeholder && <option value="">{placeholder}</option>}
+        {options.map((o) => {
+          const { value, label: text } = typeof o === "string" ? { value: o, label: o } : o;
+          return (
+            <option key={value} value={value}>
+              {text}
+            </option>
+          );
+        })}
       </select>
     </Wrapper>
+  );
+}
+
+type TextAreaProps = BaseProps & Omit<React.TextareaHTMLAttributes<HTMLTextAreaElement>, "className">;
+
+export function TextAreaField({ label, error, hint, className, ...props }: TextAreaProps) {
+  const id = useId();
+  return (
+    <Wrapper id={id} label={label} error={error} hint={hint} className={className}>
+      <textarea
+        id={id}
+        aria-invalid={error ? true : undefined}
+        aria-describedby={error ? `${id}-error` : hint ? `${id}-hint` : undefined}
+        className={cn(control, "py-2", error ? "border-state-error" : "border-border-strong")}
+        {...props}
+      />
+    </Wrapper>
+  );
+}
+
+type CheckboxProps = { label: string; hint?: string; error?: string; className?: string } & Omit<React.InputHTMLAttributes<HTMLInputElement>, "className" | "type">;
+
+export function CheckboxField({ label, hint, error, className, ...props }: CheckboxProps) {
+  const id = useId();
+  return (
+    <div className={className}>
+      <label htmlFor={id} className="flex min-h-11 cursor-pointer items-center gap-3">
+        <input id={id} type="checkbox" aria-invalid={error ? true : undefined} aria-describedby={hint ? `${id}-hint` : undefined} className="size-5 accent-brand-primary" {...props} />
+        <span>{label}</span>
+      </label>
+      {hint && (
+        <p id={`${id}-hint`} className="ml-8 text-sm text-text-muted">
+          {hint}
+        </p>
+      )}
+      {error && <p className="ml-8 text-sm text-state-error">{error}</p>}
+    </div>
   );
 }

@@ -1,5 +1,6 @@
 import { cookies } from "next/headers";
 import { db } from "../db";
+import { evaluateCoupon, normalizeCouponCode } from "../coupons";
 import { availableUnits } from "../availability";
 import { getCurrentUser } from "../auth";
 import { randomToken } from "../security";
@@ -163,5 +164,30 @@ export async function confirmPrices(): Promise<CartChange> {
   await db.$executeRaw`
     UPDATE cart_items ci SET "priceAtAdd" = v.price
     FROM product_variants v WHERE v.id = ci."variantId" AND ci."cartId" = ${cart.id}`;
+  return { cart: await loadCartView(cart.id) };
+}
+
+export type CouponResult = { ok: true; change: CartChange } | { ok: false; message: string };
+
+/** Aplica un cupón al carrito si es válido para su subtotal actual. */
+export async function applyCoupon(rawCode: string): Promise<CouponResult> {
+  const code = normalizeCouponCode(rawCode);
+  if (!code) return { ok: false, message: "Escribe el código del cupón." };
+  const cart = await resolveCart(false);
+  const view = await loadCartView(cart?.id ?? null);
+  if (!cart || view.lines.length === 0) return { ok: false, message: "Agrega productos a tu carrito antes de usar un cupón." };
+
+  const coupon = await db.coupon.findUnique({ where: { code } });
+  const check = evaluateCoupon(coupon, view.subtotal);
+  if (!check.ok) return { ok: false, message: check.message };
+
+  await db.cart.update({ where: { id: cart.id }, data: { couponCode: code } });
+  return { ok: true, change: { cart: await loadCartView(cart.id), notice: "Aplicamos tu cupón." } };
+}
+
+export async function removeCoupon(): Promise<CartChange> {
+  const cart = await resolveCart(false);
+  if (!cart) return { cart: emptyCart };
+  await db.cart.update({ where: { id: cart.id }, data: { couponCode: null } });
   return { cart: await loadCartView(cart.id) };
 }

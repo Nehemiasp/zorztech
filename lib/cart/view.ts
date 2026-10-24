@@ -1,5 +1,6 @@
 import { db } from "../db";
 import { availableUnits } from "../availability";
+import { couponLabel, evaluateCoupon } from "../coupons";
 import { sweepIfDue } from "../orders/expiry";
 import { emptyCart, type CartIssue, type CartLine, type CartView } from "./types";
 
@@ -61,10 +62,32 @@ export async function loadCartView(cartId: string | null): Promise<CartView> {
     };
   });
 
+  const subtotal = lines.reduce((n, l) => n + l.lineTotal, 0);
+
+  // El cupón se vuelve a validar en cada lectura: si venció o se agotó, se quita y se avisa.
+  let discount = 0;
+  let coupon: CartView["coupon"] = null;
+  let couponNotice: string | undefined;
+  const cart = await db.cart.findUnique({ where: { id: cartId }, select: { couponCode: true } });
+  if (cart?.couponCode) {
+    const found = await db.coupon.findUnique({ where: { code: cart.couponCode } });
+    const check = evaluateCoupon(found, subtotal);
+    if (check.ok && found) {
+      discount = check.discount;
+      coupon = { code: found.code, label: couponLabel(found) };
+    } else if (!check.ok) {
+      await db.cart.update({ where: { id: cartId }, data: { couponCode: null } });
+      couponNotice = `Quitamos tu cupón ${cart.couponCode}. ${check.message}`;
+    }
+  }
+
   return {
     lines,
     count: lines.reduce((n, l) => n + l.quantity, 0),
-    subtotal: lines.reduce((n, l) => n + l.lineTotal, 0),
+    subtotal,
+    discount,
+    coupon,
+    couponNotice,
     blocking: lines.some((l) => l.issues.some((i) => i !== "precio_cambio")),
     priceChanged: lines.some((l) => l.issues.includes("precio_cambio")),
   };
@@ -73,4 +96,5 @@ export async function loadCartView(cartId: string | null): Promise<CartView> {
 
 export async function clearCartItems(cartId: string): Promise<void> {
   await db.cartItem.deleteMany({ where: { cartId } });
+  await db.cart.updateMany({ where: { id: cartId }, data: { couponCode: null } });
 }

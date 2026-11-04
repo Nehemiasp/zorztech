@@ -74,5 +74,7 @@ export const getHero = cache(async () => {
     primaryCta: { label: banner.ctaLabel, href: banner.ctaHref },
     secondaryCta: defaultHero.secondaryCta,
     image: { src: banner.imageUrl || defaultHero.image.src, alt: banner.imageUrl ? banner.imageAlt || banner.title : defaultHero.image.alt },
+    // La versión vertical solo acompaña a la imagen por defecto; un banner con foto propia usa esa foto en todos los anchos.
+    imageMobile: banner.imageUrl ? undefined : defaultHero.imageMobile,
   };
 });

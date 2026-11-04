@@ -7,6 +7,8 @@ export const hero: {
   primaryCta: { label: string; href: string };
   secondaryCta: { label: string; href: string };
   image: { src: string; alt: string };
+  /** Versión vertical para celular. Sin ella, el celular usa la imagen horizontal. */
+  imageMobile?: { src: string };
 } = {
   title: "Compra tecnología sabiendo qué pagas y cuándo llega",
   body: "Celulares, laptops, audio, gaming y hogar inteligente. Precios en quetzales, entrega a domicilio o recogida en tienda.",
@@ -16,6 +18,7 @@ export const hero: {
     src: "/img/promo/banner-gaming.webp",
     alt: "Equipo gaming con monitor, torre con ventiladores de colores, teclado, mouse, audífonos y tarjeta gráfica",
   },
+  imageMobile: { src: "/img/promo/banner-gaming-movil.webp" },
 };
 
 export const trust = [

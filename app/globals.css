@@ -162,6 +162,13 @@
     transform-origin: 0 0;
   }
 
+  /* Versión vertical: se funde con el fondo negro donde empieza, para que no se vea el corte detrás del texto */
+  @media (max-width: 639px) {
+    .hero-banner-tall {
+      mask-image: linear-gradient(to bottom, transparent, #000 18%);
+    }
+  }
+
   /* Scrim para que el texto del hero se lea aunque la imagen cambie: solo sobre el lado del texto, en escritorio */
   @media (min-width: 1280px) {
     .hero-banner::after {

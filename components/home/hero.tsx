@@ -30,8 +30,8 @@ export function Hero({ hero }: { hero: Awaited<ReturnType<typeof getHero>> }) {
           </div>
         </div>
 
-        <div className="hero-visual hero-panel-in -mx-4 md:-mx-6 lg:col-span-5 lg:col-start-8 lg:mx-0">
-          <div className="hero-glow mx-auto w-full max-w-[22rem] py-10 lg:max-w-[28rem] lg:py-0">
+        <div className="hero-visual hero-panel-in -mx-4 md:-mx-6 lg:col-span-6 lg:col-start-7 lg:mx-0">
+          <div className="hero-glow mx-auto w-full max-w-[28rem] py-10 lg:max-w-[36rem] lg:py-0">
             <CatalogImage
               src={hero.image.src}
               alt={hero.image.alt}

@@ -284,8 +284,8 @@ async function main() {
   for (const [order, c] of categories.entries()) {
     await db.category.upsert({
       where: { slug: c.slug },
-      update: { name: c.name, order, image: `/img/placeholder/categoria-${c.slug}-4x3.svg` },
-      create: { ...c, order, image: `/img/placeholder/categoria-${c.slug}-4x3.svg` },
+      update: { name: c.name, order, image: `/img/categorias/${c.slug}.webp` },
+      create: { ...c, order, image: `/img/categorias/${c.slug}.webp` },
     });
   }
   for (const [order, c] of subcategories.entries()) {

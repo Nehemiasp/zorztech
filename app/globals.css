@@ -139,29 +139,13 @@
     }
   }
 
-  @keyframes hero-panel-in {
-    from {
-      opacity: 0;
-      transform: translateX(32px);
-    }
-    to {
-      opacity: 1;
-      transform: none;
-    }
-  }
-
   .hero-step {
     animation: hero-rise 280ms ease-out both;
     animation-delay: calc(var(--step, 0) * 90ms);
   }
 
-  .hero-panel-in {
-    animation: hero-panel-in 300ms ease-out 120ms both;
-  }
-
   @media (prefers-reduced-motion: reduce) {
-    .hero-step,
-    .hero-panel-in {
+    .hero-step {
       animation: none;
     }
   }
@@ -178,32 +162,14 @@
     transform-origin: 0 0;
   }
 
-  /* En móvil el bloque del producto es una banda azul marino con borde superior inclinado */
-  .hero-visual {
-    background: var(--color-surface-dark-alt);
-    clip-path: polygon(0 3.5rem, 100% 0, 100% 100%, 0 100%);
-    padding-top: 2.5rem;
-  }
-
-  @media (min-width: 1024px) {
-    .hero-visual {
-      background: none;
-      clip-path: none;
-      padding-top: 0;
+  /* Scrim para que el texto del hero se lea aunque la imagen cambie: solo sobre el lado del texto, en escritorio */
+  @media (min-width: 1280px) {
+    .hero-banner::after {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(90deg, color-mix(in srgb, var(--color-surface-dark) 70%, transparent), transparent 55%);
     }
-  }
-
-  .hero-glow {
-    position: relative;
-  }
-
-  /* Único brillo del sitio, permitido por la marca en el hero */
-  .hero-glow::before {
-    content: "";
-    position: absolute;
-    inset: -12%;
-    z-index: -1;
-    background: radial-gradient(closest-side, color-mix(in srgb, var(--color-brand-accent) 24%, transparent), transparent);
   }
 
   /* Esquina inferior derecha cortada con la inclinación de la Z (38° respecto a la vertical) */

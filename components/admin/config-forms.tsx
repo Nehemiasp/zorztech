@@ -112,10 +112,10 @@ export function BannerForm({ banner, custom }: { banner: BannerValues; custom: b
           <TextField label="A dónde lleva el botón" name="ctaHref" hint="Ejemplo: /categorias/audio" defaultValue={v("ctaHref")} error={e.ctaHref} />
         </div>
         <div>
-          <p className="mb-1 font-medium">Foto del producto o promoción (cuadrada, 1:1)</p>
+          <p className="mb-1 font-medium">Imagen del banner (horizontal, 1600 × 640 px, proporción 5:2)</p>
           {image && (
-            <div className="mb-2 size-40 overflow-hidden rounded-md bg-surface-light-alt">
-              <CatalogImage src={image} alt="" width={320} height={320} className="size-full object-cover" />
+            <div className="mb-2 aspect-[5/2] w-full max-w-sm overflow-hidden rounded-md bg-surface-light-alt">
+              <CatalogImage src={image} alt="" width={640} height={256} className="size-full object-cover" />
             </div>
           )}
           <input ref={fileInput} id="imagen-banner" type="file" accept="image/jpeg,image/png,image/webp,image/avif" className="sr-only" onChange={(ev) => upload(ev.target.files?.[0])} />

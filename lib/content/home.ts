@@ -13,8 +13,8 @@ export const hero: {
   primaryCta: { label: "Explorar categorías", href: "#categorias" },
   secondaryCta: { label: "Seguir mi pedido", href: "/pedido/seguimiento" },
   image: {
-    src: "/img/placeholder/hero-producto-1x1.svg",
-    alt: "Espacio reservado para la foto del producto de la promoción",
+    src: "/img/promo/promo-temporal-1x1.webp",
+    alt: "Tarjeta gráfica negra con dos ventiladores",
   },
 };
 

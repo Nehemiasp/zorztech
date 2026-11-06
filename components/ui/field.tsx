@@ -1,8 +1,21 @@
+import { ChevronDown } from "lucide-react";
 import { useId } from "react";
 import { cn } from "@/lib/cn";
 
 const control =
   "min-h-11 w-full rounded-sm border bg-surface-light px-3 text-base text-text-on-light placeholder:text-text-muted";
+
+/** Lista desplegable sin la flecha del navegador (que queda pegada al borde): la flecha propia deja aire y no intercepta los toques. */
+export const selectControl = `${control} cursor-pointer appearance-none py-2 pl-3 pr-12`;
+
+export function SelectShell({ children, className }: { children: React.ReactNode; className?: string }) {
+  return (
+    <div className={cn("relative", className)}>
+      {children}
+      <ChevronDown aria-hidden strokeWidth={2} className="pointer-events-none absolute right-4 top-1/2 size-5 -translate-y-1/2 text-text-muted" />
+    </div>
+  );
+}
 
 interface BaseProps {
   label: string;
@@ -59,23 +72,25 @@ export function SelectField({ label, error, hint, className, options, placeholde
   const id = useId();
   return (
     <Wrapper id={id} label={label} error={error} hint={hint} className={className}>
-      <select
-        id={id}
-        aria-invalid={error ? true : undefined}
-        aria-describedby={error ? `${id}-error` : hint ? `${id}-hint` : undefined}
-        className={cn(control, error ? "border-state-error" : "border-border-strong")}
-        {...props}
-      >
-        {placeholder && <option value="">{placeholder}</option>}
-        {options.map((o) => {
-          const { value, label: text } = typeof o === "string" ? { value: o, label: o } : o;
-          return (
-            <option key={value} value={value}>
-              {text}
-            </option>
-          );
-        })}
-      </select>
+      <SelectShell>
+        <select
+          id={id}
+          aria-invalid={error ? true : undefined}
+          aria-describedby={error ? `${id}-error` : hint ? `${id}-hint` : undefined}
+          className={cn(selectControl, error ? "border-state-error" : "border-border-strong")}
+          {...props}
+        >
+          {placeholder && <option value="">{placeholder}</option>}
+          {options.map((o) => {
+            const { value, label: text } = typeof o === "string" ? { value: o, label: o } : o;
+            return (
+              <option key={value} value={value}>
+                {text}
+              </option>
+            );
+          })}
+        </select>
+      </SelectShell>
     </Wrapper>
   );
 }

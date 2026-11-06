@@ -5,7 +5,7 @@ import { useRouter } from "next/navigation";
 import { buttonStyles } from "@/components/ui/button";
 
 /** Reintenta el pago de un pedido que sigue apartado. */
-export function RetryPaymentButton({ code, label = "Intentar de nuevo", variant = "primary" }: { code: string; label?: string; variant?: "primary" | "secondary-light" }) {
+export function RetryPaymentButton({ code, token, label = "Intentar de nuevo", variant = "primary" }: { code: string; token?: string; label?: string; variant?: "primary" | "secondary-light" }) {
   const [pending, setPending] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
@@ -22,7 +22,7 @@ export function RetryPaymentButton({ code, label = "Intentar de nuevo", variant 
             const res = await fetch("/api/payments/retry", {
               method: "POST",
               headers: { "Content-Type": "application/json" },
-              body: JSON.stringify({ codigo: code }),
+              body: JSON.stringify({ codigo: code, t: token }),
             });
             const data = (await res.json()) as { error?: string; payment?: { kind: string; url?: string } };
             if (res.ok && data.payment?.kind === "redirect" && data.payment.url) {

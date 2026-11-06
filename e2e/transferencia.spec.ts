@@ -53,6 +53,29 @@ test.describe("pago por transferencia", () => {
       await expect(datos).toContainText("0123456789");
       await expect(datos).toContainText(codigo);
 
+      // Subir el comprobante: queda guardado y el cliente puede volver a abrirlo.
+      const png = Buffer.from("iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mNkYPhfDwAChwGA60e6kgAAAABJRU5ErkJggg==", "base64");
+      await tienda.getByLabel(/Foto o captura/).setInputFiles({ name: "comprobante.png", mimeType: "image/png", buffer: png });
+      await tienda.getByRole("button", { name: "Enviar comprobante" }).click();
+      await expect(tienda.getByText(/Recibimos tu comprobante/)).toBeVisible();
+      await expect(tienda.getByRole("link", { name: /Ver comprobante 1/ })).toBeVisible();
+
+      // El enlace directo del pedido funciona sin sesión ni cookie; el comprobante no se ve sin ese enlace.
+      const enlace = (await tienda.getByText(/\/confirmacion\?t=/).first().textContent())!.trim();
+      const directo = new URL(enlace);
+      const visitante = await browser.newContext();
+      const anonimo = await visitante.newPage();
+      expect((await anonimo.request.get(`/api/pedidos/${codigo}/comprobante/0`)).status()).toBe(404);
+      await anonimo.goto(directo.pathname + directo.search);
+      await expect(anonimo.getByRole("heading", { name: "Tu pedido está apartado: falta tu transferencia" })).toBeVisible();
+      const imagen = await anonimo.request.get(`/api/pedidos/${codigo}/comprobante/0${directo.search}`);
+      expect(imagen.status()).toBe(200);
+      expect(imagen.headers()["content-type"]).toBe("image/png");
+      // Un enlace alterado no sirve.
+      await anonimo.goto(`/pedido/${codigo}/confirmacion?t=${"0".repeat(32)}`);
+      await expect(anonimo).toHaveURL(/\/pedido\/seguimiento/);
+      await visitante.close();
+
       // El carrito se vació: el pedido ya tiene sus productos apartados.
       await tienda.goto("/carrito");
       await expect(tienda.getByText("Tu carrito está vacío").first()).toBeVisible();
@@ -60,6 +83,11 @@ test.describe("pago por transferencia", () => {
       // El administrador ve el pedido pendiente y confirma la transferencia.
       await page.goto(`/admin/pedidos/${codigo}`);
       await expect(page.getByText("transferencia", { exact: true })).toBeVisible();
+      await expect(page.getByText("Comprobantes del cliente")).toBeVisible();
+      await expect(page.getByRole("link", { name: /Abrir comprobante 1/ })).toBeVisible();
+      await page.goto(`/admin/pedidos?q=${codigo}`);
+      await expect(page.getByText("Con comprobante")).toBeVisible();
+      await page.goto(`/admin/pedidos/${codigo}`);
       await page.getByRole("button", { name: "Marcar como pagado" }).click();
       await page.getByRole("dialog", { name: "Confirmar cambio" }).getByRole("button", { name: "Sí, continuar" }).click();
       await expect(page.getByText(/pasó a «Pagado»/)).toBeVisible();

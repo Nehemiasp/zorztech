@@ -7,6 +7,11 @@ import type { CheckoutInput } from "../../lib/checkout/schema";
 import { createOrderFromCart } from "../../lib/orders/create";
 import { changeOrderStatus } from "../../lib/orders/admin";
 import { expireStaleReservations } from "../../lib/orders/expiry";
+import { addProof, countProofs, MAX_PROOFS, readProofImage } from "../../lib/orders/proofs";
+
+// PNG de 1 × 1 píxel.
+const PNG = Buffer.from("iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mNkYPhfDwAChwGA60e6kgAAAABJRU5ErkJggg==", "base64");
+const png = (name = "comprobante.png") => new File([PNG], name, { type: "image/png" });
 
 const run = Math.random().toString(36).slice(2, 8);
 const PRICE = 50000; // Q 500.00: con envío gratis
@@ -147,5 +152,75 @@ describe("pago por transferencia", () => {
     assert.ok(!incomplete.ok);
 
     await putTransfer(bank);
+  });
+
+  describe("comprobantes", () => {
+    async function pending() {
+      await db.productVariant.update({ where: { id: variantId }, data: { stock: 10, reservedStock: 0 } });
+      const result = await createOrderFromCart(input(), null, await cart(1));
+      assert.ok(result.ok, result.ok ? "" : result.message);
+      orders.push(result.code);
+      return result.code;
+    }
+
+    test("se guarda, se cuenta y se puede leer de vuelta", async () => {
+      const code = await pending();
+      const added = await addProof(code, png());
+      assert.deepEqual(added, { ok: true, count: 1 });
+      assert.equal(await countProofs(code), 1);
+      const image = await readProofImage(code, 0);
+      assert.ok(image);
+      assert.equal(image.type, "image/png");
+      assert.deepEqual(image.data, PNG);
+      assert.equal(await readProofImage(code, 1), null);
+      const events = await db.orderEvent.findMany({ where: { order: { code }, type: "comprobante" } });
+      assert.equal(events.length, 1);
+    });
+
+    test("el pago conserva su registro de transferencia al guardar comprobantes", async () => {
+      const code = await pending();
+      await addProof(code, png());
+      const payment = await db.payment.findFirstOrThrow({ where: { order: { code } } });
+      assert.equal((payment.rawResponse as { checkout: { kind: string } }).checkout.kind, "transfer");
+    });
+
+    test("rechaza lo que no es una imagen, aunque diga serlo", async () => {
+      const code = await pending();
+      const fake = await addProof(code, new File([Buffer.from("%PDF-1.4 no soy una imagen")], "x.png", { type: "image/png" }));
+      assert.ok(!fake.ok);
+      assert.equal(await countProofs(code), 0);
+    });
+
+    test("rechaza archivos vacíos y muy pesados", async () => {
+      const code = await pending();
+      assert.ok(!(await addProof(code, new File([], "vacio.png", { type: "image/png" }))).ok);
+      const big = new File([Buffer.concat([PNG, Buffer.alloc(3 * 1024 * 1024)])], "grande.png", { type: "image/png" });
+      const result = await addProof(code, big);
+      assert.ok(!result.ok && /3 MB/.test(result.message));
+    });
+
+    test(`no admite más de ${MAX_PROOFS}`, async () => {
+      const code = await pending();
+      for (let i = 0; i < MAX_PROOFS; i++) assert.ok((await addProof(code, png())).ok);
+      const extra = await addProof(code, png());
+      assert.ok(!extra.ok);
+      assert.equal(await countProofs(code), MAX_PROOFS);
+    });
+
+    test("un pedido pagado ya no recibe comprobantes", async () => {
+      const code = await pending();
+      assert.ok((await changeOrderStatus({ code, to: "pagado", actorId: adminId })).ok);
+      const late = await addProof(code, png());
+      assert.ok(!late.ok);
+    });
+
+    test("un pedido que no es de transferencia no los acepta", async () => {
+      await db.productVariant.update({ where: { id: variantId }, data: { stock: 10, reservedStock: 0 } });
+      const result = await createOrderFromCart(input({ paymentMethod: "simulado" }), null, await cart(1));
+      assert.ok(result.ok);
+      orders.push(result.code);
+      const proof = await addProof(result.code, png());
+      assert.ok(!proof.ok);
+    });
   });
 });

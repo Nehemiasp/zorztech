@@ -1,6 +1,7 @@
 import { cookies } from "next/headers";
 import { getCurrentUser } from "../auth";
 import { sign, verifySignature } from "../security";
+import { validOrderToken } from "./link";
 
 const COOKIE = "zt_pedido";
 
@@ -34,4 +35,9 @@ export async function hasOrderAccess(order: { code: string; userId: string | nul
   if ((await lastAccessedOrder()) === order.code) return true;
   const user = await getCurrentUser();
   return Boolean(user && (user.role === "admin" || user.id === order.userId));
+}
+
+/** Igual que hasOrderAccess, pero también acepta el enlace directo firmado (`?t=`) que se envía por correo. */
+export async function canViewOrder(order: { code: string; userId: string | null }, token?: string | null): Promise<boolean> {
+  return validOrderToken(order.code, token) || (await hasOrderAccess(order));
 }

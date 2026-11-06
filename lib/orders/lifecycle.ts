@@ -4,6 +4,7 @@ import { sendEmail } from "../email";
 import type { OrderStatus, PaymentStatus, Prisma } from "../generated/prisma/client";
 import { contactOrMarker, getStoreSettings, loadTransfer } from "../settings";
 import { releaseReservation } from "./expiry";
+import { orderViewUrl } from "./link";
 import { canTransition, paidStatuses, reservedStatuses } from "./status";
 
 type Tx = Prisma.TransactionClient;
@@ -113,6 +114,7 @@ export async function sendOrderStatusEmail(orderId: string): Promise<void> {
       total: order.total,
       items: order.items,
       pickupLocation: order.pickupLocation,
+      viewUrl: orderViewUrl(order.code),
     });
     if (message) await sendEmail(message);
   } catch (error) {
@@ -143,6 +145,7 @@ export async function sendTransferInstructions(orderId: string): Promise<void> {
         total: order.total,
         items: order.items,
         pickupLocation: order.pickupLocation,
+        viewUrl: orderViewUrl(order.code),
       },
       bank,
       order.reservationExpiresAt,

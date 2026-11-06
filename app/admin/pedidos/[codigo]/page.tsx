@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import Image from "next/image";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import { NoteForm, StatusActions, type StatusOption } from "@/components/admin/order-actions";
@@ -25,7 +26,7 @@ const manual: Partial<Record<OrderStatus, Omit<StatusOption, "to">>> = {
   reembolsado: { label: "Reembolsar", confirm: "Se registra la devolución del dinero y el cliente recibe un correo. Esta acción no se puede deshacer." },
 };
 
-const eventLabel: Record<string, string> = { creado: "Pedido creado", estado: "Cambio de estado", pago: "Pago", nota: "Nota interna", alerta: "Alerta" };
+const eventLabel: Record<string, string> = { creado: "Pedido creado", estado: "Cambio de estado", pago: "Pago", nota: "Nota interna", alerta: "Alerta", comprobante: "Comprobante" };
 
 export default async function AdminOrderPage({ params }: { params: Promise<{ codigo: string }> }) {
   await requireAdmin();
@@ -36,6 +37,7 @@ export default async function AdminOrderPage({ params }: { params: Promise<{ cod
     .filter((to) => manual[to])
     .map((to) => ({ to, ...manual[to]! }));
   const payment = order.payments[0];
+  const proofEvents = order.events.filter((e) => e.type === "comprobante").reverse();
 
   return (
     <div className="space-y-6">
@@ -131,6 +133,25 @@ export default async function AdminOrderPage({ params }: { params: Promise<{ cod
               </dl>
             ) : (
               <p className="text-text-muted">Sin pagos registrados.</p>
+            )}
+            {proofEvents.length > 0 && (
+              <div className="mt-4 border-t border-border pt-4">
+                <p className="font-medium">Comprobantes del cliente</p>
+                <ul className="mt-2 flex flex-wrap gap-3">
+                  {proofEvents.map((e, i) => (
+                    <li key={e.id}>
+                      <a href={`/api/pedidos/${order.code}/comprobante/${i}`} target="_blank" rel="noopener noreferrer" className="block">
+                        <Image src={`/api/pedidos/${order.code}/comprobante/${i}`} alt="" width={120} height={160} unoptimized className="h-40 w-30 rounded-sm border border-border object-cover" />
+                        <span className="mt-1 block text-sm text-brand-primary-strong underline underline-offset-2">
+                          Abrir comprobante {i + 1}
+                          <span className="sr-only"> (se abre en otra pestaña)</span>
+                        </span>
+                        <span className="block text-sm text-text-muted">{formatDateTime(e.createdAt)}</span>
+                      </a>
+                    </li>
+                  ))}
+                </ul>
+              </div>
             )}
             {order.coupon && <p className="mt-3 text-sm text-text-muted">Cupón usado: {order.coupon.code}</p>}
             {order.notes && <p className="mt-3 text-sm text-text-muted">Nota del cliente: {order.notes}</p>}

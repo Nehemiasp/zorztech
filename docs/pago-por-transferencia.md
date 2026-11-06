@@ -17,11 +17,18 @@ Mientras esté desactivada, o falte alguno de los tres datos obligatorios, la op
 3. La confirmación muestra la cuenta, el monto exacto y la **referencia** (el código del pedido), con botones para copiar. Recibe lo mismo por correo.
 4. Si prefiere otra forma de pago, el botón «Prefiero pagar de otra forma» abre un pago con el proveedor.
 
+### Comprobante y enlace al pedido
+
+- En la confirmación (y en **Mi cuenta → Mis pedidos → el pedido**, si tiene sesión) hay un recuadro para **subir una foto o captura del comprobante**. Es opcional; se admiten hasta 3, en JPG, PNG o WebP de hasta 3 MB (las fotos grandes se reducen antes de subirlas).
+- Los comprobantes se guardan en el registro del pago, dentro de la base de datos, y **no son públicos**: solo los ve quien tiene acceso al pedido (el cliente o un administrador).
+- La confirmación muestra un **enlace directo al pedido** que se puede copiar. También va en los correos. Con ese enlace se ve el pedido y se sube el comprobante desde cualquier dispositivo, sin iniciar sesión. Solo sirve para ese pedido; quien lo tenga puede verlo, por eso se pide no compartirlo.
+
 ## Qué hace la persona que administra
 
 1. Cuando el dinero aparezca en la cuenta, entra a **Panel → Pedidos →** el pedido (la referencia es su código).
-2. Pulsa **Marcar como pagado** y confirma. El pedido pasa a **Pagado**, se descuenta el stock, el pago queda aprobado y el cliente recibe el correo de pago.
-3. Desde ahí sigue el flujo normal: preparar, enviar y entregar.
+2. Si el cliente subió comprobante, lo ves en el panel del pago (con vista previa) y en la lista de pedidos aparece «Con comprobante». Compara el monto y la referencia.
+3. Pulsa **Marcar como pagado** y confirma. El pedido pasa a **Pagado**, se descuenta el stock, el pago queda aprobado y el cliente recibe el correo de pago.
+4. Desde ahí sigue el flujo normal: preparar, enviar y entregar.
 
 ## Cuánto se aparta el pedido
 

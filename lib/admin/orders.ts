@@ -46,7 +46,7 @@ export async function listOrders(f: OrderFilters) {
       orderBy: { createdAt: "desc" },
       skip: (f.pagina - 1) * ORDERS_PAGE_SIZE,
       take: ORDERS_PAGE_SIZE,
-      select: { code: true, createdAt: true, status: true, total: true, customerName: true, email: true, shippingMethod: true, _count: { select: { items: true } } },
+      select: { code: true, createdAt: true, status: true, total: true, customerName: true, email: true, shippingMethod: true, _count: { select: { items: true, events: { where: { type: "comprobante" } } } } },
     }),
     db.order.count({ where }),
   ]);
@@ -60,7 +60,8 @@ export async function getAdminOrder(code: string) {
       items: { orderBy: { id: "asc" } },
       pickupLocation: true,
       coupon: { select: { code: true } },
-      payments: { orderBy: { createdAt: "desc" } },
+      // Sin rawResponse: ahí viven las imágenes de los comprobantes y no hacen falta para mostrar el pedido.
+      payments: { orderBy: { createdAt: "desc" }, select: { id: true, provider: true, providerRef: true, status: true, amount: true, createdAt: true } },
       events: { orderBy: { createdAt: "desc" } },
       user: { select: { id: true, name: true, email: true } },
     },

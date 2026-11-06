@@ -94,6 +94,7 @@ export default async function AdminOrdersPage({ searchParams }: { searchParams: 
                 <td className={table.td}>{o.shippingMethod === "domicilio" ? "Domicilio" : "Recogida"}</td>
                 <td className={table.td}>
                   <StatusBadge status={o.status} />
+                  {o.status === "pendiente_pago" && o._count.events > 0 && <span className="mt-1 block text-sm text-text-muted">Con comprobante</span>}
                 </td>
                 <td className={`${table.td} text-right`}>{formatGTQ(o.total)}</td>
               </tr>

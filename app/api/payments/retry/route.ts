@@ -1,11 +1,11 @@
 import { z } from "zod";
 import { apiError, json, readBody } from "@/lib/api";
 import { db } from "@/lib/db";
-import { hasOrderAccess } from "@/lib/orders/access";
+import { canViewOrder } from "@/lib/orders/access";
 import { retryPayment } from "@/lib/orders/create";
 import { clientIp, rateLimit } from "@/lib/rate-limit";
 
-const schema = z.object({ codigo: z.string().min(4).max(20) });
+const schema = z.object({ codigo: z.string().min(4).max(20), t: z.string().max(64).optional() });
 
 export async function POST(request: Request) {
   if (!rateLimit(`reintento:${clientIp(request.headers)}`, 12, 10 * 60_000)) {
@@ -15,7 +15,7 @@ export async function POST(request: Request) {
   if (!body.ok) return body.response;
 
   const order = await db.order.findUnique({ where: { code: body.data.codigo }, select: { code: true, userId: true } });
-  if (!order || !(await hasOrderAccess(order))) return apiError("No encontramos ese pedido.", 404);
+  if (!order || !(await canViewOrder(order, body.data.t))) return apiError("No encontramos ese pedido.", 404);
 
   const result = await retryPayment(order.code);
   return result.ok ? json({ payment: result.payment }) : apiError(result.message, 409);

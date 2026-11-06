@@ -23,6 +23,8 @@ export interface OrderEmailData {
   total: number;
   items: { productName: string; variantName: string; unitPrice: number; quantity: number }[];
   pickupLocation?: { name: string; address: string; hours: string } | null;
+  /** Enlace directo para ver el pedido sin iniciar sesión. Si falta, se usa el seguimiento con código y correo. */
+  viewUrl?: string;
 }
 
 function layout(title: string, bodyHtml: string): string {
@@ -107,7 +109,7 @@ export function orderStatusEmail(order: OrderEmailData): EmailMessage | null {
     pickup && order.pickupLocation
       ? `\nDónde recoger: ${order.pickupLocation.name}, ${order.pickupLocation.address}. Horario: ${order.pickupLocation.hours}.`
       : "";
-  const action = order.status === "pago_fallido" ? `${siteConfig.url}/pedido/${order.code}/confirmacion` : trackingUrl();
+  const action = order.viewUrl ?? (order.status === "pago_fallido" ? `${siteConfig.url}/pedido/${order.code}/confirmacion` : trackingUrl());
   const actionLabel = order.status === "pago_fallido" ? "Intentar de nuevo" : "Seguir mi pedido";
 
   return {
@@ -147,8 +149,8 @@ export function transferInstructionsEmail(order: OrderEmailData, bank: TransferS
   return {
     to: order.email,
     subject: `Transferencia pendiente: pedido ${order.code}`,
-    html: layout(title, `<p style="margin:0 0 8px;line-height:1.5">${esc(text)}</p>${table}${extra}${itemsTable(order)}${button(trackingUrl(), "Ver mi pedido")}${proof}`),
-    text: `${title}\n\n${text}\n\n${rows.map(([k, v]) => `${k}: ${v}`).join("\n")}${bank.instructions ? `\n\n${bank.instructions}` : ""}\n\n${itemsText(order)}\n\nVer mi pedido: ${trackingUrl()}\n¿Ya transferiste? Envía tu comprobante a ${contactEmail} con el código ${order.code}.`,
+    html: layout(title, `<p style="margin:0 0 8px;line-height:1.5">${esc(text)}</p>${table}${extra}${itemsTable(order)}${button(order.viewUrl ?? trackingUrl(), "Ver mi pedido")}${proof}`),
+    text: `${title}\n\n${text}\n\n${rows.map(([k, v]) => `${k}: ${v}`).join("\n")}${bank.instructions ? `\n\n${bank.instructions}` : ""}\n\n${itemsText(order)}\n\nVer mi pedido: ${order.viewUrl ?? trackingUrl()}\n¿Ya transferiste? Envía tu comprobante a ${contactEmail} con el código ${order.code}.`,
   };
 }
 

@@ -1,6 +1,6 @@
 import Link from "next/link";
 import { getNavCategories } from "@/lib/catalog/cards";
-import { contactOrMarker, getStoreSettings } from "@/lib/settings";
+import { contactOrMarker, getStoreSettings, telHref } from "@/lib/settings";
 import { siteConfig } from "@/lib/site";
 import { Logo } from "./logo";
 import { Marker } from "./marker";
@@ -65,7 +65,7 @@ export async function SiteFooter() {
         <div>
           <h2 className="text-lg">Contacto</h2>
           <ul className="mt-3 space-y-2 text-text-on-dark-muted">
-            <li>{contact.phone.pending ? show(contact.phone) : <a href={`tel:${contact.phone.value.replace(/[^+\d]/g, "")}`} className="underline underline-offset-2">{contact.phone.value}</a>}</li>
+            <li>{contact.phone.pending ? show(contact.phone) : <a href={telHref(contact.phone.value)} className="underline underline-offset-2">{contact.phone.value}</a>}</li>
             <li>{contact.email.pending ? show(contact.email) : <a href={`mailto:${contact.email.value}`} className="underline underline-offset-2">{contact.email.value}</a>}</li>
             <li>{show(contact.hours)}</li>
             <li>{show(contact.socials)}</li>

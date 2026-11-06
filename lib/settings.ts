@@ -26,7 +26,20 @@ export const shippingSchema = z.object({
   deliveryTime: z.string().trim().max(80, "Usa hasta 80 caracteres."),
 });
 
-const emptyContact: ContactSettings = { phone: "", email: "", hours: "", socials: "", paymentMethods: "" };
+/** Datos que entregó el dueño. Valen mientras no guarde otros en el panel (Configuración → Contacto). */
+export const defaultContact: ContactSettings = {
+  phone: "4187 8256",
+  email: "Zorztech@hotmail.com",
+  hours: "08:00 a 22:00",
+  socials: "IG: ZorzTech",
+  paymentMethods: "Transferencia, VisaPago y VisaCuotas",
+};
+
+/** Enlace tel: de un teléfono. Un número de 8 dígitos se toma como de Guatemala (+502). */
+export function telHref(phone: string): string {
+  const digits = phone.replace(/[^+\d]/g, "");
+  return `tel:${/^\d{8}$/.test(digits) ? `+502${digits}` : digits}`;
+}
 
 export const getStoreSettings = cache(async () => {
   const rows = await db.storeSetting.findMany({ where: { key: { in: ["contacto", "inventario"] } } });
@@ -34,7 +47,8 @@ export const getStoreSettings = cache(async () => {
   const contact = contactSchema.safeParse(byKey.get("contacto"));
   const inventory = inventorySchema.safeParse(byKey.get("inventario"));
   return {
-    contact: contact.success ? contact.data : emptyContact,
+    // Sin nada guardado valen los datos iniciales; una vez guardado en el panel, un campo vacío vuelve a mostrar su marcador.
+    contact: contact.success ? contact.data : defaultContact,
     inventory: inventory.success ? inventory.data : { lowStockDefault: 3 },
   };
 });

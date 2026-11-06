@@ -274,6 +274,7 @@ test.describe("cupones y configuración", () => {
     await page.goto("/admin/configuracion");
     await page.getByLabel("Teléfono", { exact: true }).fill(telefono);
     await page.getByLabel("Horario de atención").fill("Lunes a sábado, de 9:00 a 18:00");
+    await page.getByLabel("Correo de contacto").fill("");
     await page.getByRole("button", { name: "Guardar contacto" }).click();
     await expect(page.getByText("Guardamos los datos de contacto.")).toBeVisible();
 
@@ -282,6 +283,14 @@ test.describe("cupones y configuración", () => {
     await expect(pie.getByRole("link", { name: telefono })).toBeVisible();
     await expect(pie.getByText("Lunes a sábado, de 9:00 a 18:00")).toBeVisible();
     await expect(pie.getByText("[Correo de contacto]")).toBeVisible();
+
+    // Se devuelven los datos reales del dueño para que la prueba se pueda repetir.
+    await page.goto("/admin/configuracion");
+    await page.getByLabel("Teléfono", { exact: true }).fill("4187 8256");
+    await page.getByLabel("Horario de atención").fill("08:00 a 22:00");
+    await page.getByLabel("Correo de contacto").fill("Zorztech@hotmail.com");
+    await page.getByRole("button", { name: "Guardar contacto" }).click();
+    await expect(page.getByText("Guardamos los datos de contacto.")).toBeVisible();
 
     // Banner del inicio
     await page.goto("/admin/configuracion");

@@ -5,6 +5,7 @@ import "dotenv/config";
 import { PrismaPg } from "@prisma/adapter-pg";
 import { PrismaClient } from "../lib/generated/prisma/client";
 import { hashPassword } from "../lib/auth/password";
+import { defaultContact } from "../lib/settings";
 import { defaultShipping } from "../lib/shipping";
 import { buildSearchText } from "../lib/search";
 
@@ -221,6 +222,9 @@ const products: SeedProduct[] = [
 async function seedStoreData() {
   // Envío general de partida (Q 55, gratis desde Q 400, entrega de 1 a 2 días). Si el dueño ya lo cambió, no se pisa.
   await db.storeSetting.upsert({ where: { key: "envio" }, update: {}, create: { key: "envio", value: { ...defaultShipping } } });
+
+  // Datos de contacto y formas de pago que entregó el dueño. Si ya los cambió en el panel, no se pisan.
+  await db.storeSetting.upsert({ where: { key: "contacto" }, update: {}, create: { key: "contacto", value: { ...defaultContact } } });
 
   // Cupón de ejemplo para probar el flujo; el dueño lo borra o lo reemplaza desde el panel.
   await db.coupon.upsert({

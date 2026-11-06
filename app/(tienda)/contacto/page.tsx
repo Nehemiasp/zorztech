@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { InfoPage, InfoSection } from "@/components/info/info-page";
 import { Marker } from "@/components/marker";
-import { contactOrMarker, getStoreSettings } from "@/lib/settings";
+import { contactOrMarker, getStoreSettings, telHref } from "@/lib/settings";
 
 export const metadata: Metadata = {
   title: "Contacto y horario de atención",
@@ -19,7 +19,7 @@ export default async function ContactPage() {
       <InfoSection title="Cómo encontrarnos">
         <dl className="grid gap-x-6 gap-y-3 sm:grid-cols-[10rem_1fr]">
           <dt className="font-medium text-text-on-light">Teléfono</dt>
-          <dd>{contact.phone.pending ? show(contact.phone) : <a href={`tel:${contact.phone.value.replace(/[^+\d]/g, "")}`} className="text-brand-primary-strong underline underline-offset-2">{contact.phone.value}</a>}</dd>
+          <dd>{contact.phone.pending ? show(contact.phone) : <a href={telHref(contact.phone.value)} className="text-brand-primary-strong underline underline-offset-2">{contact.phone.value}</a>}</dd>
           <dt className="font-medium text-text-on-light">Correo</dt>
           <dd>{contact.email.pending ? show(contact.email) : <a href={`mailto:${contact.email.value}`} className="text-brand-primary-strong underline underline-offset-2">{contact.email.value}</a>}</dd>
           <dt className="font-medium text-text-on-light">Horario</dt>

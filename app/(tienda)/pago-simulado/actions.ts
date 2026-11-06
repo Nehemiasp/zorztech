@@ -3,7 +3,7 @@
 import { redirect } from "next/navigation";
 import { z } from "zod";
 import { db } from "@/lib/db";
-import { isMockProvider } from "@/lib/payments";
+import { mockPaymentVisible } from "@/lib/payments";
 import { MOCK_SIGNATURE_HEADER, signMockWebhook } from "@/lib/payments/providers/mock";
 import { siteConfig } from "@/lib/site";
 
@@ -18,7 +18,7 @@ const schema = z.object({
  * Así el flujo completo (webhook, estados, stock, correos) se ejercita igual que con un proveedor de verdad.
  */
 export async function simulatePayment(formData: FormData): Promise<{ volver: string }> {
-  if (!isMockProvider()) redirect("/");
+  if (!mockPaymentVisible()) redirect("/");
   const parsed = schema.safeParse(Object.fromEntries(formData));
   if (!parsed.success) redirect("/");
 

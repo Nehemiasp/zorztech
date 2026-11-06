@@ -23,5 +23,14 @@ function entry(): ProviderEntry {
 }
 
 export const getPaymentProvider = (): PaymentProvider => entry().provider;
-export const getPaymentMethods = (): PaymentMethod[] => entry().methods;
 export const isMockProvider = (): boolean => (process.env.PAYMENT_PROVIDER ?? "mock") === "mock";
+
+/**
+ * La pasarela simulada deja marcar un pedido como pagado sin pagar nada: solo se ofrece en desarrollo y pruebas,
+ * o en producción si se pide a propósito con SHOW_MOCK_PAYMENT=1. Un proveedor real no pasa por aquí.
+ */
+export const mockPaymentVisible = (): boolean =>
+  isMockProvider() && (process.env.NODE_ENV !== "production" || process.env.SHOW_MOCK_PAYMENT === "1");
+
+/** Formas de pago del proveedor activo que se ofrecen hoy. Con la pasarela simulada oculta, ninguna. */
+export const getPaymentMethods = (): PaymentMethod[] => (isMockProvider() && !mockPaymentVisible() ? [] : entry().methods);

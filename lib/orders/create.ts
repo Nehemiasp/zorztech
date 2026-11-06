@@ -3,7 +3,7 @@ import { clearCartItems, loadCartView } from "../cart/view";
 import { evaluateCoupon } from "../coupons";
 import type { CheckoutInput } from "../checkout/schema";
 import { Prisma, type Order } from "../generated/prisma/client";
-import { getPaymentProvider } from "../payments";
+import { getPaymentMethods, getPaymentProvider } from "../payments";
 import type { CreatePaymentResult } from "../payments/types";
 import { formatGTQ } from "../money";
 import { isRealPickup } from "../pickup";
@@ -310,6 +310,10 @@ export type RetryResult =
 
 /** Nuevo intento de pago de un pedido que sigue apartado (pendiente o con pago fallido). */
 export async function retryPayment(code: string): Promise<RetryResult> {
+  // Sin pasarela disponible (la simulada está oculta y aún no hay una real) no hay otra forma de pagar que reintentar.
+  if (getPaymentMethods().length === 0) {
+    return { ok: false, message: "Por ahora no hay otra forma de pago disponible. Si ya hiciste tu transferencia, solo falta que la confirmemos." };
+  }
   await expireStaleReservations();
   const order = await db.order.findUnique({ where: { code } });
   if (!order || !reservedStatuses.includes(order.status)) {

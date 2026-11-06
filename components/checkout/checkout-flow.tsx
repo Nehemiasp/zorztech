@@ -492,6 +492,11 @@ function CheckoutForm({ cart, shipping: shippingSettings, pickups, addresses, me
                 <fieldset>
                   <legend className="mb-2 font-medium">Forma de pago</legend>
                   <div className="space-y-2">
+                    {methods.length === 0 && (
+                      <p role="status" className="rounded-md border border-state-warning p-3">
+                        Por ahora no tenemos formas de pago disponibles. Escríbenos desde Contacto y te ayudamos con tu pedido.
+                      </p>
+                    )}
                     {methods.map((m) => (
                       <label key={m.id} className={cn("flex cursor-pointer items-start gap-3 rounded-md border p-4", draft.paymentMethod === m.id ? "border-brand-primary ring-1 ring-brand-primary" : "border-border-strong")}>
                         <input type="radio" name="forma-pago" checked={draft.paymentMethod === m.id} onChange={() => setDraft((d) => ({ ...d, paymentMethod: m.id }))} data-invalid={errors.paymentMethod ? "true" : undefined} className="mt-1 size-5 accent-brand-primary" />

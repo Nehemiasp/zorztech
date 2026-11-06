@@ -8,6 +8,7 @@ import { createOrderFromCart } from "../../lib/orders/create";
 import { changeOrderStatus } from "../../lib/orders/admin";
 import { expireStaleReservations } from "../../lib/orders/expiry";
 import { addProof, countProofs, MAX_PROOFS, readProofImage } from "../../lib/orders/proofs";
+import { retryPayment } from "../../lib/orders/create";
 
 // PNG de 1 × 1 píxel.
 const PNG = Buffer.from("iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mNkYPhfDwAChwGA60e6kgAAAABJRU5ErkJggg==", "base64");
@@ -221,6 +222,32 @@ describe("pago por transferencia", () => {
       orders.push(result.code);
       const proof = await addProof(result.code, png());
       assert.ok(!proof.ok);
+    });
+  });
+
+  describe("pasarela simulada oculta", () => {
+    const env = process.env as Record<string, string | undefined>;
+
+    test("un pedido por transferencia no puede pasarse a la pasarela de prueba para «pagar» gratis", async () => {
+      await db.productVariant.update({ where: { id: variantId }, data: { stock: 10, reservedStock: 0 } });
+      const result = await createOrderFromCart(input(), null, await cart(1));
+      assert.ok(result.ok);
+      orders.push(result.code);
+
+      const saved = { NODE_ENV: env.NODE_ENV, SHOW: env.SHOW_MOCK_PAYMENT };
+      env.NODE_ENV = "production";
+      delete env.SHOW_MOCK_PAYMENT;
+      try {
+        const retry = await retryPayment(result.code);
+        assert.ok(!retry.ok);
+      } finally {
+        if (saved.NODE_ENV === undefined) delete env.NODE_ENV;
+        else env.NODE_ENV = saved.NODE_ENV;
+        if (saved.SHOW !== undefined) env.SHOW_MOCK_PAYMENT = saved.SHOW;
+      }
+      const payments = await db.payment.findMany({ where: { order: { code: result.code } } });
+      assert.deepEqual(payments.map((p) => p.provider), ["transferencia"], "no se creó ningún pago simulado");
+      assert.equal((await db.order.findUniqueOrThrow({ where: { code: result.code } })).status, "pendiente_pago");
     });
   });
 });

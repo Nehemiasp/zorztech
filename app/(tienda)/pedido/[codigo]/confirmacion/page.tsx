@@ -15,6 +15,7 @@ import { expireStaleReservations } from "@/lib/orders/expiry";
 import { formatDateTime, formatTime, getOrderByCode } from "@/lib/orders/queries";
 import { statusDescription } from "@/lib/orders/status";
 import { contactOrMarker, getStoreSettings, loadTransfer } from "@/lib/settings";
+import { getPaymentMethods } from "@/lib/payments";
 import { asSentence } from "@/lib/shipping";
 import { TRANSFER_METHOD_ID } from "@/lib/transfer";
 
@@ -89,9 +90,11 @@ export default async function ConfirmationPage({ params, searchParams }: Props) 
               {contactEmail.pending ? <span className="marker">{contactEmail.value}</span> : <a href={`mailto:${contactEmail.value}`} className="text-brand-primary-strong underline underline-offset-2">{contactEmail.value}</a>} con el código {order.code}.
             </p>
           )}
-          <div className="mt-6">
-            <RetryPaymentButton code={order.code} token={token} label="Prefiero pagar de otra forma" variant="secondary-light" />
-          </div>
+          {getPaymentMethods().length > 0 && (
+            <div className="mt-6">
+              <RetryPaymentButton code={order.code} token={token} label="Prefiero pagar de otra forma" variant="secondary-light" />
+            </div>
+          )}
         </>
       )}
 

@@ -8,6 +8,7 @@ import { ProofUpload } from "@/components/orders/proof-upload";
 import { getCurrentUser } from "@/lib/auth";
 import { normalizeOrderCode } from "@/lib/orders/code";
 import { countProofs, MAX_PROOFS } from "@/lib/orders/proofs";
+import { getPaymentMethods } from "@/lib/payments";
 import { TRANSFER_METHOD_ID } from "@/lib/transfer";
 import { formatDateTime, getOrderByCode } from "@/lib/orders/queries";
 
@@ -41,7 +42,7 @@ export default async function OrderDetailPage({ params }: { params: Promise<{ co
         </p>
       )}
       {awaitingTransfer && <ProofUpload code={order.code} count={proofCount} max={MAX_PROOFS} />}
-      {(order.status === "pago_fallido" || order.status === "pendiente_pago") && (
+      {(order.status === "pago_fallido" || order.status === "pendiente_pago") && (!awaitingTransfer || getPaymentMethods().length > 0) && (
         <RetryPaymentButton code={order.code} label={awaitingTransfer ? "Prefiero pagar de otra forma" : "Pagar ahora"} variant={awaitingTransfer ? "secondary-light" : "primary"} />
       )}
       <OrderSummary order={order} />

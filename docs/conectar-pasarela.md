@@ -65,7 +65,7 @@ Antes de escribir código, consigue esto por escrito o en su documentación:
 - **`verifyWebhook`**: lee el cuerpo **crudo** (`await req.clone().text()`), verifica la firma con comparación de tiempo constante (`safeEqual` en `lib/security.ts`) y, si hay marca de tiempo, rechaza avisos viejos. Devuelve `null` si la firma no es válida (la ruta responde 401). Pon el monto recibido en `raw.amount`, **en centavos**: la ruta lo compara con el total del pedido antes de marcarlo como pagado.
 - **Estados**: traduce todo estado desconocido a `error`, nunca a `approved`.
 - **Sin datos de tarjeta**: no leas, registres ni guardes número, CVV ni vencimiento. La tienda solo ve la referencia y el estado.
-- **`mock` queda como está**: `/pago-simulado` devuelve 404 y sus acciones redirigen cuando `PAYMENT_PROVIDER` no es `mock`.
+- **`mock` queda como está**: `/pago-simulado` devuelve 404 y sus acciones redirigen cuando `PAYMENT_PROVIDER` no es `mock`. Además, la pasarela simulada **solo se ofrece en desarrollo** (en producción está oculta, y reintentar un pago no puede caer en ella) salvo que se defina `SHOW_MOCK_PAYMENT=1`, que usan las pruebas e2e.
 
 ### Si el proveedor es de tipo `embedded` (formulario dentro de la tienda)
 

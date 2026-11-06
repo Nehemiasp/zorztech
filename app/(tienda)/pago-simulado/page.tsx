@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import { db } from "@/lib/db";
 import { formatGTQ } from "@/lib/money";
-import { isMockProvider } from "@/lib/payments";
+import { mockPaymentVisible } from "@/lib/payments";
 import { SimulatedPaymentForm } from "./form";
 
 export const metadata: Metadata = { title: "Pago de prueba", robots: { index: false, follow: false } };
@@ -13,7 +13,7 @@ interface Props {
 
 export default async function SimulatedPaymentPage({ searchParams }: Props) {
   // Solo existe mientras la pasarela activa es la simulada: con un proveedor real, esta ruta no existe.
-  if (!isMockProvider()) notFound();
+  if (!mockPaymentVisible()) notFound();
 
   const { ref, volver = "/" } = await searchParams;
   const payment = ref ? await db.payment.findFirst({ where: { provider: "mock", providerRef: ref }, include: { order: { select: { code: true } } } }) : null;

@@ -21,7 +21,7 @@ npm run dev
 | `npm run lint` / `npm run typecheck` | Revisión de código y tipos |
 | `npm test` | Pruebas unitarias (`lib/**/*.test.ts`) |
 | `npm run test:integration` | Compra, pagos e inventario contra la base de datos de desarrollo |
-| `npm run test:e2e` | Recorridos en navegador (Playwright). Con la app en marcha: `RATE_LIMIT_OFF=1 ALLOW_LOCAL_UPLOADS=1 npm start` |
+| `npm run test:e2e` | Recorridos en navegador (Playwright). Con la app en marcha: `RATE_LIMIT_OFF=1 ALLOW_LOCAL_UPLOADS=1 SHOW_MOCK_PAYMENT=1 npm start` |
 | `npm run db:migrate` | Nueva migración en desarrollo |
 | `npm run db:seed` | Datos de ejemplo (se puede repetir sin duplicar) |
 

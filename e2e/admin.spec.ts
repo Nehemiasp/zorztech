@@ -294,7 +294,7 @@ test.describe("cupones y configuración", () => {
 
     // Banner del inicio
     await page.goto("/admin/configuracion");
-    await page.getByLabel("Titular").fill("Tecnología al mejor precio de la semana");
+    await page.getByLabel("Titular", { exact: true }).fill("Tecnología al mejor precio de la semana");
     await page.getByRole("button", { name: "Guardar banner" }).click();
     await expect(page.getByText("Guardamos el banner.")).toBeVisible();
     await page.goto("/");

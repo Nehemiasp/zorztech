@@ -339,6 +339,10 @@ app/api/payments/
 - Cada botón dispara el mismo webhook que usará el proveedor real, para probar todo el flujo de punta a punta.
 - Solo disponible cuando `PAYMENT_PROVIDER=mock`. En producción con un proveedor real, la ruta devuelve 404.
 
+### 8.3 bis Pago por transferencia (manual)
+
+Además de la pasarela, la tienda ofrece **transferencia bancaria** cuando el dueño carga y activa los datos de su cuenta en el panel. No usa `PaymentProvider`: el pedido queda `pendiente_pago` con su stock apartado (24 horas por defecto, configurable) y el administrador lo marca como `pagado` a mano al ver el depósito. Ver `docs/pago-por-transferencia.md`.
+
 ### 8.4 Reglas de seguridad de pagos
 
 - **Nunca** se guardan ni pasan por el servidor de la tienda números de tarjeta, CVV ni fechas de vencimiento. Se usa la página o el formulario del proveedor (por eso el pago es `redirect` o `embedded`).

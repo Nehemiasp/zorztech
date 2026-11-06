@@ -57,7 +57,7 @@ export function StatusActions({ code, options }: { code: string; options: Status
             type="button"
             disabled={pending}
             onClick={() => choose(o)}
-            className={buttonStyles(o.confirm ? "secondary-light" : "primary")}
+            className={buttonStyles(o.confirm && o.to !== "pagado" ? "secondary-light" : "primary")}
           >
             {o.label}
           </button>

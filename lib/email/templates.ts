@@ -3,6 +3,7 @@ import { statusLabel } from "../orders/status";
 import { siteConfig } from "../site";
 import type { EmailMessage } from "./index";
 import type { OrderStatus, ShippingMethod } from "../generated/prisma/client";
+import type { TransferSettings } from "../transfer";
 
 // Los correos no pueden usar variables CSS: los colores de la marca se repiten aquí, en un solo lugar.
 const color = { ink: "#0a1220", muted: "#55627a", line: "#d9dfea", navy: "#0b1728", action: "#0563f1", soft: "#f2f5fa" };
@@ -117,6 +118,37 @@ export function orderStatusEmail(order: OrderEmailData): EmailMessage | null {
       `<p style="margin:0 0 16px;line-height:1.5">${esc(text)}</p>${itemsTable(order)}${pickup}${button(action, actionLabel)}<p style="font-size:13px;color:${color.muted};margin:16px 0 0">Para seguir tu pedido sin cuenta, usa el código ${esc(order.code)} y este correo.</p>`,
     ),
     text: `${title}\n\n${text}\n\n${itemsText(order)}${pickupText}\n\n${actionLabel}: ${action}\nPara seguir tu pedido sin cuenta usa el código ${order.code} y este correo.`,
+  };
+}
+
+const dateTimeGT = new Intl.DateTimeFormat("es-GT", { dateStyle: "long", timeStyle: "short", timeZone: "America/Guatemala" });
+
+/** Correo con los datos de la cuenta, el monto y la referencia para quien eligió pagar por transferencia. */
+export function transferInstructionsEmail(order: OrderEmailData, bank: TransferSettings, deadline: Date | null, contactEmail: string): EmailMessage {
+  const title = "Tu pedido está apartado: falta tu transferencia";
+  const until = deadline ? ` Apartamos tus productos hasta el ${dateTimeGT.format(deadline).replace(/[.\s]+$/, "")}.` : "";
+  const text = `Hola ${order.customerName}, recibimos tu pedido ${order.code}. Para completarlo, transfiere ${formatGTQ(order.total)} a la cuenta de abajo y escribe el código ${order.code} como referencia.${until} Cuando recibamos el dinero te avisamos por correo.`;
+  const rows: [string, string][] = [
+    ["Banco", bank.bankName],
+    ["Titular", bank.accountName],
+    ["Número de cuenta", bank.accountNumber],
+    ...(bank.accountType ? ([["Tipo de cuenta", bank.accountType]] as [string, string][]) : []),
+    ["Monto", formatGTQ(order.total)],
+    ["Referencia", order.code],
+  ];
+  const table = `<table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="font-size:14px;margin:16px 0;border:1px solid ${color.line};border-radius:8px">${rows
+    .map(
+      ([k, v]) =>
+        `<tr><td style="padding:8px 12px;color:${color.muted};border-bottom:1px solid ${color.line}">${esc(k)}</td><td align="right" style="padding:8px 12px;font-weight:bold;border-bottom:1px solid ${color.line}">${esc(v)}</td></tr>`,
+    )
+    .join("")}</table>`;
+  const extra = bank.instructions ? `<p style="margin:0 0 16px;line-height:1.5">${esc(bank.instructions)}</p>` : "";
+  const proof = `<p style="margin:16px 0 0;font-size:13px;color:${color.muted}">¿Ya transferiste? Si quieres, envíanos tu comprobante a ${esc(contactEmail)} con el código ${esc(order.code)}.</p>`;
+  return {
+    to: order.email,
+    subject: `Transferencia pendiente: pedido ${order.code}`,
+    html: layout(title, `<p style="margin:0 0 8px;line-height:1.5">${esc(text)}</p>${table}${extra}${itemsTable(order)}${button(trackingUrl(), "Ver mi pedido")}${proof}`),
+    text: `${title}\n\n${text}\n\n${rows.map(([k, v]) => `${k}: ${v}`).join("\n")}${bank.instructions ? `\n\n${bank.instructions}` : ""}\n\n${itemsText(order)}\n\nVer mi pedido: ${trackingUrl()}\n¿Ya transferiste? Envía tu comprobante a ${contactEmail} con el código ${order.code}.`,
   };
 }
 

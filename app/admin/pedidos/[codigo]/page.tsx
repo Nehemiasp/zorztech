@@ -16,7 +16,7 @@ export const metadata: Metadata = { title: "Pedido" };
 
 // Lo que el panel ofrece hacer a mano. "Pago fallido" y "Expirado" los pone el sistema, no una persona.
 const manual: Partial<Record<OrderStatus, Omit<StatusOption, "to">>> = {
-  pagado: { label: "Marcar como pagado" },
+  pagado: { label: "Marcar como pagado", confirm: "Confirma que ya recibiste el dinero en tu cuenta. Se descuenta el stock y el cliente recibe un correo con el pago." },
   en_preparacion: { label: "Empezar a preparar" },
   enviado: { label: "Marcar como enviado" },
   listo_para_recoger: { label: "Marcar listo para recoger" },

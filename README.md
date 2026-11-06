@@ -33,3 +33,4 @@ npm run dev
 - Fase 4 (administración): [`docs/fase-4-reporte.md`](docs/fase-4-reporte.md).
 - Fase 5 (cierre): [`docs/fase-5-reporte.md`](docs/fase-5-reporte.md).
 - Fase 6 (pasarela real): pendiente de que exista la API del proveedor. Pasos en [`docs/conectar-pasarela.md`](docs/conectar-pasarela.md).
+- Pago por transferencia (manual, sin proveedor): [`docs/pago-por-transferencia.md`](docs/pago-por-transferencia.md).

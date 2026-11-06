@@ -1,5 +1,5 @@
 import { db } from "../db";
-import { loadCartView } from "../cart/view";
+import { clearCartItems, loadCartView } from "../cart/view";
 import { evaluateCoupon } from "../coupons";
 import type { CheckoutInput } from "../checkout/schema";
 import { Prisma, type Order } from "../generated/prisma/client";
@@ -7,19 +7,20 @@ import { getPaymentProvider } from "../payments";
 import type { CreatePaymentResult } from "../payments/types";
 import { formatGTQ } from "../money";
 import { isRealPickup } from "../pickup";
-import { loadShipping } from "../settings";
+import { loadShipping, loadTransfer } from "../settings";
 import { homeShippingCost } from "../shipping";
+import { TRANSFER_METHOD_ID, transferReady } from "../transfer";
 import { siteConfig } from "../site";
 import { generateOrderCode } from "./code";
 import { expireStaleReservations } from "./expiry";
-import { applyTransition } from "./lifecycle";
+import { applyTransition, sendTransferInstructions } from "./lifecycle";
 import { reservedStatuses } from "./status";
 import { calculateTotals } from "./totals";
 
 /** Minutos que se aparta el stock mientras el cliente paga. */
 export const RESERVATION_MINUTES = 15;
 
-export type PaymentRedirect = { kind: "redirect"; url: string } | { kind: "embedded"; clientToken: string };
+export type PaymentRedirect = { kind: "redirect"; url: string } | { kind: "embedded"; clientToken: string } | { kind: "transfer" };
 
 export type CreateOrderResult =
   | { ok: true; code: string; payment: PaymentRedirect }
@@ -45,11 +46,11 @@ class StockShortage extends Error {
   }
 }
 
-const reservationEnd = () => new Date(Date.now() + RESERVATION_MINUTES * 60_000);
+const reservationEnd = (minutes = RESERVATION_MINUTES) => new Date(Date.now() + minutes * 60_000);
 
 function storedRedirect(raw: unknown): PaymentRedirect | null {
   const value = (raw as { checkout?: PaymentRedirect } | null)?.checkout;
-  return value && (value.kind === "redirect" || value.kind === "embedded") ? value : null;
+  return value && (value.kind === "redirect" || value.kind === "embedded" || value.kind === "transfer") ? value : null;
 }
 
 /** Inicia un pago para un pedido y lo registra. Devuelve lo que el navegador necesita para continuar. */
@@ -111,6 +112,7 @@ async function startPayment(order: Pick<Order, "id" | "code" | "total" | "email"
 /** Un pedido que ya existe: se reutiliza su pago pendiente y, si no lo hay (falló al iniciar), se abre uno nuevo. */
 async function resumePayment(order: Order) {
   const latest = await db.payment.findFirst({ where: { orderId: order.id }, orderBy: { createdAt: "desc" } });
+  if (latest?.provider === TRANSFER_METHOD_ID && latest.status === "pending") return { ok: true as const, payment: { kind: "transfer" } as PaymentRedirect };
   const saved = latest && latest.status === "pending" ? storedRedirect(latest.rawResponse) : null;
   if (saved) return { ok: true as const, payment: saved };
   const attempts = await db.payment.count({ where: { orderId: order.id } });
@@ -148,6 +150,10 @@ export async function createOrderFromCart(input: CheckoutInput, userId: string |
   }
 
   const shipping = await loadShipping();
+  const transfer = input.paymentMethod === TRANSFER_METHOD_ID ? await loadTransfer() : null;
+  if (transfer && !transferReady(transfer)) {
+    return { ok: false, error: "pago", message: "El pago por transferencia no está disponible. Elige otra forma de pago." };
+  }
   let shippingAddress: Prisma.InputJsonValue | undefined;
   let pickupLocationId: string | undefined;
   if (input.delivery.method === "domicilio") {
@@ -229,7 +235,7 @@ export async function createOrderFromCart(input: CheckoutInput, userId: string |
           taxId: input.billing.taxId,
           taxName: input.billing.taxName,
           notes: input.notes || null,
-          reservationExpiresAt: reservationEnd(),
+          reservationExpiresAt: reservationEnd(transfer ? transfer.holdHours * 60 : RESERVATION_MINUTES),
           items: {
             create: items.map((i) => ({
               variantId: i.variantId,
@@ -270,6 +276,28 @@ export async function createOrderFromCart(input: CheckoutInput, userId: string |
       }
     }
     throw error;
+  }
+
+  if (transfer) {
+    // Transferencia: no hay proveedor. Se registra el pago pendiente, se vacía el carrito (el pedido ya tiene
+    // sus productos apartados) y se envían al cliente los datos de la cuenta.
+    await db.payment.create({
+      data: {
+        orderId: order.id,
+        provider: TRANSFER_METHOD_ID,
+        providerRef: `TRANSFERENCIA-${order.code}`,
+        status: "pending",
+        amount: order.total,
+        idempotencyKey: `${input.idempotencyKey}:1`,
+        rawResponse: { checkout: { kind: "transfer" } },
+      },
+    });
+    await db.orderEvent.create({
+      data: { orderId: order.id, type: "pago", note: "El cliente eligió pagar por transferencia. Se espera el depósito." },
+    });
+    await clearCartItems(cart.id);
+    await sendTransferInstructions(order.id);
+    return { ok: true, code: order.code, payment: { kind: "transfer" } };
   }
 
   const started = await startPayment(order, 1, input.idempotencyKey);

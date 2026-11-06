@@ -50,6 +50,10 @@ export async function changeOrderStatus(input: { code: string; to: OrderStatus; 
         actorId: input.actorId,
         note: input.to === "pagado" ? [note, "Marcado como pagado a mano."].filter(Boolean).join(" ") : note,
       });
+      // Una transferencia confirmada a mano deja su registro de pago como aprobado.
+      if (input.to === "pagado") {
+        await tx.payment.updateMany({ where: { orderId: order.id, provider: "transferencia", status: "pending" }, data: { status: "approved" } });
+      }
     });
   } catch (error) {
     if (error instanceof TransitionError) return { ok: false, message: error.message };

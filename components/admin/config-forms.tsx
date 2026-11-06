@@ -13,8 +13,10 @@ import {
   saveInventoryAction,
   savePickupAction,
   saveShippingAction,
+  saveTransferAction,
 } from "@/app/admin/configuracion/actions";
 import type { FormState } from "@/lib/auth/actions";
+import type { TransferSettings } from "@/lib/transfer";
 
 type Form = [FormState, (payload: FormData) => void, boolean];
 const useForm = (action: (prev: FormState, data: FormData) => Promise<FormState>): Form => useActionState<FormState, FormData>(action, {});
@@ -180,6 +182,39 @@ export function ShippingForm({ flatRate, freeFrom, deliveryTime }: { flatRate: s
       />
       <button type="submit" disabled={pending} className={buttonStyles("primary")}>
         {pending ? "Guardando…" : "Guardar envío"}
+      </button>
+    </form>
+  );
+}
+
+export function TransferForm({ transfer }: { transfer: TransferSettings }) {
+  const [state, action, pending] = useForm(saveTransferAction);
+  const e = state.fields ?? {};
+  const v = (k: keyof TransferSettings) => state.values?.[k] ?? String(transfer[k]);
+  return (
+    <form action={action} noValidate className="max-w-xl space-y-4">
+      <Message state={state} />
+      <p className="max-w-[65ch] text-text-muted">
+        El cliente elige «Transferencia bancaria» en el pago, ve estos datos y deposita. El pedido queda pendiente: cuando veas el dinero en tu cuenta, entra al pedido y pulsa «Marcar como pagado».
+      </p>
+      <CheckboxField label="Ofrecer pago por transferencia" hint="Si lo desmarcas, la opción desaparece del pago. Tus datos se conservan." name="enabled" defaultChecked={transfer.enabled} />
+      <TextField label="Banco" name="bankName" defaultValue={v("bankName")} error={e.bankName} />
+      <TextField label="Titular de la cuenta" name="accountName" defaultValue={v("accountName")} error={e.accountName} />
+      <TextField label="Número de cuenta" name="accountNumber" inputMode="numeric" defaultValue={v("accountNumber")} error={e.accountNumber} />
+      <TextField label="Tipo de cuenta (opcional)" name="accountType" hint="Por ejemplo, Monetaria o Ahorro." defaultValue={v("accountType")} error={e.accountType} />
+      <TextAreaField label="Indicaciones para el cliente (opcional)" name="instructions" rows={3} hint="Por ejemplo, a qué hora se acreditan las transferencias." defaultValue={v("instructions")} error={e.instructions} />
+      <TextField
+        label="Horas que se aparta el pedido esperando el pago"
+        name="holdHours"
+        type="number"
+        min={1}
+        max={168}
+        hint="Pasado ese tiempo sin pago, el pedido vence y los productos vuelven a estar disponibles. Si recibes el dinero después, aún puedes marcarlo como pagado."
+        defaultValue={v("holdHours")}
+        error={e.holdHours}
+      />
+      <button type="submit" disabled={pending} className={buttonStyles("primary")}>
+        {pending ? "Guardando…" : "Guardar transferencia"}
       </button>
     </form>
   );

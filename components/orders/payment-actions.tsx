@@ -5,7 +5,7 @@ import { useRouter } from "next/navigation";
 import { buttonStyles } from "@/components/ui/button";
 
 /** Reintenta el pago de un pedido que sigue apartado. */
-export function RetryPaymentButton({ code, label = "Intentar de nuevo" }: { code: string; label?: string }) {
+export function RetryPaymentButton({ code, label = "Intentar de nuevo", variant = "primary" }: { code: string; label?: string; variant?: "primary" | "secondary-light" }) {
   const [pending, setPending] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
@@ -14,7 +14,7 @@ export function RetryPaymentButton({ code, label = "Intentar de nuevo" }: { code
       <button
         type="button"
         disabled={pending}
-        className={buttonStyles("primary")}
+        className={buttonStyles(variant)}
         onClick={async () => {
           setPending(true);
           setError(null);

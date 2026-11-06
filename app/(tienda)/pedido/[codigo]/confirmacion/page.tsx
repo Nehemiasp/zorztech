@@ -2,13 +2,17 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { notFound, redirect } from "next/navigation";
 import { OrderSummary } from "@/components/orders/order-summary";
+import { TransferInstructions } from "@/components/orders/transfer-instructions";
 import { AutoRefresh, RetryPaymentButton } from "@/components/orders/payment-actions";
 import { LinkButton } from "@/components/ui/button";
 import { hasOrderAccess } from "@/lib/orders/access";
 import { normalizeOrderCode } from "@/lib/orders/code";
 import { expireStaleReservations } from "@/lib/orders/expiry";
-import { formatTime, getOrderByCode } from "@/lib/orders/queries";
+import { formatDateTime, formatTime, getOrderByCode } from "@/lib/orders/queries";
 import { statusDescription } from "@/lib/orders/status";
+import { contactOrMarker, getStoreSettings, loadTransfer } from "@/lib/settings";
+import { asSentence } from "@/lib/shipping";
+import { TRANSFER_METHOD_ID } from "@/lib/transfer";
 
 export const metadata: Metadata = { title: "Tu pedido", robots: { index: false, follow: false } };
 
@@ -25,13 +29,17 @@ export default async function ConfirmationPage({ params }: Props) {
   if (!(await hasOrderAccess(order))) redirect(`/pedido/seguimiento?codigo=${encodeURIComponent(code)}`);
 
   const paymentStatus = order.payments[0]?.status;
+  const isTransfer = order.payments[0]?.provider === TRANSFER_METHOD_ID;
   const waiting = order.status === "pendiente_pago" && paymentStatus === "pending";
+  const waitingTransfer = waiting && isTransfer;
+  const [bank, settings] = waitingTransfer ? await Promise.all([loadTransfer(), getStoreSettings()]) : [null, null];
+  const contactEmail = settings ? contactOrMarker(settings.contact).email : null;
   const failed = order.status === "pago_fallido" || (order.status === "pendiente_pago" && paymentStatus !== "pending");
   const paid = !["pendiente_pago", "pago_fallido", "expirado", "cancelado"].includes(order.status);
 
   return (
     <div className="mx-auto max-w-3xl px-4 py-8 md:px-6 md:py-12">
-      {waiting && <AutoRefresh />}
+      {waiting && !isTransfer && <AutoRefresh />}
 
       {paid && (
         <>
@@ -54,7 +62,31 @@ export default async function ConfirmationPage({ params }: Props) {
         </>
       )}
 
-      {waiting && (
+      {waitingTransfer && bank && (
+        <>
+          <h1 className="text-2xl md:text-3xl">Tu pedido está apartado: falta tu transferencia</h1>
+          <p className="mt-3 text-lg">
+            Pedido <strong className="font-medium">{order.code}</strong>
+          </p>
+          <p role="status" className="mt-2 text-text-muted">
+            Transfiere el monto exacto a la cuenta de abajo y escribe el código del pedido como referencia.
+            {order.reservationExpiresAt ? ` Apartamos tus productos hasta el ${asSentence(formatDateTime(order.reservationExpiresAt))}` : ""} Cuando recibamos el dinero confirmamos tu pedido y te avisamos por correo a{" "}
+            <strong className="font-medium text-text-on-light">{order.email}</strong>. También te enviamos estos datos por correo.
+          </p>
+          <TransferInstructions bank={bank} total={order.total} code={order.code} />
+          {contactEmail && (
+            <p className="mt-4 text-text-muted">
+              ¿Ya transferiste? Si quieres, envíanos tu comprobante a{" "}
+              {contactEmail.pending ? <span className="marker">{contactEmail.value}</span> : <a href={`mailto:${contactEmail.value}`} className="text-brand-primary-strong underline underline-offset-2">{contactEmail.value}</a>} con el código {order.code}.
+            </p>
+          )}
+          <div className="mt-6">
+            <RetryPaymentButton code={order.code} label="Prefiero pagar de otra forma" variant="secondary-light" />
+          </div>
+        </>
+      )}
+
+      {waiting && !isTransfer && (
         <>
           <h1 className="text-2xl md:text-3xl">Estamos esperando la confirmación de tu pago</h1>
           <p className="mt-3 text-lg">

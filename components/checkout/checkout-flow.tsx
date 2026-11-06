@@ -14,6 +14,7 @@ import { departamentos } from "@/lib/geo/departamentos";
 import { formatGTQ } from "@/lib/money";
 import { amountToFreeShipping, asSentence, homeShippingCost, type ShippingSettings } from "@/lib/shipping";
 import type { PaymentMethod } from "@/lib/payments/types";
+import { TRANSFER_METHOD_ID } from "@/lib/transfer";
 
 interface Props {
   cart: CartView;
@@ -221,9 +222,21 @@ function CheckoutForm({ cart, shipping: shippingSettings, pickups, addresses, me
         code?: string;
         orderCode?: string;
         fields?: Record<string, string>;
-        payment?: { kind: "redirect"; url: string } | { kind: "embedded"; clientToken: string };
+        payment?: { kind: "redirect"; url: string } | { kind: "embedded"; clientToken: string } | { kind: "transfer" };
       };
 
+      if (res.ok && data.payment?.kind === "transfer" && data.code) {
+        // Transferencia: no hay página de pago. Se va a la confirmación, que muestra la cuenta donde depositar.
+        try {
+          sessionStorage.removeItem(IDEM_KEY);
+          sessionStorage.removeItem(DRAFT_KEY);
+        } catch {
+          /* nada que limpiar */
+        }
+        // Navegación completa a propósito: el carrito ya se vació en el servidor y el contador debe actualizarse.
+        window.location.assign(new URL(`/pedido/${encodeURIComponent(data.code)}/confirmacion`, window.location.origin).toString());
+        return;
+      }
       if (res.ok && data.payment?.kind === "redirect") {
         try {
           sessionStorage.removeItem(IDEM_KEY);
@@ -490,7 +503,11 @@ function CheckoutForm({ cart, shipping: shippingSettings, pickups, addresses, me
                     ))}
                   </div>
                   {errors.paymentMethod && <p className="mt-2 text-sm text-state-error">{errors.paymentMethod}</p>}
-                  <p className="mt-3 text-sm text-text-muted">Nunca pedimos ni guardamos los datos de tu tarjeta en esta tienda: el pago se completa en la página del proveedor.</p>
+                  <p className="mt-3 text-sm text-text-muted">
+                    {draft.paymentMethod === TRANSFER_METHOD_ID
+                      ? "Al terminar te mostramos la cuenta y el monto exacto. Nunca pedimos ni guardamos datos de tu tarjeta en esta tienda."
+                      : "Nunca pedimos ni guardamos los datos de tu tarjeta en esta tienda: el pago se completa en la página del proveedor."}
+                  </p>
                 </fieldset>
                 <div>
                   <label className="flex cursor-pointer items-start gap-3">
@@ -550,9 +567,13 @@ function CheckoutForm({ cart, shipping: shippingSettings, pickups, addresses, me
                   </p>
                 )}
                 <button type="button" onClick={pay} disabled={paying || cart.blocking} className={cn(buttonStyles("primary"), "w-full text-lg sm:w-auto sm:min-w-72")}>
-                  {paying ? "Procesando…" : `Pagar ${formatGTQ(total)}`}
+                  {paying ? "Procesando…" : draft.paymentMethod === TRANSFER_METHOD_ID ? `Confirmar pedido ${formatGTQ(total)}` : `Pagar ${formatGTQ(total)}`}
                 </button>
-                <p className="text-sm text-text-muted">Al pagar apartamos tus productos por unos minutos mientras completas el pago.</p>
+                <p className="text-sm text-text-muted">
+                  {draft.paymentMethod === TRANSFER_METHOD_ID
+                    ? "Al confirmar apartamos tus productos y te mostramos la cuenta donde depositar. El pedido se confirma cuando recibimos tu transferencia."
+                    : "Al pagar apartamos tus productos por unos minutos mientras completas el pago."}
+                </p>
               </div>
             )}
 

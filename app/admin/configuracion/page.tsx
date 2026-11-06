@@ -1,19 +1,20 @@
 import type { Metadata } from "next";
-import { BannerForm, ContactForm, InventoryForm, PickupList, ShippingForm } from "@/components/admin/config-forms";
+import { BannerForm, ContactForm, InventoryForm, PickupList, ShippingForm, TransferForm } from "@/components/admin/config-forms";
 import { PageHeader, Panel } from "@/components/admin/ui";
 import { requireAdmin } from "@/lib/auth/guards";
 import { hero as defaultHero } from "@/lib/content/home";
 import { db } from "@/lib/db";
 import { centsToInput } from "@/lib/money";
-import { getStoreSettings, loadShipping } from "@/lib/settings";
+import { getStoreSettings, loadShipping, loadTransfer } from "@/lib/settings";
 
 export const metadata: Metadata = { title: "Configuración" };
 
 export default async function AdminSettingsPage() {
   await requireAdmin();
-  const [settings, shipping, pickups, banner] = await Promise.all([
+  const [settings, shipping, transfer, pickups, banner] = await Promise.all([
     getStoreSettings(),
     loadShipping(),
+    loadTransfer(),
     db.pickupLocation.findMany({ orderBy: { name: "asc" } }),
     db.banner.findFirst({ where: { slot: "hero" }, orderBy: { order: "asc" } }),
   ]);
@@ -29,6 +30,7 @@ export default async function AdminSettingsPage() {
           ["#contacto", "Contacto"],
           ["#banner", "Banner del inicio"],
           ["#envios", "Envío"],
+          ["#transferencia", "Pago por transferencia"],
           ["#tiendas", "Tiendas para recoger"],
           ["#inventario", "Inventario"],
         ].map(([href, label]) => (
@@ -65,6 +67,10 @@ export default async function AdminSettingsPage() {
             freeFrom={shipping.freeFrom > 0 ? centsToInput(shipping.freeFrom) : ""}
             deliveryTime={shipping.deliveryTime}
           />
+        </Panel>
+        <Panel title="Pago por transferencia">
+          <span id="transferencia" />
+          <TransferForm transfer={transfer} />
         </Panel>
         <Panel title="Tiendas para recoger">
           <span id="tiendas" />

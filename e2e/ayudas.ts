@@ -18,7 +18,7 @@ export interface Comprador {
 export const comprador = (): Comprador => ({ nombre: "Ana López", correo: `ana-${unique()}@correo.test`, telefono: "5555 1234" });
 
 /** Recorre los cinco pasos del checkout con entrega a domicilio. */
-export async function completarCheckout(page: Page, c: Comprador) {
+export async function completarCheckout(page: Page, c: Comprador, metodoDePago: RegExp = /Pago en línea de prueba/) {
   await page.getByLabel("Nombre completo").fill(c.nombre);
   await page.getByLabel("Correo").fill(c.correo);
   await page.getByLabel("Teléfono").fill(c.telefono);
@@ -37,7 +37,7 @@ export async function completarCheckout(page: Page, c: Comprador) {
   await page.getByRole("button", { name: "Continuar" }).click();
 
   await expect(page.getByRole("heading", { name: "4. Pago" })).toBeVisible();
-  await page.getByLabel(/Pago en línea de prueba/).check();
+  await page.getByLabel(metodoDePago).check();
   await page.getByLabel(/Acepto los/).check();
   await page.getByRole("button", { name: "Continuar" }).click();
 

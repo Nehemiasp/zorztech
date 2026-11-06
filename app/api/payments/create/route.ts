@@ -4,7 +4,7 @@ import { resolveCart } from "@/lib/cart/service";
 import { checkoutSchema } from "@/lib/checkout/schema";
 import { createOrderFromCart } from "@/lib/orders/create";
 import { grantOrderAccess } from "@/lib/orders/access";
-import { getPaymentMethods } from "@/lib/payments";
+import { getAvailablePaymentMethods } from "@/lib/payments/methods";
 import { clientIp, rateLimit } from "@/lib/rate-limit";
 
 export async function POST(request: Request) {
@@ -14,7 +14,7 @@ export async function POST(request: Request) {
   const body = await readBody(request, checkoutSchema);
   if (!body.ok) return body.response;
 
-  if (!getPaymentMethods().some((m) => m.id === body.data.paymentMethod)) {
+  if (!(await getAvailablePaymentMethods()).some((m) => m.id === body.data.paymentMethod)) {
     return apiError("Elige una forma de pago disponible.", 422, { fields: { paymentMethod: "Elige una forma de pago disponible." } });
   }
 

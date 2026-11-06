@@ -4,6 +4,7 @@ import { db } from "./db";
 import { email } from "./auth/schemas";
 import { hero as defaultHero } from "./content/home";
 import { defaultShipping, type ShippingSettings } from "./shipping";
+import { defaultTransfer, transferSchema, type TransferSettings } from "./transfer";
 import { pendingData } from "./site";
 
 /** Datos de contacto que carga el dueño. Mientras un dato esté vacío, la tienda muestra su marcador. */
@@ -60,7 +61,14 @@ export async function loadShipping(): Promise<ShippingSettings> {
   return parsed.success ? parsed.data : defaultShipping;
 }
 
-export async function saveSetting(key: "contacto" | "inventario" | "envio", value: unknown): Promise<void> {
+/** Datos de la cuenta para pagar por transferencia. Sin nada guardado, la transferencia no se ofrece. */
+export async function loadTransfer(): Promise<TransferSettings> {
+  const row = await db.storeSetting.findUnique({ where: { key: "transferencia" } });
+  const parsed = transferSchema.safeParse(row?.value);
+  return parsed.success ? parsed.data : defaultTransfer;
+}
+
+export async function saveSetting(key: "contacto" | "inventario" | "envio" | "transferencia", value: unknown): Promise<void> {
   const json = JSON.parse(JSON.stringify(value));
   await db.storeSetting.upsert({ where: { key }, update: { value: json }, create: { key, value: json } });
 }

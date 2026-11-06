@@ -6,6 +6,7 @@ import { adminUser, noPermission } from "@/lib/admin/guard";
 import type { FormState } from "@/lib/auth/actions";
 import { parseGTQ } from "@/lib/money";
 import { bannerSchema, contactSchema, inventorySchema, saveSetting, shippingSchema } from "@/lib/settings";
+import { transferSchema } from "@/lib/transfer";
 
 const text = (formData: FormData, key: string) => String(formData.get(key) ?? "");
 
@@ -71,6 +72,20 @@ export async function saveShippingAction(_prev: FormState, formData: FormData): 
   await saveSetting("envio", parsed.data);
   refresh();
   return { success: "Guardamos el envío. Ya se aplica en el carrito y en el pago.", values };
+}
+
+export async function saveTransferAction(_prev: FormState, formData: FormData): Promise<FormState> {
+  if (!(await adminUser())) return noPermission;
+  const values = Object.fromEntries(["bankName", "accountName", "accountNumber", "accountType", "instructions", "holdHours"].map((k) => [k, text(formData, k)]));
+  const hold = values.holdHours.trim() === "" ? Number.NaN : Number(values.holdHours);
+  const parsed = transferSchema.safeParse({ ...values, enabled: formData.get("enabled") === "on", holdHours: hold });
+  if (!parsed.success) return { fields: fieldsOf(parsed.error), values };
+  await saveSetting("transferencia", parsed.data);
+  refresh();
+  return {
+    success: parsed.data.enabled ? "Guardamos los datos. La transferencia ya se ofrece en el pago." : "Guardamos los datos. La transferencia está desactivada: no se ofrece en el pago.",
+    values,
+  };
 }
 
 export async function savePickupAction(_prev: FormState, formData: FormData): Promise<FormState> {

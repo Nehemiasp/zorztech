@@ -4,7 +4,7 @@ import { CheckoutFlow } from "@/components/checkout/checkout-flow";
 import { getCurrentUser } from "@/lib/auth";
 import { getCartView } from "@/lib/cart/service";
 import { db } from "@/lib/db";
-import { getPaymentMethods } from "@/lib/payments";
+import { getAvailablePaymentMethods } from "@/lib/payments/methods";
 import { listAvailablePickups } from "@/lib/pickup";
 import { loadShipping } from "@/lib/settings";
 
@@ -14,9 +14,10 @@ export default async function CheckoutPage() {
   const [cart, user] = await Promise.all([getCartView(), getCurrentUser()]);
   if (cart.lines.length === 0) redirect("/carrito");
 
-  const [shipping, pickups, addresses] = await Promise.all([
+  const [shipping, pickups, methods, addresses] = await Promise.all([
     loadShipping(),
     listAvailablePickups(),
+    getAvailablePaymentMethods(),
     user
       ? db.address.findMany({
           where: { userId: user.id },
@@ -32,7 +33,7 @@ export default async function CheckoutPage() {
       shipping={shipping}
       pickups={pickups}
       addresses={addresses.map((a) => ({ ...a, referencia: a.referencia ?? "" }))}
-      methods={getPaymentMethods()}
+      methods={methods}
       user={user ? { name: user.name, email: user.email, phone: user.phone ?? "" } : null}
     />
   );

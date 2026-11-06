@@ -1,7 +1,8 @@
 import { db } from "../db";
-import { orderStatusEmail } from "../email/templates";
+import { orderStatusEmail, transferInstructionsEmail } from "../email/templates";
 import { sendEmail } from "../email";
 import type { OrderStatus, PaymentStatus, Prisma } from "../generated/prisma/client";
+import { contactOrMarker, getStoreSettings, loadTransfer } from "../settings";
 import { releaseReservation } from "./expiry";
 import { canTransition, paidStatuses, reservedStatuses } from "./status";
 
@@ -116,5 +117,39 @@ export async function sendOrderStatusEmail(orderId: string): Promise<void> {
     if (message) await sendEmail(message);
   } catch (error) {
     console.error("[pedido] No se pudo enviar el correo", error instanceof Error ? error.message : error);
+  }
+}
+
+/** Envía al cliente los datos para pagar por transferencia. No lanza nunca. */
+export async function sendTransferInstructions(orderId: string): Promise<void> {
+  try {
+    const [order, bank, settings] = await Promise.all([
+      db.order.findUnique({ where: { id: orderId }, include: { items: true, pickupLocation: true } }),
+      loadTransfer(),
+      getStoreSettings(),
+    ]);
+    if (!order) return;
+    const contact = contactOrMarker(settings.contact);
+    const message = transferInstructionsEmail(
+      {
+        code: order.code,
+        customerName: order.customerName,
+        email: order.email,
+        status: order.status,
+        shippingMethod: order.shippingMethod,
+        subtotal: order.subtotal,
+        shippingCost: order.shippingCost,
+        discount: order.discount,
+        total: order.total,
+        items: order.items,
+        pickupLocation: order.pickupLocation,
+      },
+      bank,
+      order.reservationExpiresAt,
+      contact.email.value,
+    );
+    await sendEmail(message);
+  } catch (error) {
+    console.error("[pedido] No se pudo enviar el correo de transferencia", error instanceof Error ? error.message : error);
   }
 }

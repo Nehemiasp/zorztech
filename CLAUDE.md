@@ -389,7 +389,7 @@ Deja un archivo `docs/conectar-pasarela.md` con:
 - **Productos de ejemplo:** crea un seed con unas 24 variantes en 6 categorías (por ejemplo: celulares, laptops, audio, accesorios, gaming, hogar inteligente). Usa nombres genéricos ("Audífonos inalámbricos ANC", no marcas reales con precios inventados) y márcalos como ejemplo en el panel.
 - **Imágenes:** placeholders con la proporción final (1:1 para producto) o imágenes de stock genéricas, registradas en `IMAGENES.md` como indica el estándar v2.
 - **Textos legales y de políticas:** marcadores claros (`[Política de devoluciones del cliente]`). No redactes condiciones legales inventadas.
-- **Datos de contacto, horarios, tiempo de entrega y ubicación de tiendas** (la tarifa general de envío y el monto de envío gratis ya están definidos, y se editan en el panel)**:** marcadores hasta que el dueño los entregue.
+- **Datos de contacto, horarios, tiempo de entrega y ubicación de tiendas:** marcadores hasta que el dueño los entregue. La tarifa general de envío y el monto de envío gratis ya están definidos y se editan en el panel.
 
 ---
 

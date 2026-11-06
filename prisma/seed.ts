@@ -219,14 +219,8 @@ const products: SeedProduct[] = [
 ];
 
 async function seedStoreData() {
-  // Envío general de ejemplo (Q 35, gratis desde Q 400). Si el dueño ya lo cambió, no se pisa.
+  // Envío general de partida (Q 55, gratis desde Q 400, entrega de 1 a 2 días). Si el dueño ya lo cambió, no se pisa.
   await db.storeSetting.upsert({ where: { key: "envio" }, update: {}, create: { key: "envio", value: { ...defaultShipping } } });
-  const existing = await db.pickupLocation.findFirst({ where: { name: "Tienda de ejemplo" } });
-  if (!existing) {
-    await db.pickupLocation.create({
-      data: { name: "Tienda de ejemplo", address: "[Dirección de la tienda]", hours: "[Horario de atención]" },
-    });
-  }
 
   // Cupón de ejemplo para probar el flujo; el dueño lo borra o lo reemplaza desde el panel.
   await db.coupon.upsert({

@@ -1,6 +1,6 @@
 import assert from "node:assert/strict";
 import { describe, test } from "node:test";
-import { amountToFreeShipping, defaultShipping, homeShippingCost } from "./shipping";
+import { amountToFreeShipping, asSentence, defaultShipping, homeShippingCost } from "./shipping";
 
 const s = { flatRate: 3500, freeFrom: 40000, deliveryTime: "" };
 
@@ -32,8 +32,14 @@ describe("envío a domicilio", () => {
     assert.equal(amountToFreeShipping(100, { ...s, freeFrom: 0 }), 0);
   });
 
-  test("los valores de partida son Q 35 y gratis desde Q 400", () => {
-    assert.equal(defaultShipping.flatRate, 3500);
+  test("los valores de partida son Q 55, gratis desde Q 400 y entrega de 1 a 2 días", () => {
+    assert.equal(defaultShipping.flatRate, 5500);
     assert.equal(defaultShipping.freeFrom, 40000);
+    assert.match(defaultShipping.deliveryTime, /^1 a 2 días/);
+  });
+
+  test("asSentence no repite el punto final", () => {
+    assert.equal(asSentence("1 a 2 días"), "1 a 2 días.");
+    assert.equal(asSentence("1 a 2 días. "), "1 a 2 días.");
   });
 });

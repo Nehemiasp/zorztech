@@ -32,7 +32,7 @@ export async function SiteFooter() {
         <div>
           <Logo height={32} />
           <p className="mt-4 max-w-xs text-text-on-dark-muted">
-            Tecnología para comprar en línea y recibir en casa o recoger en tienda.
+            Tecnología para comprar en línea y recibir en casa, en todo el país.
           </p>
         </div>
 

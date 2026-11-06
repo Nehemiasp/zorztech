@@ -57,7 +57,8 @@ const webhook = (providerRef: string, status: PaymentStatus, amount?: number) =>
 
 before(async () => {
   const category = await db.category.findFirstOrThrow({ where: { parentId: null } });
-  const pickup = await db.pickupLocation.findFirstOrThrow({ where: { isActive: true } });
+  // La tienda de ejemplo del seed tiene la dirección en marcador y no se ofrece; la prueba crea una real y la borra.
+  const pickup = await db.pickupLocation.create({ data: { name: `Tienda de prueba ${run}`, address: "6a avenida 12-34, zona 1", hours: "Lunes a viernes, 9:00 a 17:00", isActive: true } });
   pickupId = pickup.id;
   const product = await db.product.create({
     data: {
@@ -77,6 +78,7 @@ after(async () => {
   await db.order.deleteMany({ where: { code: { in: createdOrders } } });
   await db.cart.deleteMany({ where: { id: { in: createdCarts } } });
   await db.product.delete({ where: { id: productId } });
+  await db.pickupLocation.delete({ where: { id: pickupId } });
   await db.$disconnect();
 });
 

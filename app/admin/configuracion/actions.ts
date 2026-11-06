@@ -61,7 +61,7 @@ export async function saveShippingAction(_prev: FormState, formData: FormData): 
   const values = { flatRate: text(formData, "flatRate"), freeFrom: text(formData, "freeFrom"), deliveryTime: text(formData, "deliveryTime") };
   const fields: Record<string, string> = {};
   const flatRate = parseGTQ(values.flatRate);
-  if (flatRate === null) fields.flatRate = "Escribe el costo en quetzales, por ejemplo 35.00 (0 si el envío siempre es gratis).";
+  if (flatRate === null) fields.flatRate = "Escribe el costo en quetzales, por ejemplo 55.00 (0 si el envío siempre es gratis).";
   // En blanco o 0: no se ofrece envío gratis por monto.
   const freeFrom = values.freeFrom.trim() === "" ? 0 : parseGTQ(values.freeFrom);
   if (freeFrom === null) fields.freeFrom = "Escribe el monto en quetzales, por ejemplo 400.00, o déjalo en blanco.";

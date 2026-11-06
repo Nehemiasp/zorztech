@@ -4,11 +4,19 @@ import { addProduct, codigoDelPedido, comprador, completarCheckout, pagarYElegir
 const PRODUCTO = "cable-usb-c-trenzado";
 
 test.describe("compra como invitado", () => {
-  test("el carrito muestra el envío general y que recoger en tienda no cuesta", async ({ page }) => {
+  test("el carrito y el pago ofrecen solo envío a domicilio cuando no hay tienda física", async ({ page }) => {
     await addProduct(page, PRODUCTO);
     await page.goto("/carrito");
     await expect(page.getByText("Envío a domicilio", { exact: true })).toBeVisible();
-    await expect(page.getByText(/Recoger en tienda no tiene costo/)).toBeVisible();
+    await expect(page.getByText(/Recoger en tienda/)).toHaveCount(0);
+    await page.goto("/checkout");
+    await page.getByLabel("Nombre completo").fill("Ana López");
+    await page.getByLabel("Correo").fill("ana@correo.test");
+    await page.getByLabel("Teléfono").fill("5555 1234");
+    await page.getByRole("button", { name: "Continuar" }).click();
+    await expect(page.getByRole("heading", { name: "2. Entrega" })).toBeVisible();
+    await expect(page.getByText(/1 a 2 días/)).toBeVisible();
+    await expect(page.getByText(/Recoger en tienda/)).toHaveCount(0);
   });
 
   test("de la ficha al pedido pagado, con seguimiento por código y correo", async ({ page }) => {

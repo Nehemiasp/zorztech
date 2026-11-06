@@ -153,13 +153,13 @@ export function ShippingForm({ flatRate, freeFrom, deliveryTime }: { flatRate: s
     <form action={action} noValidate className="max-w-xl space-y-4">
       <Message state={state} />
       <p className="max-w-[65ch] text-text-muted">
-        Una sola tarifa para todo el país, con IVA incluido. Recoger en tienda siempre es gratis. El envío gratis se aplica cuando la compra, ya con descuentos, llega al monto que pongas.
+        Una sola tarifa para todo el país, con IVA incluido. El envío gratis se aplica cuando la compra, ya con descuentos, llega al monto que pongas.
       </p>
       <TextField
         label="Costo del envío a domicilio (Q)"
         name="flatRate"
         inputMode="decimal"
-        hint="Ejemplo: 35.00. Escribe 0 si el envío siempre es gratis."
+        hint="Ejemplo: 55.00. Escribe 0 si el envío siempre es gratis."
         defaultValue={v("flatRate", flatRate)}
         error={e.flatRate}
       />
@@ -174,7 +174,7 @@ export function ShippingForm({ flatRate, freeFrom, deliveryTime }: { flatRate: s
       <TextField
         label="Tiempo de entrega"
         name="deliveryTime"
-        hint="Texto libre, por ejemplo «2 a 4 días hábiles». Mientras esté vacío, la tienda muestra un marcador."
+        hint="Texto libre, por ejemplo «1 a 2 días; puede variar según el lugar de envío». Mientras esté vacío, la tienda muestra un marcador."
         defaultValue={v("deliveryTime", deliveryTime)}
         error={e.deliveryTime}
       />

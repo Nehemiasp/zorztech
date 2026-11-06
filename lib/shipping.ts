@@ -4,12 +4,19 @@ export interface ShippingSettings {
   flatRate: number;
   /** Compra (ya con descuentos) desde la que el envío es gratis. 0 significa que no hay envío gratis. */
   freeFrom: number;
-  /** Texto libre para el tiempo de entrega, por ejemplo «2 a 4 días hábiles». Vacío si el dueño aún no lo define. */
+  /** Texto libre para el tiempo de entrega. Vacío: la tienda muestra un marcador. */
   deliveryTime: string;
 }
 
-/** Valores de partida: Q 35.00 de envío y gratis desde Q 400.00. El dueño los cambia en el panel. */
-export const defaultShipping: ShippingSettings = { flatRate: 3500, freeFrom: 40000, deliveryTime: "" };
+/** Valores de partida: Q 55.00 de envío, gratis desde Q 400.00 y entrega de 1 a 2 días. El dueño los cambia en el panel. */
+export const defaultShipping: ShippingSettings = {
+  flatRate: 5500,
+  freeFrom: 40000,
+  deliveryTime: "1 a 2 días; puede variar según el lugar de envío",
+};
+
+/** Texto como oración: sin punto final repetido. */
+export const asSentence = (text: string) => `${text.trim().replace(/[.\s]+$/, "")}.`;
 
 const offersFreeShipping = (s: ShippingSettings) => s.freeFrom > 0;
 

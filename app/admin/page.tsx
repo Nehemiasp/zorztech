@@ -25,7 +25,7 @@ export default async function AdminDashboardPage() {
 
       {d.sampleProducts > 0 && (
         <p role="status" className="mb-6 rounded-md border border-state-warning p-4">
-          Tu catálogo todavía tiene <strong className="font-medium">{d.sampleProducts} productos de ejemplo</strong>, y la tienda para recoger es un dato de ejemplo. Revisa también el envío en Configuración.{" "}
+          Tu catálogo todavía tiene <strong className="font-medium">{d.sampleProducts} productos de ejemplo</strong>, y el envío está con valores iniciales: revísalo en Configuración.{" "}
           <Link href="/admin/productos?ejemplo=1" className="text-brand-primary-strong underline underline-offset-2">
             Ver productos de ejemplo
           </Link>{" "}

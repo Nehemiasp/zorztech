@@ -5,6 +5,7 @@ import { getCurrentUser } from "@/lib/auth";
 import { getCartView } from "@/lib/cart/service";
 import { db } from "@/lib/db";
 import { getPaymentMethods } from "@/lib/payments";
+import { listAvailablePickups } from "@/lib/pickup";
 import { loadShipping } from "@/lib/settings";
 
 export const metadata: Metadata = { title: "Finalizar compra", robots: { index: false, follow: false } };
@@ -15,7 +16,7 @@ export default async function CheckoutPage() {
 
   const [shipping, pickups, addresses] = await Promise.all([
     loadShipping(),
-    db.pickupLocation.findMany({ where: { isActive: true }, orderBy: { name: "asc" }, select: { id: true, name: true, address: true, hours: true } }),
+    listAvailablePickups(),
     user
       ? db.address.findMany({
           where: { userId: user.id },

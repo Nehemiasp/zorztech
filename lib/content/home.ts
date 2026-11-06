@@ -11,7 +11,7 @@ export const hero: {
   imageMobile?: { src: string };
 } = {
   title: "Compra tecnología sabiendo qué pagas y cuándo llega",
-  body: "Celulares, laptops, audio, gaming y hogar inteligente. Precios en quetzales, entrega a domicilio o recogida en tienda.",
+  body: "Celulares, laptops, audio, gaming y hogar inteligente. Precios en quetzales, envío a todo el país y seguimiento de tu pedido.",
   primaryCta: { label: "Explorar categorías", href: "#categorias" },
   secondaryCta: { label: "Seguir mi pedido", href: "/pedido/seguimiento" },
   image: {
@@ -24,7 +24,7 @@ export const hero: {
 export const trust = [
   {
     title: "Entrega",
-    body: "A domicilio, con tarifa según tu departamento, o recogida en tienda. El costo se calcula antes de pagar.",
+    body: "Enviamos a todo el país con una sola tarifa, gratis en compras grandes. El costo se ve antes de pagar.",
   },
   {
     title: "Seguimiento",

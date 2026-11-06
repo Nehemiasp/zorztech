@@ -29,8 +29,8 @@ export async function generateMetadata({ params, searchParams }: Props): Promise
   const from = minPrice !== null ? ` desde ${formatGTQ(minPrice)}` : "";
   const description =
     total > 0
-      ? `Compra ${category.name.toLowerCase()} en ZorzTech: ${total} ${total === 1 ? "producto" : "productos"}${from}. Envío a domicilio o recogida en tienda, pago en línea en quetzales y seguimiento de tu pedido.`
-      : `Productos de ${category.name.toLowerCase()} en ZorzTech. Muy pronto más opciones con envío a domicilio o recogida en tienda.`;
+      ? `Compra ${category.name.toLowerCase()} en ZorzTech: ${total} ${total === 1 ? "producto" : "productos"}${from}. Envío a todo el país, pago en línea en quetzales y seguimiento de tu pedido.`
+      : `Productos de ${category.name.toLowerCase()} en ZorzTech. Muy pronto más opciones, con envío a todo el país.`;
 
   // Las combinaciones de filtros y orden no se indexan; la página de la categoría sí.
   const variant = hasActiveFilters(filters) || filters.orden !== "relevancia";

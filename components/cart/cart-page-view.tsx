@@ -10,7 +10,7 @@ import { amountToFreeShipping, homeShippingCost, type ShippingSettings } from "@
 import { CartLines } from "./cart-lines";
 import { useCart } from "./cart-provider";
 
-export function CartPageView({ initial, shipping }: { initial: CartView; shipping: ShippingSettings }) {
+export function CartPageView({ initial, shipping, pickupAvailable }: { initial: CartView; shipping: ShippingSettings; pickupAvailable: boolean }) {
   const { cart: live, ready, hydrate, confirmPrices, busy, notice, applyCoupon, removeCoupon } = useCart();
   const [code, setCode] = useState("");
   const [couponError, setCouponError] = useState<string | null>(null);
@@ -76,10 +76,8 @@ export function CartPageView({ initial, shipping }: { initial: CartView; shippin
           </div>
         </dl>
         <p className="mt-2 text-sm text-text-muted">
-          {missingForFree > 0
-            ? `Agrega ${formatGTQ(missingForFree)} más y el envío es gratis. `
-            : ""}
-          Recoger en tienda no tiene costo.
+          {homeCost === 0 ? "Tu compra tiene envío gratis." : missingForFree > 0 ? `Agrega ${formatGTQ(missingForFree)} más y el envío es gratis.` : ""}
+          {pickupAvailable ? " Recoger en tienda no tiene costo." : ""}
         </p>
         <div className="mt-4 border-t border-border pt-4">
           {cart.coupon ? (

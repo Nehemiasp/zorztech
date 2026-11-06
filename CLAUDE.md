@@ -21,7 +21,7 @@ Este documento es la fuente de verdad del proyecto. Úsalo junto con el **Están
 | País y moneda | Guatemala, quetzales (GTQ). Precios con IVA incluido. |
 | Idioma y trato | Español, trato de **tú** (tienda de tecnología al consumidor). |
 | Facturación | Se pide NIT o "CF" en el checkout. La factura electrónica (FEL) queda fuera de alcance; solo se guarda el dato. |
-| Envíos | Envío a domicilio con una **tarifa general** para todo el país, **gratis desde Q 400** en compras (ya con descuentos), y recogida en tienda sin costo. Decisión del dueño que reemplaza la tarifa por departamento. El monto de la tarifa y el tiempo de entrega son provisionales hasta que el dueño los confirme. |
+| Envíos | Envío a domicilio a todo el país con una **tarifa general de Q 55**, **gratis desde Q 400** en compras (ya con descuentos) y entrega de **1 a 2 días, que puede variar según el lugar de envío**. **No hay tienda física:** la recogida en tienda no se ofrece mientras no exista una tienda real cargada en el panel. Decisiones del dueño que reemplazan la tarifa por departamento. |
 | Catálogo | Todavía no hay productos reales: se usan productos de ejemplo claramente marcados. |
 | Panel de administración | Incluido: el dueño carga productos, stock y gestiona pedidos sin tocar código. |
 
@@ -389,7 +389,7 @@ Deja un archivo `docs/conectar-pasarela.md` con:
 - **Productos de ejemplo:** crea un seed con unas 24 variantes en 6 categorías (por ejemplo: celulares, laptops, audio, accesorios, gaming, hogar inteligente). Usa nombres genéricos ("Audífonos inalámbricos ANC", no marcas reales con precios inventados) y márcalos como ejemplo en el panel.
 - **Imágenes:** placeholders con la proporción final (1:1 para producto) o imágenes de stock genéricas, registradas en `IMAGENES.md` como indica el estándar v2.
 - **Textos legales y de políticas:** marcadores claros (`[Política de devoluciones del cliente]`). No redactes condiciones legales inventadas.
-- **Datos de contacto, horarios, tiempo de entrega y ubicación de tiendas:** marcadores hasta que el dueño los entregue. La tarifa general de envío y el monto de envío gratis ya están definidos y se editan en el panel.
+- **Datos de contacto y horarios:** marcadores hasta que el dueño los entregue. El envío (tarifa, monto gratis y tiempo de entrega) ya está definido y se edita en el panel.
 
 ---
 
@@ -439,7 +439,7 @@ Deja un archivo `docs/conectar-pasarela.md` con:
 - [ ] Confirmar país, moneda, trato (tú o usted) y si los precios incluyen IVA.
 - [ ] Proveedor de pagos y sus credenciales de sandbox.
 - [ ] Catálogo real: categorías, productos, fotos, precios y stock.
-- [ ] Confirmar el costo del envío general (hoy provisional en Q 35), el tiempo de entrega y las tiendas para recogida.
+- [x] Envío definido por el dueño: Q 55 general, gratis desde Q 400, entrega de 1 a 2 días. Sin tienda física.
 - [ ] Políticas de envío, garantías, devoluciones, términos y privacidad.
 - [ ] Datos de contacto, redes y horario de atención.
 - [ ] Dominio.

@@ -1,7 +1,7 @@
 import { expect, test } from "@playwright/test";
 
 const paginas = [
-  { ruta: "/envios", titulo: "Envíos y recogida en tienda" },
+  { ruta: "/envios", titulo: "Envíos" },
   { ruta: "/garantias", titulo: "Garantías" },
   { ruta: "/devoluciones", titulo: "Devoluciones y reembolsos" },
   { ruta: "/preguntas-frecuentes", titulo: "Preguntas frecuentes" },
@@ -32,6 +32,9 @@ test.describe("páginas de información", () => {
     await expect(page.getByText(/el mismo para todo el país/)).toBeVisible();
     await expect(page.getByText(/Envío gratis en compras de/)).toContainText("Q");
     await expect(page.getByRole("table")).toHaveCount(0);
+    await expect(page.getByText(/1 a 2 días/)).toBeVisible();
+    await expect(page.getByText(/Condiciones de entrega/)).toHaveCount(0);
+    await expect(page.getByText(/Recogida en tienda/)).toHaveCount(0);
   });
 
   test("las políticas pendientes se ven como marcador, no como texto inventado", async ({ page }) => {

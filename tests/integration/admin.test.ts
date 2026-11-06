@@ -55,7 +55,7 @@ async function paidOrder(quantity = 1) {
 before(async () => {
   const category = await db.category.findFirstOrThrow({ where: { parentId: null } });
   categoryId = category.id;
-  pickupId = (await db.pickupLocation.findFirstOrThrow({ where: { isActive: true } })).id;
+  pickupId = (await db.pickupLocation.create({ data: { name: `Tienda admin ${run}`, address: "6a avenida 12-34, zona 1", hours: "Lunes a viernes, 9:00 a 17:00", isActive: true } })).id;
   adminId = (await db.user.findFirstOrThrow({ where: { role: "admin" } })).id;
   const product = await db.product.create({
     data: { name: `Producto admin ${run}`, slug: `admin-${run}`, categoryId, isSample: true, variants: { create: { sku: `ADM-${run}`, name: "Única", price: PRICE, stock: 10 } } },
@@ -72,6 +72,7 @@ after(async () => {
   await db.coupon.deleteMany({ where: { id: { in: coupons } } });
   await db.product.deleteMany({ where: { slug: { startsWith: `admin-${run}` } } });
   await db.product.deleteMany({ where: { name: { startsWith: `Guardado ${run}` } } });
+  await db.pickupLocation.deleteMany({ where: { id: pickupId } });
   await db.$disconnect();
 });
 

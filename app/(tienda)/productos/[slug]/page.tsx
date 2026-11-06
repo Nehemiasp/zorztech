@@ -9,6 +9,8 @@ import { ProductView } from "@/components/product/product-view";
 import { getProductBySlug, getRelatedProducts } from "@/lib/catalog/product";
 import { jsonLd } from "@/lib/jsonld";
 import { formatGTQ } from "@/lib/money";
+import { loadShipping } from "@/lib/settings";
+import { asSentence } from "@/lib/shipping";
 import { fitTitle, pendingData, siteConfig, truncate } from "@/lib/site";
 
 interface Props {
@@ -26,7 +28,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const cheapest = Math.min(...product.variants.map((v) => v.price));
   const base = `${product.name} desde ${formatGTQ(cheapest)}. ${product.description}`;
   // Descripciones cortas se completan con lo que siempre es cierto de la tienda, hasta ~150 caracteres.
-  const description = truncate(base.length < 140 ? `${base} Envío a domicilio o recogida en tienda.` : base, 158);
+  const description = truncate(base.length < 140 ? `${base} Envío a todo el país.` : base, 158);
   const path = `/productos/${product.slug}`;
   const photo = product.images.find((i) => !i.url.endsWith(".svg"));
 
@@ -56,7 +58,7 @@ export default async function ProductPage({ params, searchParams }: Props) {
   if (!product) notFound();
 
   const sku = (await searchParams).variante;
-  const related = await getRelatedProducts(product);
+  const [related, shipping] = await Promise.all([getRelatedProducts(product), loadShipping()]);
 
   const crumbs = [
     { name: "Inicio", href: "/" },
@@ -127,7 +129,9 @@ export default async function ProductPage({ params, searchParams }: Props) {
               <div>
                 <dt className="font-medium">Entrega</dt>
                 <dd className="text-text-muted">
-                  A domicilio, con tarifa según tu departamento, o recogida en tienda. <Marker>{pendingData.deliveryTime}</Marker>{" "}
+                  Envío a todo el país: {shipping.flatRate === 0 ? "gratis" : formatGTQ(shipping.flatRate)}
+                  {shipping.freeFrom > 0 && shipping.flatRate > 0 ? `, gratis desde ${formatGTQ(shipping.freeFrom)}` : ""}.{" "}
+                  {shipping.deliveryTime ? `Entrega: ${asSentence(shipping.deliveryTime)}` : <Marker>{pendingData.deliveryTime}</Marker>}{" "}
                   <Link href="/envios" className="text-brand-primary-strong underline underline-offset-2">
                     Ver envíos
                   </Link>

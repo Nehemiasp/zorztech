@@ -12,7 +12,7 @@ import { billingSchema, contactSchema, deliverySchema, termsSchema } from "@/lib
 import { cn } from "@/lib/cn";
 import { departamentos } from "@/lib/geo/departamentos";
 import { formatGTQ } from "@/lib/money";
-import { amountToFreeShipping, homeShippingCost, type ShippingSettings } from "@/lib/shipping";
+import { amountToFreeShipping, asSentence, homeShippingCost, type ShippingSettings } from "@/lib/shipping";
 import type { PaymentMethod } from "@/lib/payments/types";
 
 interface Props {
@@ -90,6 +90,8 @@ function CheckoutForm({ cart, shipping: shippingSettings, pickups, addresses, me
     billing: { taxId: "", taxName: "" },
     paymentMethod: methods.length === 1 ? methods[0].id : "",
     ...restored?.draft,
+    // Sin tiendas para recoger, un borrador viejo con recogida vuelve a domicilio.
+    ...(pickups.length === 0 ? { method: "domicilio" as const } : {}),
     // Los términos se aceptan de nuevo en cada compra.
     acceptTerms: false,
   }));
@@ -122,6 +124,7 @@ function CheckoutForm({ cart, shipping: shippingSettings, pickups, addresses, me
       : missingForFree > 0
         ? `${formatGTQ(shippingSettings.flatRate)}. Agrega ${formatGTQ(missingForFree)} más y es gratis.`
         : `${formatGTQ(shippingSettings.flatRate)}.`;
+  const deliveryNote = shippingSettings.deliveryTime ? ` Entrega: ${asSentence(shippingSettings.deliveryTime)}` : "";
   const pickup = pickups.find((p) => p.id === draft.pickupLocationId);
 
   const setContact = (k: keyof Draft["contact"], v: string) => setDraft((d) => ({ ...d, contact: { ...d.contact, [k]: v } }));
@@ -376,25 +379,35 @@ function CheckoutForm({ cart, shipping: shippingSettings, pickups, addresses, me
 
             {step === 1 && (
               <div className="space-y-5">
-                <fieldset>
-                  <legend className="mb-2 font-medium">¿Cómo quieres recibirlo?</legend>
-                  <div className="grid gap-2 sm:grid-cols-2">
-                    {(
-                      [
-                        ["domicilio", "Envío a domicilio", `${homeNote}${shippingSettings.deliveryTime ? ` Entrega: ${shippingSettings.deliveryTime}.` : ""}`],
-                        ["recogida", "Recoger en tienda", "Sin costo de envío."],
-                      ] as const
-                    ).map(([value, title, text]) => (
-                      <label key={value} className={cn("flex cursor-pointer items-start gap-3 rounded-md border p-4", draft.method === value ? "border-brand-primary ring-1 ring-brand-primary" : "border-border-strong")}>
-                        <input type="radio" name="metodo-entrega" checked={draft.method === value} onChange={() => { setDraft((d) => ({ ...d, method: value })); setErrors({}); }} className="mt-1 size-5 accent-brand-primary" />
-                        <span>
-                          <span className="block font-medium">{title}</span>
-                          <span className="text-sm text-text-muted">{text}</span>
-                        </span>
-                      </label>
-                    ))}
+                {pickups.length > 0 ? (
+                  <fieldset>
+                    <legend className="mb-2 font-medium">¿Cómo quieres recibirlo?</legend>
+                    <div className="grid gap-2 sm:grid-cols-2">
+                      {(
+                        [
+                          ["domicilio", "Envío a domicilio", `${homeNote}${deliveryNote}`],
+                          ["recogida", "Recoger en tienda", "Sin costo de envío."],
+                        ] as const
+                      ).map(([value, title, text]) => (
+                        <label key={value} className={cn("flex cursor-pointer items-start gap-3 rounded-md border p-4", draft.method === value ? "border-brand-primary ring-1 ring-brand-primary" : "border-border-strong")}>
+                          <input type="radio" name="metodo-entrega" checked={draft.method === value} onChange={() => { setDraft((d) => ({ ...d, method: value })); setErrors({}); }} className="mt-1 size-5 accent-brand-primary" />
+                          <span>
+                            <span className="block font-medium">{title}</span>
+                            <span className="text-sm text-text-muted">{text}</span>
+                          </span>
+                        </label>
+                      ))}
+                    </div>
+                  </fieldset>
+                ) : (
+                  <div>
+                    <h3 className="font-medium">Envío a domicilio</h3>
+                    <p className="mt-1 text-text-muted">
+                      {homeNote}
+                      {deliveryNote}
+                    </p>
                   </div>
-                </fieldset>
+                )}
 
                 {draft.method === "domicilio" ? (
                   <div className="space-y-4">

@@ -6,6 +6,7 @@ import { Prisma, type Order } from "../generated/prisma/client";
 import { getPaymentProvider } from "../payments";
 import type { CreatePaymentResult } from "../payments/types";
 import { formatGTQ } from "../money";
+import { isRealPickup } from "../pickup";
 import { loadShipping } from "../settings";
 import { homeShippingCost } from "../shipping";
 import { siteConfig } from "../site";
@@ -155,7 +156,7 @@ export async function createOrderFromCart(input: CheckoutInput, userId: string |
     shippingAddress = address;
   } else {
     const pickup = await db.pickupLocation.findFirst({ where: { id: input.delivery.pickupLocationId, isActive: true } });
-    if (!pickup) return { ok: false, error: "sin_tienda", message: "Esa tienda ya no está disponible para recoger. Elige otra." };
+    if (!pickup || !isRealPickup(pickup)) return { ok: false, error: "sin_tienda", message: "Esa tienda ya no está disponible para recoger. Elige otra." };
     pickupLocationId = pickup.id;
   }
 

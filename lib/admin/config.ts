@@ -1,47 +1,6 @@
 import { z } from "zod";
 import { db } from "../db";
-import { departamentos } from "../geo/departamentos";
-import { parseGTQ } from "../money";
 import type { BannerInput } from "../settings";
-
-// --- Tarifas de envío -------------------------------------------------------------------
-
-export const ratesFormSchema = z.record(
-  z.enum(departamentos),
-  z.object({ price: z.string().trim(), days: z.string().trim() }),
-);
-
-export type RatesResult = { ok: true; saved: number; removed: number } | { ok: false; fields: Record<string, string> };
-
-/**
- * Guarda las tarifas de los 22 departamentos. Un precio vacío significa "no enviamos ahí": la tarifa se
- * quita y el checkout ofrece solo recogida en tienda para ese departamento.
- */
-export async function saveRates(input: z.infer<typeof ratesFormSchema>): Promise<RatesResult> {
-  const fields: Record<string, string> = {};
-  const toSave: { departamento: string; price: number; estimatedDays: number }[] = [];
-  const toRemove: string[] = [];
-
-  for (const departamento of departamentos) {
-    const row = input[departamento] ?? { price: "", days: "" };
-    if (!row.price && !row.days) {
-      toRemove.push(departamento);
-      continue;
-    }
-    const price = row.price === "" ? null : parseGTQ(row.price);
-    const days = Number(row.days);
-    if (price === null) fields[`${departamento}.price`] = "Escribe el costo en quetzales, por ejemplo 45.00 (0 si es gratis).";
-    if (!Number.isInteger(days) || days < 1 || days > 30) fields[`${departamento}.days`] = "Escribe los días de entrega, de 1 a 30.";
-    if (price !== null && Number.isInteger(days) && days >= 1 && days <= 30) toSave.push({ departamento, price, estimatedDays: days });
-  }
-  if (Object.keys(fields).length > 0) return { ok: false, fields };
-
-  await db.$transaction([
-    ...toSave.map((r) => db.shippingRate.upsert({ where: { departamento: r.departamento }, update: r, create: r })),
-    db.shippingRate.deleteMany({ where: { departamento: { in: toRemove } } }),
-  ]);
-  return { ok: true, saved: toSave.length, removed: toRemove.length };
-}
 
 // --- Tiendas para recoger ---------------------------------------------------------------
 

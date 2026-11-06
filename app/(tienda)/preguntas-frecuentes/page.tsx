@@ -24,7 +24,7 @@ const faqs: { q: string; a: React.ReactNode }[] = [
     q: "¿Cuánto cuesta el envío?",
     a: (
       <>
-        Depende del departamento y se calcula antes de pagar. Consulta la lista en <Link href="/envios" className={link}>Envíos</Link>. Recoger en tienda no tiene costo.
+        Hay una sola tarifa para todo el país y se muestra antes de pagar; en compras grandes el envío es gratis. Los montos están en <Link href="/envios" className={link}>Envíos</Link>. Recoger en tienda no tiene costo.
       </>
     ),
   },

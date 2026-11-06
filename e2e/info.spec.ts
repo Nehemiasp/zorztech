@@ -27,10 +27,11 @@ test.describe("páginas de información", () => {
     });
   }
 
-  test("las tarifas de envío salen de la base de datos", async ({ page }) => {
+  test("el envío es una sola tarifa general y se anuncia el envío gratis", async ({ page }) => {
     await page.goto("/envios");
-    const tabla = page.getByRole("region", { name: "Tarifas de envío por departamento" });
-    await expect(tabla.getByRole("row", { name: /Guatemala/ }).first()).toContainText("Q");
+    await expect(page.getByText(/el mismo para todo el país/)).toBeVisible();
+    await expect(page.getByText(/Envío gratis en compras de/)).toContainText("Q");
+    await expect(page.getByRole("table")).toHaveCount(0);
   });
 
   test("las políticas pendientes se ven como marcador, no como texto inventado", async ({ page }) => {

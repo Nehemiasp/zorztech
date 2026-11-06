@@ -1,11 +1,11 @@
 "use server";
 
 import { revalidatePath } from "next/cache";
-import { removePickup, pickupSchema, ratesFormSchema, resetHeroBanner, saveHeroBanner, savePickup, saveRates } from "@/lib/admin/config";
+import { removePickup, pickupSchema, resetHeroBanner, saveHeroBanner, savePickup } from "@/lib/admin/config";
 import { adminUser, noPermission } from "@/lib/admin/guard";
 import type { FormState } from "@/lib/auth/actions";
-import { bannerSchema, contactSchema, inventorySchema, saveSetting } from "@/lib/settings";
-import { departamentos } from "@/lib/geo/departamentos";
+import { parseGTQ } from "@/lib/money";
+import { bannerSchema, contactSchema, inventorySchema, saveSetting, shippingSchema } from "@/lib/settings";
 
 const text = (formData: FormData, key: string) => String(formData.get(key) ?? "");
 
@@ -56,16 +56,21 @@ export async function resetBannerAction(): Promise<FormState> {
   return { success: "Volvimos al banner por defecto." };
 }
 
-export async function saveRatesAction(_prev: FormState, formData: FormData): Promise<FormState> {
+export async function saveShippingAction(_prev: FormState, formData: FormData): Promise<FormState> {
   if (!(await adminUser())) return noPermission;
-  const raw: Record<string, { price: string; days: string }> = {};
-  for (const d of departamentos) raw[d] = { price: text(formData, `price:${d}`), days: text(formData, `days:${d}`) };
-  const parsed = ratesFormSchema.safeParse(raw);
-  if (!parsed.success) return { error: "No pudimos leer las tarifas." };
-  const result = await saveRates(parsed.data);
-  if (!result.ok) return { error: "Revisa las tarifas marcadas.", fields: result.fields };
+  const values = { flatRate: text(formData, "flatRate"), freeFrom: text(formData, "freeFrom"), deliveryTime: text(formData, "deliveryTime") };
+  const fields: Record<string, string> = {};
+  const flatRate = parseGTQ(values.flatRate);
+  if (flatRate === null) fields.flatRate = "Escribe el costo en quetzales, por ejemplo 35.00 (0 si el envío siempre es gratis).";
+  // En blanco o 0: no se ofrece envío gratis por monto.
+  const freeFrom = values.freeFrom.trim() === "" ? 0 : parseGTQ(values.freeFrom);
+  if (freeFrom === null) fields.freeFrom = "Escribe el monto en quetzales, por ejemplo 400.00, o déjalo en blanco.";
+  if (Object.keys(fields).length > 0 || flatRate === null || freeFrom === null) return { fields, values };
+  const parsed = shippingSchema.safeParse({ flatRate, freeFrom, deliveryTime: values.deliveryTime });
+  if (!parsed.success) return { fields: fieldsOf(parsed.error), values };
+  await saveSetting("envio", parsed.data);
   refresh();
-  return { success: `Guardamos ${result.saved} tarifas.${result.removed > 0 ? ` En ${result.removed} departamentos no se ofrece envío a domicilio: solo recogida.` : ""}` };
+  return { success: "Guardamos el envío. Ya se aplica en el carrito y en el pago.", values };
 }
 
 export async function savePickupAction(_prev: FormState, formData: FormData): Promise<FormState> {

@@ -3,6 +3,7 @@ import { z } from "zod";
 import { db } from "./db";
 import { email } from "./auth/schemas";
 import { hero as defaultHero } from "./content/home";
+import { defaultShipping, type ShippingSettings } from "./shipping";
 import { pendingData } from "./site";
 
 /** Datos de contacto que carga el dueño. Mientras un dato esté vacío, la tienda muestra su marcador. */
@@ -18,6 +19,13 @@ export type ContactSettings = z.infer<typeof contactSchema>;
 export const inventorySchema = z.object({ lowStockDefault: z.coerce.number({ error: "Escribe un número." }).int("Usa un número entero.").min(0, "No puede ser negativo.").max(10_000) });
 export type InventorySettings = z.infer<typeof inventorySchema>;
 
+/** Se guarda en centavos; el formulario del panel convierte desde quetzales. */
+export const shippingSchema = z.object({
+  flatRate: z.number().int().min(0).max(100_000_00),
+  freeFrom: z.number().int().min(0).max(100_000_00),
+  deliveryTime: z.string().trim().max(80, "Usa hasta 80 caracteres."),
+});
+
 const emptyContact: ContactSettings = { phone: "", email: "", hours: "", socials: "", paymentMethods: "" };
 
 export const getStoreSettings = cache(async () => {
@@ -31,7 +39,14 @@ export const getStoreSettings = cache(async () => {
   };
 });
 
-export async function saveSetting(key: "contacto" | "inventario", value: unknown): Promise<void> {
+/** Envío vigente. Sin nada guardado, valen los valores de partida. Sin caché: el cobro siempre lee lo último. */
+export async function loadShipping(): Promise<ShippingSettings> {
+  const row = await db.storeSetting.findUnique({ where: { key: "envio" } });
+  const parsed = shippingSchema.safeParse(row?.value);
+  return parsed.success ? parsed.data : defaultShipping;
+}
+
+export async function saveSetting(key: "contacto" | "inventario" | "envio", value: unknown): Promise<void> {
   const json = JSON.parse(JSON.stringify(value));
   await db.storeSetting.upsert({ where: { key }, update: { value: json }, create: { key, value: json } });
 }

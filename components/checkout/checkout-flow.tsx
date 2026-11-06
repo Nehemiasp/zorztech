@@ -1,6 +1,6 @@
 "use client";
 
-import { useCallback, useEffect, useMemo, useRef, useState, useSyncExternalStore } from "react";
+import { useCallback, useEffect, useRef, useState, useSyncExternalStore } from "react";
 import Link from "next/link";
 import { Check } from "lucide-react";
 import { CatalogImage } from "@/components/catalog-image";
@@ -12,11 +12,12 @@ import { billingSchema, contactSchema, deliverySchema, termsSchema } from "@/lib
 import { cn } from "@/lib/cn";
 import { departamentos } from "@/lib/geo/departamentos";
 import { formatGTQ } from "@/lib/money";
+import { amountToFreeShipping, homeShippingCost, type ShippingSettings } from "@/lib/shipping";
 import type { PaymentMethod } from "@/lib/payments/types";
 
 interface Props {
   cart: CartView;
-  rates: { departamento: string; price: number; estimatedDays: number }[];
+  shipping: ShippingSettings;
   pickups: { id: string; name: string; address: string; hours: string }[];
   addresses: { id: string; nombre: string; telefono: string; departamento: string; municipio: string; direccion: string; referencia: string }[];
   methods: PaymentMethod[];
@@ -79,7 +80,7 @@ export function CheckoutFlow(props: Props) {
   return <CheckoutForm key={restored ? "restaurado" : "nuevo"} {...props} restored={restored} />;
 }
 
-function CheckoutForm({ cart, rates, pickups, addresses, methods, user, restored }: Props & { restored: { draft: Partial<Draft>; step: number } | null }) {
+function CheckoutForm({ cart, shipping: shippingSettings, pickups, addresses, methods, user, restored }: Props & { restored: { draft: Partial<Draft>; step: number } | null }) {
   const [step, setStep] = useState(() => Math.min(Math.max(restored?.step ?? 0, 0), steps.length - 1));
   const [draft, setDraft] = useState<Draft>(() => ({
     contact: { name: user?.name ?? "", email: user?.email ?? "", phone: user?.phone ?? "" },
@@ -111,9 +112,16 @@ function CheckoutForm({ cart, rates, pickups, addresses, methods, user, restored
     requestAnimationFrame(() => heading.current?.focus());
   }, []);
 
-  const rate = useMemo(() => rates.find((r) => r.departamento === draft.home.departamento), [rates, draft.home.departamento]);
-  const shipping = draft.method === "recogida" ? 0 : (rate?.price ?? null);
-  const total = cart.subtotal - cart.discount + (shipping ?? 0);
+  const goodsTotal = cart.subtotal - cart.discount;
+  const shipping = draft.method === "recogida" ? 0 : homeShippingCost(goodsTotal, shippingSettings);
+  const missingForFree = amountToFreeShipping(goodsTotal, shippingSettings);
+  const total = goodsTotal + shipping;
+  const homeNote =
+    shipping === 0
+      ? "Tu compra tiene envío gratis."
+      : missingForFree > 0
+        ? `${formatGTQ(shippingSettings.flatRate)}. Agrega ${formatGTQ(missingForFree)} más y es gratis.`
+        : `${formatGTQ(shippingSettings.flatRate)}.`;
   const pickup = pickups.find((p) => p.id === draft.pickupLocationId);
 
   const setContact = (k: keyof Draft["contact"], v: string) => setDraft((d) => ({ ...d, contact: { ...d.contact, [k]: v } }));
@@ -131,9 +139,7 @@ function CheckoutForm({ cart, rates, pickups, addresses, methods, user, restored
     } else if (index === 1) {
       const r = deliverySchema.safeParse(deliveryInput);
       if (!r.success) found = issuesToErrors(r.error.issues);
-      else if (draft.method === "domicilio" && shipping === null) {
-        found = { departamento: `Todavía no tenemos tarifa de envío para ${draft.home.departamento}. Elige recogida en tienda o escríbenos.` };
-      }
+
     } else if (index === 2) {
       const r = billingSchema.safeParse(draft.billing);
       if (!r.success) found = issuesToErrors(r.error.issues);
@@ -275,7 +281,7 @@ function CheckoutForm({ cart, rates, pickups, addresses, methods, user, restored
         )}
         <div className="flex justify-between">
           <dt>Envío</dt>
-          <dd>{draft.method === "recogida" ? "Sin costo" : shipping !== null ? formatGTQ(shipping) : "Elige tu departamento"}</dd>
+          <dd>{draft.method === "recogida" || shipping === 0 ? "Gratis" : formatGTQ(shipping)}</dd>
         </div>
         <div className="flex justify-between border-t border-border pt-2 text-lg font-medium">
           <dt>Total</dt>
@@ -375,7 +381,7 @@ function CheckoutForm({ cart, rates, pickups, addresses, methods, user, restored
                   <div className="grid gap-2 sm:grid-cols-2">
                     {(
                       [
-                        ["domicilio", "Envío a domicilio", "Lo llevamos a tu dirección."],
+                        ["domicilio", "Envío a domicilio", `${homeNote}${shippingSettings.deliveryTime ? ` Entrega: ${shippingSettings.deliveryTime}.` : ""}`],
                         ["recogida", "Recoger en tienda", "Sin costo de envío."],
                       ] as const
                     ).map(([value, title, text]) => (
@@ -407,11 +413,6 @@ function CheckoutForm({ cart, rates, pickups, addresses, methods, user, restored
                     <TextField label="Nombre de quien recibe" name="nombre" autoComplete="shipping name" value={draft.home.nombre} onChange={(e) => setHome("nombre", e.target.value)} error={errors.nombre} />
                     <TextField label="Teléfono de quien recibe" name="telefono" type="tel" autoComplete="shipping tel" inputMode="tel" value={draft.home.telefono} onChange={(e) => setHome("telefono", e.target.value)} error={errors.telefono} />
                     <SelectField label="Departamento" name="departamento" autoComplete="shipping address-level1" options={[...departamentos]} value={draft.home.departamento} onChange={(e) => setHome("departamento", e.target.value)} error={errors.departamento} />
-                    {draft.home.departamento && rate && (
-                      <p className="-mt-2 text-sm text-text-muted">
-                        Envío a {draft.home.departamento}: {formatGTQ(rate.price)}. Entrega en unos {rate.estimatedDays} {rate.estimatedDays === 1 ? "día" : "días"}.
-                      </p>
-                    )}
                     <TextField label="Municipio" name="municipio" autoComplete="shipping address-level2" value={draft.home.municipio} onChange={(e) => setHome("municipio", e.target.value)} error={errors.municipio} />
                     <TextField label="Dirección" name="direccion" autoComplete="shipping street-address" hint="Zona, calle o avenida, número de casa." value={draft.home.direccion} onChange={(e) => setHome("direccion", e.target.value)} error={errors.direccion} />
                     <TextField label="Referencia (opcional)" name="referencia" hint="Algo que ayude a ubicarte: color del portón, un negocio cercano." value={draft.home.referencia} onChange={(e) => setHome("referencia", e.target.value)} error={errors.referencia} />

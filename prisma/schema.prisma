@@ -312,15 +312,6 @@ model OrderEvent {
   @@map("order_events")
 }
 
-model ShippingRate {
-  id            String @id @default(cuid())
-  departamento  String @unique
-  price         Int
-  estimatedDays Int
-
-  @@map("shipping_rates")
-}
-
 model PickupLocation {
   id       String  @id @default(cuid())
   name     String

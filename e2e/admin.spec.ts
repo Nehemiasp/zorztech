@@ -247,10 +247,11 @@ test.describe("cupones y configuración", () => {
     await expect(resumen.getByText(`Cupón ${codigo}`, { exact: true })).toBeVisible();
     await expect(resumen.getByText("-Q 139.80")).toBeVisible();
 
-    // El checkout cobra el total con descuento y el pedido guarda el cupón.
+    // El checkout cobra el total con descuento y el pedido guarda el cupón. Con el descuento la compra
+    // sigue por encima de Q 400, así que el envío a domicilio es gratis.
     await tienda.goto("/checkout");
     await completarCheckout(tienda, comprador());
-    await expect(tienda.getByRole("button", { name: /^Pagar Q/ })).toContainText("Q 594.20");
+    await expect(tienda.getByRole("button", { name: /^Pagar Q/ })).toContainText("Q 559.20");
     await pagarYElegir(tienda, "Aprobar");
     await expect(tienda.getByRole("heading", { name: "Gracias por tu compra" })).toBeVisible();
     await expect(tienda.getByText("-Q 139.80")).toBeVisible();
@@ -295,19 +296,16 @@ test.describe("cupones y configuración", () => {
     await page.goto("/");
     await expect(page.getByRole("heading", { level: 1 })).toHaveText(/Compra tecnología/);
 
-    // Dejar un departamento sin tarifa lo saca del envío a domicilio y volver a ponerla lo repone.
+    // Envío general: un costo inválido se rechaza y el valor original se puede volver a guardar.
     await page.goto("/admin/configuracion");
-    const precio = page.getByLabel("Costo de envío a Petén");
-    const original = await precio.inputValue();
-    const dias = page.getByLabel("Días de entrega a Petén");
-    const diasOriginal = await dias.inputValue();
-    await precio.fill("abc");
-    await page.getByRole("button", { name: "Guardar tarifas" }).click();
+    const costo = page.getByLabel("Costo del envío a domicilio (Q)");
+    const original = await costo.inputValue();
+    await costo.fill("abc");
+    await page.getByRole("button", { name: "Guardar envío" }).click();
     await expect(page.getByText("Escribe el costo en quetzales")).toBeVisible();
-    await precio.fill(original);
-    await dias.fill(diasOriginal);
-    await page.getByRole("button", { name: "Guardar tarifas" }).click();
-    await expect(page.getByText(/Guardamos 22 tarifas/)).toBeVisible();
+    await costo.fill(original);
+    await page.getByRole("button", { name: "Guardar envío" }).click();
+    await expect(page.getByText("Guardamos el envío.")).toBeVisible();
   });
 });
 

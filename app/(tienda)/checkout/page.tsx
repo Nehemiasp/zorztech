@@ -5,6 +5,7 @@ import { getCurrentUser } from "@/lib/auth";
 import { getCartView } from "@/lib/cart/service";
 import { db } from "@/lib/db";
 import { getPaymentMethods } from "@/lib/payments";
+import { loadShipping } from "@/lib/settings";
 
 export const metadata: Metadata = { title: "Finalizar compra", robots: { index: false, follow: false } };
 
@@ -12,8 +13,8 @@ export default async function CheckoutPage() {
   const [cart, user] = await Promise.all([getCartView(), getCurrentUser()]);
   if (cart.lines.length === 0) redirect("/carrito");
 
-  const [rates, pickups, addresses] = await Promise.all([
-    db.shippingRate.findMany({ orderBy: { departamento: "asc" }, select: { departamento: true, price: true, estimatedDays: true } }),
+  const [shipping, pickups, addresses] = await Promise.all([
+    loadShipping(),
     db.pickupLocation.findMany({ where: { isActive: true }, orderBy: { name: "asc" }, select: { id: true, name: true, address: true, hours: true } }),
     user
       ? db.address.findMany({
@@ -27,7 +28,7 @@ export default async function CheckoutPage() {
   return (
     <CheckoutFlow
       cart={cart}
-      rates={rates}
+      shipping={shipping}
       pickups={pickups}
       addresses={addresses.map((a) => ({ ...a, referencia: a.referencia ?? "" }))}
       methods={getPaymentMethods()}

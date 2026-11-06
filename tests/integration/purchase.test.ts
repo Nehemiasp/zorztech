@@ -283,22 +283,73 @@ describe("inventario y precios", () => {
     assert.deepEqual(await stock(), { stock: 10, reservedStock: 1 });
   });
 
-  test("el envío a domicilio suma la tarifa del departamento", async () => {
-    await setStock(10);
-    const rate = await db.shippingRate.findUniqueOrThrow({ where: { departamento: "Guatemala" } });
-    const cartId = await cartWith(1);
-    const result = await createOrderFromCart(
-      input({
-        expectedTotal: PRICE + rate.price,
-        delivery: { method: "domicilio", nombre: "Ana", telefono: "55551234", departamento: "Guatemala", municipio: "Mixco", direccion: "Zona 1, 5a calle 3-20" },
-      }),
-      null,
-      cartId,
-    );
-    assert.ok(result.ok);
-    createdOrders.push(result.code);
-    const order = await db.order.findUniqueOrThrow({ where: { code: result.code } });
-    assert.equal(order.shippingCost, rate.price);
-    assert.equal(order.total, PRICE + rate.price);
+  describe("envío a domicilio", () => {
+    const LOW = 10000; // Q 100.00
+    const home = { method: "domicilio", nombre: "Ana", telefono: "55551234", departamento: "Petén", municipio: "Flores", direccion: "Zona 1, 5a calle 3-20" } as const;
+    let lowVariantId = "";
+    let previous: unknown = null;
+
+    before(async () => {
+      lowVariantId = (await db.productVariant.create({ data: { productId, sku: `TEST-LOW-${run}`, name: "Económica", price: LOW, stock: 50 } })).id;
+      const row = await db.storeSetting.findUnique({ where: { key: "envio" } });
+      previous = row?.value ?? null;
+      const value = { flatRate: 3500, freeFrom: 40000, deliveryTime: "" };
+      await db.storeSetting.upsert({ where: { key: "envio" }, update: { value }, create: { key: "envio", value } });
+    });
+
+    after(async () => {
+      if (previous === null) await db.storeSetting.deleteMany({ where: { key: "envio" } });
+      else await db.storeSetting.update({ where: { key: "envio" }, data: { value: previous as object } });
+    });
+
+    async function lowCart(quantity: number) {
+      const cart = await db.cart.create({ data: { sessionId: `test-${run}-${Math.random().toString(36).slice(2)}` } });
+      createdCarts.push(cart.id);
+      await db.cartItem.create({ data: { cartId: cart.id, variantId: lowVariantId, quantity, priceAtAdd: LOW } });
+      return cart.id;
+    }
+
+    async function placeHome(cartId: string, expectedTotal: number) {
+      const result = await createOrderFromCart(input({ expectedTotal, delivery: { ...home } }), null, cartId);
+      if (result.ok) createdOrders.push(result.code);
+      return result;
+    }
+
+    test("bajo Q 400 cobra la tarifa general, igual para cualquier departamento", async () => {
+      const result = await placeHome(await lowCart(3), LOW * 3 + 3500);
+      assert.ok(result.ok, result.ok ? "" : result.message);
+      const order = await db.order.findUniqueOrThrow({ where: { code: result.code } });
+      assert.equal(order.shippingCost, 3500);
+      assert.equal(order.total, LOW * 3 + 3500);
+    });
+
+    test("desde Q 400 exactos el envío es gratis", async () => {
+      const result = await placeHome(await lowCart(4), LOW * 4);
+      assert.ok(result.ok, result.ok ? "" : result.message);
+      const order = await db.order.findUniqueOrThrow({ where: { code: result.code } });
+      assert.equal(order.shippingCost, 0);
+      assert.equal(order.total, LOW * 4);
+    });
+
+    test("una compra grande también tiene envío gratis", async () => {
+      await setStock(10);
+      const result = await placeHome(await cartWith(1), PRICE);
+      assert.ok(result.ok, result.ok ? "" : result.message);
+      assert.equal((await db.order.findUniqueOrThrow({ where: { code: result.code } })).shippingCost, 0);
+    });
+
+    test("si el navegador espera envío gratis y no corresponde, el servidor corrige el total", async () => {
+      const result = await placeHome(await lowCart(3), LOW * 3);
+      assert.ok(!result.ok);
+      assert.equal(result.error, "total_cambio");
+    });
+
+    test("recoger en tienda nunca cobra envío", async () => {
+      const cartId = await lowCart(1);
+      const result = await createOrderFromCart(input({ expectedTotal: LOW }), null, cartId);
+      assert.ok(result.ok, result.ok ? "" : result.message);
+      createdOrders.push(result.code);
+      assert.equal((await db.order.findUniqueOrThrow({ where: { code: result.code } })).shippingCost, 0);
+    });
   });
 });

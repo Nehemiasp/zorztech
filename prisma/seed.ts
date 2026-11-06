@@ -5,7 +5,7 @@ import "dotenv/config";
 import { PrismaPg } from "@prisma/adapter-pg";
 import { PrismaClient } from "../lib/generated/prisma/client";
 import { hashPassword } from "../lib/auth/password";
-import { departamentos } from "../lib/geo/departamentos";
+import { defaultShipping } from "../lib/shipping";
 import { buildSearchText } from "../lib/search";
 
 const db = new PrismaClient({ adapter: new PrismaPg({ connectionString: process.env.DATABASE_URL }) });
@@ -218,41 +218,9 @@ const products: SeedProduct[] = [
   },
 ];
 
-// Tarifas de ejemplo por departamento (centavos y días). El dueño las reemplaza desde el panel.
-const sampleRates: Record<string, [number, number]> = {
-  Guatemala: [q(35), 1],
-  Sacatepéquez: [q(45), 2],
-  Chimaltenango: [q(45), 2],
-  Escuintla: [q(45), 2],
-  "El Progreso": [q(55), 2],
-  "Santa Rosa": [q(55), 2],
-  Jalapa: [q(55), 3],
-  Jutiapa: [q(55), 3],
-  Zacapa: [q(60), 3],
-  Chiquimula: [q(60), 3],
-  Quetzaltenango: [q(60), 3],
-  Retalhuleu: [q(60), 3],
-  Suchitepéquez: [q(60), 3],
-  Sololá: [q(60), 3],
-  Totonicapán: [q(60), 3],
-  "Baja Verapaz": [q(60), 3],
-  "Alta Verapaz": [q(65), 4],
-  Quiché: [q(65), 4],
-  "San Marcos": [q(65), 4],
-  Izabal: [q(75), 4],
-  Huehuetenango: [q(75), 4],
-  Petén: [q(85), 5],
-};
-
 async function seedStoreData() {
-  for (const departamento of departamentos) {
-    const [price, estimatedDays] = sampleRates[departamento];
-    await db.shippingRate.upsert({
-      where: { departamento },
-      update: { price, estimatedDays },
-      create: { departamento, price, estimatedDays },
-    });
-  }
+  // Envío general de ejemplo (Q 35, gratis desde Q 400). Si el dueño ya lo cambió, no se pisa.
+  await db.storeSetting.upsert({ where: { key: "envio" }, update: {}, create: { key: "envio", value: { ...defaultShipping } } });
   const existing = await db.pickupLocation.findFirst({ where: { name: "Tienda de ejemplo" } });
   if (!existing) {
     await db.pickupLocation.create({

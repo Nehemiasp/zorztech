@@ -6,6 +6,8 @@ import { Prisma, type Order } from "../generated/prisma/client";
 import { getPaymentProvider } from "../payments";
 import type { CreatePaymentResult } from "../payments/types";
 import { formatGTQ } from "../money";
+import { loadShipping } from "../settings";
+import { homeShippingCost } from "../shipping";
 import { siteConfig } from "../site";
 import { generateOrderCode } from "./code";
 import { expireStaleReservations } from "./expiry";
@@ -22,7 +24,7 @@ export type CreateOrderResult =
   | { ok: true; code: string; payment: PaymentRedirect }
   | {
       ok: false;
-      error: "carrito_vacio" | "carrito_con_problemas" | "sin_tarifa" | "sin_tienda" | "sin_stock" | "total_cambio" | "cupon" | "pago";
+      error: "carrito_vacio" | "carrito_con_problemas" | "sin_tienda" | "sin_stock" | "total_cambio" | "cupon" | "pago";
       message: string;
       /** El pedido ya existe y puede reintentarse (el proveedor falló al iniciar el pago). */
       code?: string;
@@ -144,15 +146,10 @@ export async function createOrderFromCart(input: CheckoutInput, userId: string |
     return { ok: false, error: "carrito_con_problemas", message: "Algunos productos de tu carrito ya no están disponibles. Revísalo antes de pagar." };
   }
 
-  let shippingCost = 0;
+  const shipping = await loadShipping();
   let shippingAddress: Prisma.InputJsonValue | undefined;
   let pickupLocationId: string | undefined;
   if (input.delivery.method === "domicilio") {
-    const rate = await db.shippingRate.findUnique({ where: { departamento: input.delivery.departamento } });
-    if (!rate) {
-      return { ok: false, error: "sin_tarifa", message: `Todavía no tenemos tarifa de envío para ${input.delivery.departamento}. Elige recogida en tienda o escríbenos.` };
-    }
-    shippingCost = rate.price;
     const { method: _method, ...address } = input.delivery;
     void _method;
     shippingAddress = address;
@@ -208,6 +205,8 @@ export async function createOrderFromCart(input: CheckoutInput, userId: string |
         discount = check.discount;
       }
 
+      // El envío depende de lo que se compra ya con descuento; la recogida en tienda no cuesta.
+      const shippingCost = input.delivery.method === "domicilio" ? homeShippingCost(subtotal - discount, shipping) : 0;
       const totals = calculateTotals(lines, shippingCost, discount);
       if (totals.total !== input.expectedTotal) throw new TotalChanged(totals.total);
       const created = await tx.order.create({

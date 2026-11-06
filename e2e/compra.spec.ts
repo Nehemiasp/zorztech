@@ -4,6 +4,13 @@ import { addProduct, codigoDelPedido, comprador, completarCheckout, pagarYElegir
 const PRODUCTO = "cable-usb-c-trenzado";
 
 test.describe("compra como invitado", () => {
+  test("el carrito muestra el envío general y que recoger en tienda no cuesta", async ({ page }) => {
+    await addProduct(page, PRODUCTO);
+    await page.goto("/carrito");
+    await expect(page.getByText("Envío a domicilio", { exact: true })).toBeVisible();
+    await expect(page.getByText(/Recoger en tienda no tiene costo/)).toBeVisible();
+  });
+
   test("de la ficha al pedido pagado, con seguimiento por código y correo", async ({ page }) => {
     const c = comprador();
     await addProduct(page, PRODUCTO);

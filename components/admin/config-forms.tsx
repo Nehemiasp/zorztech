@@ -12,11 +12,9 @@ import {
   saveContactAction,
   saveInventoryAction,
   savePickupAction,
-  saveRatesAction,
+  saveShippingAction,
 } from "@/app/admin/configuracion/actions";
 import type { FormState } from "@/lib/auth/actions";
-import { departamentos } from "@/lib/geo/departamentos";
-import { ScrollRegion, table } from "./ui";
 
 type Form = [FormState, (payload: FormData) => void, boolean];
 const useForm = (action: (prev: FormState, data: FormData) => Promise<FormState>): Form => useActionState<FormState, FormData>(action, {});
@@ -147,46 +145,41 @@ export function BannerForm({ banner, custom }: { banner: BannerValues; custom: b
   );
 }
 
-export function RatesForm({ rates }: { rates: Record<string, { price: string; days: string }> }) {
-  const [state, action, pending] = useForm(saveRatesAction);
+export function ShippingForm({ flatRate, freeFrom, deliveryTime }: { flatRate: string; freeFrom: string; deliveryTime: string }) {
+  const [state, action, pending] = useForm(saveShippingAction);
   const e = state.fields ?? {};
+  const v = (k: string, fallback: string) => state.values?.[k] ?? fallback;
   return (
-    <form action={action} noValidate className="space-y-4">
+    <form action={action} noValidate className="max-w-xl space-y-4">
       <Message state={state} />
       <p className="max-w-[65ch] text-text-muted">
-        Costo del envío a domicilio y días de entrega por departamento, con IVA incluido. Si dejas un departamento sin costo ni días, no se ofrece envío a domicilio ahí y el cliente solo puede recoger en tienda. Escribe 0 si el envío es gratis.
+        Una sola tarifa para todo el país, con IVA incluido. Recoger en tienda siempre es gratis. El envío gratis se aplica cuando la compra, ya con descuentos, llega al monto que pongas.
       </p>
-      <ScrollRegion label="Tarifas de envío por departamento">
-        <table className={table.table}>
-          <caption className="sr-only">Tarifas de envío por departamento</caption>
-          <thead className={table.head}>
-            <tr>
-              <th scope="col" className={table.th}>Departamento</th>
-              <th scope="col" className={table.th}>Costo (Q)</th>
-              <th scope="col" className={table.th}>Días de entrega</th>
-            </tr>
-          </thead>
-          <tbody>
-            {departamentos.map((d) => (
-              <tr key={d} className={table.row}>
-                <th scope="row" className={`${table.td} font-medium`}>{d}</th>
-                <td className={table.td}>
-                  <label className="sr-only" htmlFor={`price-${d}`}>Costo de envío a {d}</label>
-                  <input id={`price-${d}`} name={`price:${d}`} inputMode="decimal" defaultValue={rates[d]?.price ?? ""} aria-invalid={e[`${d}.price`] ? true : undefined} className="min-h-11 w-32 rounded-sm border border-border-strong bg-surface-light px-3" />
-                  {e[`${d}.price`] && <p className="mt-1 max-w-56 text-sm text-state-error">{e[`${d}.price`]}</p>}
-                </td>
-                <td className={table.td}>
-                  <label className="sr-only" htmlFor={`days-${d}`}>Días de entrega a {d}</label>
-                  <input id={`days-${d}`} name={`days:${d}`} type="number" min={1} max={30} inputMode="numeric" defaultValue={rates[d]?.days ?? ""} aria-invalid={e[`${d}.days`] ? true : undefined} className="min-h-11 w-24 rounded-sm border border-border-strong bg-surface-light px-3" />
-                  {e[`${d}.days`] && <p className="mt-1 max-w-56 text-sm text-state-error">{e[`${d}.days`]}</p>}
-                </td>
-              </tr>
-            ))}
-          </tbody>
-        </table>
-      </ScrollRegion>
+      <TextField
+        label="Costo del envío a domicilio (Q)"
+        name="flatRate"
+        inputMode="decimal"
+        hint="Ejemplo: 35.00. Escribe 0 si el envío siempre es gratis."
+        defaultValue={v("flatRate", flatRate)}
+        error={e.flatRate}
+      />
+      <TextField
+        label="Envío gratis desde (Q)"
+        name="freeFrom"
+        inputMode="decimal"
+        hint="Ejemplo: 400.00. Déjalo en blanco si no ofreces envío gratis por monto."
+        defaultValue={v("freeFrom", freeFrom)}
+        error={e.freeFrom}
+      />
+      <TextField
+        label="Tiempo de entrega"
+        name="deliveryTime"
+        hint="Texto libre, por ejemplo «2 a 4 días hábiles». Mientras esté vacío, la tienda muestra un marcador."
+        defaultValue={v("deliveryTime", deliveryTime)}
+        error={e.deliveryTime}
+      />
       <button type="submit" disabled={pending} className={buttonStyles("primary")}>
-        {pending ? "Guardando…" : "Guardar tarifas"}
+        {pending ? "Guardando…" : "Guardar envío"}
       </button>
     </form>
   );

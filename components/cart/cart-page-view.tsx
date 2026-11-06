@@ -6,15 +6,19 @@ import { buttonStyles, LinkButton } from "@/components/ui/button";
 import { TextField } from "@/components/ui/field";
 import type { CartView } from "@/lib/cart/types";
 import { formatGTQ } from "@/lib/money";
+import { amountToFreeShipping, homeShippingCost, type ShippingSettings } from "@/lib/shipping";
 import { CartLines } from "./cart-lines";
 import { useCart } from "./cart-provider";
 
-export function CartPageView({ initial }: { initial: CartView }) {
+export function CartPageView({ initial, shipping }: { initial: CartView; shipping: ShippingSettings }) {
   const { cart: live, ready, hydrate, confirmPrices, busy, notice, applyCoupon, removeCoupon } = useCart();
   const [code, setCode] = useState("");
   const [couponError, setCouponError] = useState<string | null>(null);
   useEffect(() => hydrate(initial), [hydrate, initial]);
   const cart = ready ? live : initial;
+  const goodsTotal = cart.subtotal - cart.discount;
+  const homeCost = homeShippingCost(goodsTotal, shipping);
+  const missingForFree = amountToFreeShipping(goodsTotal, shipping);
 
   if (cart.lines.length === 0) {
     return (
@@ -66,11 +70,17 @@ export function CartPageView({ initial }: { initial: CartView }) {
               <dd>-{formatGTQ(cart.discount)}</dd>
             </div>
           )}
-          <div className="flex justify-between text-text-muted">
-            <dt>Envío</dt>
-            <dd>Se calcula en el siguiente paso</dd>
+          <div className="flex justify-between">
+            <dt>Envío a domicilio</dt>
+            <dd>{homeCost === 0 ? "Gratis" : formatGTQ(homeCost)}</dd>
           </div>
         </dl>
+        <p className="mt-2 text-sm text-text-muted">
+          {missingForFree > 0
+            ? `Agrega ${formatGTQ(missingForFree)} más y el envío es gratis. `
+            : ""}
+          Recoger en tienda no tiene costo.
+        </p>
         <div className="mt-4 border-t border-border pt-4">
           {cart.coupon ? (
             <div className="flex items-start justify-between gap-3">

@@ -1,19 +1,19 @@
 import type { Metadata } from "next";
-import { BannerForm, ContactForm, InventoryForm, PickupList, RatesForm } from "@/components/admin/config-forms";
+import { BannerForm, ContactForm, InventoryForm, PickupList, ShippingForm } from "@/components/admin/config-forms";
 import { PageHeader, Panel } from "@/components/admin/ui";
 import { requireAdmin } from "@/lib/auth/guards";
 import { hero as defaultHero } from "@/lib/content/home";
 import { db } from "@/lib/db";
 import { centsToInput } from "@/lib/money";
-import { getStoreSettings } from "@/lib/settings";
+import { getStoreSettings, loadShipping } from "@/lib/settings";
 
 export const metadata: Metadata = { title: "Configuración" };
 
 export default async function AdminSettingsPage() {
   await requireAdmin();
-  const [settings, rates, pickups, banner] = await Promise.all([
+  const [settings, shipping, pickups, banner] = await Promise.all([
     getStoreSettings(),
-    db.shippingRate.findMany(),
+    loadShipping(),
     db.pickupLocation.findMany({ orderBy: { name: "asc" } }),
     db.banner.findFirst({ where: { slot: "hero" }, orderBy: { order: "asc" } }),
   ]);
@@ -28,7 +28,7 @@ export default async function AdminSettingsPage() {
         {[
           ["#contacto", "Contacto"],
           ["#banner", "Banner del inicio"],
-          ["#envios", "Tarifas de envío"],
+          ["#envios", "Envío"],
           ["#tiendas", "Tiendas para recoger"],
           ["#inventario", "Inventario"],
         ].map(([href, label]) => (
@@ -58,9 +58,13 @@ export default async function AdminSettingsPage() {
             }}
           />
         </Panel>
-        <Panel title="Tarifas de envío">
+        <Panel title="Envío">
           <span id="envios" />
-          <RatesForm rates={Object.fromEntries(rates.map((r) => [r.departamento, { price: centsToInput(r.price), days: String(r.estimatedDays) }]))} />
+          <ShippingForm
+            flatRate={centsToInput(shipping.flatRate)}
+            freeFrom={shipping.freeFrom > 0 ? centsToInput(shipping.freeFrom) : ""}
+            deliveryTime={shipping.deliveryTime}
+          />
         </Panel>
         <Panel title="Tiendas para recoger">
           <span id="tiendas" />

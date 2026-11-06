@@ -4,51 +4,40 @@ import { InfoPage, InfoSection, PolicyPlaceholder } from "@/components/info/info
 import { Marker } from "@/components/marker";
 import { db } from "@/lib/db";
 import { formatGTQ } from "@/lib/money";
+import { loadShipping } from "@/lib/settings";
 
 export const metadata: Metadata = {
   title: "Envíos y recogida en tienda",
-  description: "Costo y tiempo de entrega a domicilio según tu departamento, y dónde recoger tu pedido sin costo. Consulta las tarifas antes de pagar.",
+  description: "Costo del envío a domicilio, envío gratis desde cierto monto de compra y dónde recoger tu pedido sin costo.",
   alternates: { canonical: "/envios" },
 };
 
 const isMarker = (text: string) => text.startsWith("[");
 
 export default async function ShippingPage() {
-  const [rates, pickups] = await Promise.all([
-    db.shippingRate.findMany({ orderBy: { departamento: "asc" } }),
+  const [shipping, pickups] = await Promise.all([
+    loadShipping(),
     db.pickupLocation.findMany({ where: { isActive: true }, orderBy: { name: "asc" } }),
   ]);
+  const freeShipping = shipping.freeFrom > 0;
 
   return (
-    <InfoPage title="Envíos y recogida en tienda" intro="Puedes recibir tu pedido en casa o recogerlo en tienda. El costo se calcula antes de pagar, según tu departamento.">
+    <InfoPage title="Envíos y recogida en tienda" intro="Puedes recibir tu pedido en casa o recogerlo en tienda. El costo del envío lo ves antes de pagar.">
       <InfoSection title="Envío a domicilio">
-        <p>Llevamos tu pedido a la dirección que indiques en el pago. Cuando sale de la tienda te avisamos por correo.</p>
-        {rates.length === 0 ? (
-          <p>Todavía no hay tarifas cargadas. Mientras tanto, la recogida en tienda está disponible.</p>
-        ) : (
-          <div className="relative overflow-x-auto" role="region" aria-label="Tarifas de envío por departamento" tabIndex={0}>
-            <table className="w-full min-w-[19rem] text-left">
-              <caption className="sr-only">Costo y tiempo de entrega por departamento</caption>
-              <thead className="border-b border-border text-sm">
-                <tr>
-                  <th scope="col" className="py-2 pr-4 font-medium">Departamento</th>
-                  <th scope="col" className="py-2 pr-4 text-right font-medium">Costo</th>
-                  <th scope="col" className="py-2 text-right font-medium">Entrega</th>
-                </tr>
-              </thead>
-              <tbody>
-                {rates.map((r) => (
-                  <tr key={r.id} className="border-b border-border">
-                    <th scope="row" className="py-2 pr-4 font-normal text-text-on-light">{r.departamento}</th>
-                    <td className="py-2 pr-4 text-right tabular-nums">{r.price === 0 ? "Gratis" : formatGTQ(r.price)}</td>
-                    <td className="py-2 text-right tabular-nums">{r.estimatedDays} {r.estimatedDays === 1 ? "día" : "días"}</td>
-                  </tr>
-                ))}
-              </tbody>
-            </table>
-          </div>
-        )}
-        <p>Si tu departamento no aparece en la lista, por ahora solo puedes elegir la recogida en tienda.</p>
+        <p>Llevamos tu pedido a la dirección que indiques en el pago, en cualquier departamento. Cuando sale de la tienda te avisamos por correo.</p>
+        <ul className="list-disc space-y-1 pl-5">
+          <li>
+            Costo del envío: <strong className="font-medium text-text-on-light">{shipping.flatRate === 0 ? "gratis" : formatGTQ(shipping.flatRate)}</strong>, el mismo para todo el país.
+          </li>
+          {freeShipping && shipping.flatRate > 0 && (
+            <li>
+              Envío gratis en compras de <strong className="font-medium text-text-on-light">{formatGTQ(shipping.freeFrom)}</strong> o más, ya con descuentos aplicados.
+            </li>
+          )}
+          <li>
+            Tiempo de entrega: {shipping.deliveryTime ? shipping.deliveryTime : <Marker>[Tiempo de entrega]</Marker>}
+          </li>
+        </ul>
       </InfoSection>
 
       <InfoSection title="Recogida en tienda">

@@ -17,3 +17,9 @@
 Las fotos reales de producto no viven en el código: se suben desde el panel (fase 4) y cambian el campo `url` de `ProductImage`.
 
 Material de marca sin usar todavía, guardado en `docs/brand/`: dos variantes de la mascota (ave azul) entregadas junto con el logo.
+| `public/img/categorias/tablets.png` | Inicio, categoría Tablets | Foto con licencia (CC0) | «Tablet Computer», Birch Landing Home, StockSnap. Recortada a 4:3 | Foto propia o del proveedor |
+| `public/img/categorias/monitores.png` | Inicio, categoría Monitores | Foto con licencia (CC0) | «Blank LCD Monitor Mockup On Isolated White Background», personalgraphic.official, Flickr. Fondo quitado | Foto propia o del proveedor |
+| `public/img/categorias/componentes-de-pc.png` | Inicio, categoría Componentes de PC | Foto con licencia (CC0) | «CPU Processor», Lenharth Systems, StockSnap. Fondo quitado | Foto propia o del proveedor |
+| `public/img/categorias/almacenamiento.png` | Inicio, categoría Almacenamiento | Foto con licencia (**CC BY 2.0**) | «USB Stick», ccnull.de Bilddatenbank, Flickr. Fondo quitado. **Exige crédito**: está en `/creditos` | Foto propia (y entonces se puede quitar de `/creditos`) |
+| `public/img/categorias/redes.png` | Inicio, categoría Redes | Foto con licencia (**CC BY 2.0**) | «weißer Router auf weißen Hintergrund», ccnull.de Bilddatenbank, Flickr. Fondo quitado. **Exige crédito**: está en `/creditos` | Foto propia (y entonces se puede quitar de `/creditos`) |
+| `public/img/categorias/smartwatches.png` | Inicio, categoría Smartwatches | Foto con licencia (CC0) | «Smartwatch digital device technology», rawpixel. Fondo a transparente | Foto propia o del proveedor |

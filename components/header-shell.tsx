@@ -93,12 +93,12 @@ export function HeaderShell({ categories }: Props) {
       )}
 
       <nav aria-label="Categorías" className="hidden border-t border-border-on-dark md:block">
-        <ul className="mx-auto flex max-w-page flex-wrap gap-x-1 px-6">
+        <ul className="mx-auto flex max-w-page flex-wrap px-4 lg:px-5">
           {categories.map((c) => (
             <li key={c.slug}>
               <Link
                 href={`/categorias/${c.slug}`}
-                className="inline-flex min-h-11 items-center px-3 text-base text-text-on-dark-muted transition-colors duration-150 ease-out hover:text-text-on-dark"
+                className="inline-flex min-h-11 items-center px-2 text-base text-text-on-dark-muted transition-colors duration-150 ease-out hover:text-text-on-dark lg:px-2.5"
               >
                 {c.name}
               </Link>

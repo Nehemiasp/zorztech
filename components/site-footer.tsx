@@ -17,6 +17,7 @@ const infoLinks = [
 const legalLinks = [
   { href: "/terminos", label: "Términos y condiciones" },
   { href: "/privacidad", label: "Privacidad" },
+  { href: "/creditos", label: "Créditos de imágenes" },
 ];
 
 const linkClass = "inline-flex min-h-11 items-center text-text-on-dark-muted transition-colors duration-150 ease-out hover:text-text-on-dark";

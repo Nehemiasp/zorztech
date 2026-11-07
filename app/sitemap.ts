@@ -15,7 +15,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     }),
   ]);
 
-  const info = ["envios", "garantias", "devoluciones", "preguntas-frecuentes", "contacto", "terminos", "privacidad"];
+  const info = ["envios", "garantias", "devoluciones", "preguntas-frecuentes", "contacto", "terminos", "privacidad", "creditos"];
 
   return [
     { url: siteConfig.url, changeFrequency: "daily", priority: 1 },

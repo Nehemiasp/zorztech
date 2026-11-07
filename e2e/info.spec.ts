@@ -7,6 +7,7 @@ const paginas = [
   { ruta: "/preguntas-frecuentes", titulo: "Preguntas frecuentes" },
   { ruta: "/terminos", titulo: "Términos y condiciones" },
   { ruta: "/privacidad", titulo: "Privacidad" },
+  { ruta: "/creditos", titulo: "Créditos de imágenes" },
   { ruta: "/contacto", titulo: "Contacto" },
 ];
 
@@ -45,7 +46,7 @@ test.describe("páginas de información", () => {
   test("el pie de página lleva a cada página de información", async ({ page }) => {
     await page.goto("/");
     const pie = page.getByRole("contentinfo");
-    for (const nombre of ["Envíos", "Garantías", "Devoluciones", "Preguntas frecuentes", "Contacto", "Términos y condiciones", "Privacidad"]) {
+    for (const nombre of ["Envíos", "Garantías", "Devoluciones", "Preguntas frecuentes", "Contacto", "Términos y condiciones", "Privacidad", "Créditos de imágenes"]) {
       const enlace = pie.getByRole("link", { name: nombre, exact: true });
       const href = await enlace.getAttribute("href");
       const res = await page.request.get(href!);

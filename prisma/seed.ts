@@ -20,12 +20,18 @@ const VARIANT_IMAGE = "/img/placeholder/producto-variante-1x1.svg";
 const q = (quetzales: number) => quetzales * 100; // montos en centavos
 
 const categories = [
-  { slug: "celulares", name: "Celulares" },
-  { slug: "laptops", name: "Laptops" },
-  { slug: "audio", name: "Audio" },
-  { slug: "accesorios", name: "Accesorios" },
-  { slug: "gaming", name: "Gaming" },
-  { slug: "hogar-inteligente", name: "Hogar inteligente" },
+  { slug: "celulares", name: "Celulares", image: "celulares.webp" },
+  { slug: "laptops", name: "Laptops", image: "laptops.webp" },
+  { slug: "audio", name: "Audio", image: "audio.webp" },
+  { slug: "accesorios", name: "Accesorios", image: "accesorios.webp" },
+  { slug: "gaming", name: "Gaming", image: "gaming.webp" },
+  { slug: "hogar-inteligente", name: "Hogar inteligente", image: "hogar-inteligente.webp" },
+  { slug: "tablets", name: "Tablets", image: "tablets.png" },
+  { slug: "monitores", name: "Monitores", image: "monitores.png" },
+  { slug: "componentes-de-pc", name: "Componentes de PC", image: "componentes-de-pc.png" },
+  { slug: "almacenamiento", name: "Almacenamiento", image: "almacenamiento.png" },
+  { slug: "redes", name: "Redes", image: "redes.png" },
+  { slug: "smartwatches", name: "Smartwatches", image: "smartwatches.png" },
 ];
 
 // Subcategorías (un solo nivel bajo una categoría principal).
@@ -248,10 +254,11 @@ async function seedStoreData() {
 
 async function main() {
   for (const [order, c] of categories.entries()) {
+    const image = `/img/categorias/${c.image}`;
     await db.category.upsert({
       where: { slug: c.slug },
-      update: { name: c.name, order, image: `/img/categorias/${c.slug}.webp` },
-      create: { ...c, order, image: `/img/categorias/${c.slug}.webp` },
+      update: { name: c.name, order, image },
+      create: { slug: c.slug, name: c.name, order, image },
     });
   }
   for (const [order, c] of subcategories.entries()) {

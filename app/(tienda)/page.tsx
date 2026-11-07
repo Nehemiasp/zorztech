@@ -1,4 +1,5 @@
 import { CategoryTile } from "@/components/category-tile";
+import { CategoryCarousel } from "@/components/home/category-carousel";
 import { Hero } from "@/components/home/hero";
 import { TrustStrip } from "@/components/home/trust-strip";
 import { ProductCard } from "@/components/product-card";
@@ -37,13 +38,15 @@ export default async function HomePage() {
           <h2 id="categorias-titulo" className="text-xl md:text-2xl">
             Categorías
           </h2>
-          <ul className="mt-8 grid grid-cols-2 gap-x-4 gap-y-8 md:grid-cols-3 md:gap-x-6 lg:grid-cols-6">
-            {categories.map((category) => (
-              <li key={category.id}>
-                <CategoryTile category={category} />
-              </li>
-            ))}
-          </ul>
+          <div className="mt-8">
+            <CategoryCarousel label="Categorías">
+              {categories.map((category) => (
+                <li key={category.id} className="w-[44%] shrink-0 snap-start md:w-auto">
+                  <CategoryTile category={category} />
+                </li>
+              ))}
+            </CategoryCarousel>
+          </div>
         </div>
       </section>
 

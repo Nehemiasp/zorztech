@@ -21,27 +21,6 @@ export const hero: {
   imageMobile: { src: "/img/promo/banner-movil.webp" },
 };
 
-export const trust = [
-  {
-    title: "Entrega",
-    body: "Enviamos a todo el país con una sola tarifa, gratis en compras grandes. El costo se ve antes de pagar.",
-  },
-  {
-    title: "Seguimiento",
-    body: "Consulta el estado de tu pedido con su código y tu correo, sin necesidad de crear una cuenta.",
-  },
-  {
-    title: "Pago",
-    body: "Pagas en línea y en quetzales. Si el pago queda pendiente, te lo decimos en la confirmación.",
-    pending: "paymentMethods",
-  },
-  {
-    title: "Atención",
-    body: "Escríbenos si tienes dudas antes o después de comprar.",
-    pending: "hours",
-  },
-] as const;
-
 /** Frase de cada categoría para los banners del inicio. Una categoría sin frase muestra solo su nombre. */
 export const categoryTaglines: Record<string, string> = {
   celulares: "Celulares para el día a día",

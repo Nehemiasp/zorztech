@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { ArrowRight, Landmark, Truck } from "lucide-react";
+import { ArrowRight, ChevronRight, Landmark, Truck } from "lucide-react";
 import { CatalogImage } from "@/components/catalog-image";
 import type { CategoryRail } from "@/lib/catalog/cards";
 import { categoryTaglines } from "@/lib/content/home";
@@ -120,24 +120,51 @@ export function ShippingPromo({ shipping, className }: { shipping: ShippingSetti
   );
 }
 
-/** Franja de pago por transferencia: solo cuando el dueño la activó en el panel. */
+/**
+ * Franja de pago por transferencia, solo cuando el dueño la activó en el panel. En escritorio, los tres pasos
+ * van en una fila de píldoras; en celular y tablet, en tres recuadros debajo del título.
+ */
 export function TransferPromo({ transfer }: { transfer: TransferSettings }) {
   if (!transfer.enabled) return null;
+  const steps = [
+    { label: "Elige «Transferencia»", tone: "bg-brand-primary" },
+    { label: "Deposita", extra: transfer.bankName ? ` en ${transfer.bankName}` : "", tone: "bg-brand-primary" },
+    { label: "Sube tu comprobante", tone: "bg-brand-black" },
+  ];
+
   return (
     <section aria-labelledby="transferencia-titulo" className="mx-auto max-w-page px-4 py-4 md:px-6">
-      <div className="flex flex-col gap-4 rounded-lg border border-border bg-surface-light-alt p-5 sm:flex-row sm:items-center md:p-6">
-        <span className="inline-flex size-12 shrink-0 items-center justify-center rounded-full bg-surface-tint text-brand-primary-strong">
-          <Landmark aria-hidden size={24} strokeWidth={1.75} />
-        </span>
-        <div>
-          <h2 id="transferencia-titulo" className="text-lg">
-            Paga con transferencia bancaria
-          </h2>
-          <p className="mt-1 text-text-muted">
-            Elige «Transferencia» al pagar: te apartamos el pedido {transfer.holdHours} horas mientras haces el depósito
-            {transfer.bankName ? ` en ${transfer.bankName}` : ""} y subes tu comprobante.
-          </p>
+      <div className="flex flex-col gap-6 overflow-hidden rounded-lg border border-border border-l-4 border-l-brand-primary bg-surface-light p-5 md:p-6 xl:flex-row xl:items-center xl:justify-between xl:border-l xl:border-l-border xl:px-8 xl:py-7">
+        <div className="flex items-center gap-4 xl:gap-6">
+          <span className="inline-flex size-12 shrink-0 items-center justify-center rounded-full bg-surface-tint text-brand-primary md:size-14 xl:size-16">
+            <Landmark aria-hidden size={26} strokeWidth={1.75} />
+          </span>
+          <div>
+            <h2 id="transferencia-titulo" className="text-lg md:text-xl xl:max-w-[17ch] xl:text-2xl">
+              Paga con transferencia bancaria
+            </h2>
+            <p className="mt-1 text-text-muted">
+              Te apartamos tu pedido {transfer.holdHours} horas<span className="hidden xl:inline"> mientras depositas</span>.
+            </p>
+          </div>
         </div>
+
+        <ol className="grid gap-2 sm:grid-cols-3 sm:gap-3 xl:flex xl:shrink-0 xl:items-center xl:gap-0">
+          {steps.map((step, i) => (
+            <li key={step.label} className="flex xl:items-center">
+              {i > 0 && <ChevronRight aria-hidden size={20} className="mx-3 hidden shrink-0 text-brand-primary xl:block" />}
+              <span className="flex w-full items-center gap-3 rounded-lg border border-border bg-surface-light-alt p-3 font-semibold leading-snug sm:flex-col sm:items-start sm:p-4 xl:w-auto xl:flex-row xl:items-center xl:rounded-full xl:py-2 xl:pl-2 xl:pr-5">
+                <span className={`inline-flex size-8 shrink-0 items-center justify-center rounded-full text-sm text-brand-white xl:size-9 ${step.tone}`}>
+                  {i + 1}
+                </span>
+                <span className="text-sm sm:text-base">
+                  {step.label}
+                  {step.extra && <span className="xl:hidden">{step.extra}</span>}
+                </span>
+              </span>
+            </li>
+          ))}
+        </ol>
       </div>
     </section>
   );

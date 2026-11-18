@@ -171,6 +171,9 @@
 
   /* Scrim para que el texto del hero se lea aunque la imagen cambie: solo sobre el lado del texto, en escritorio */
   @media (min-width: 1280px) {
+    .hero-banner {
+      mask-image: linear-gradient(90deg, transparent, #000 15%);
+    }
     .hero-banner::after {
       content: "";
       position: absolute;

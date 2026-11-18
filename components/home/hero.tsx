@@ -4,7 +4,8 @@ import type { getHero } from "@/lib/settings";
 
 /**
  * Banner del inicio. En escritorio (1280 px en adelante) la imagen horizontal es el fondo del hero y el
- * texto va sobre su zona oscura; en pantallas medianas el texto queda arriba y el banner completo debajo.
+ * texto va sobre su zona oscura. En pantallas muy anchas la imagen no se estira: conserva su proporción,
+ * queda a la derecha con toda su altura y su borde izquierdo se funde con el fondo negro; en pantallas medianas el texto queda arriba y el banner completo debajo.
  * En celular, si hay versión vertical, es el fondo y el texto va sobre su parte alta; si no, se usa la horizontal.
  */
 export function Hero({ hero }: { hero: Awaited<ReturnType<typeof getHero>> }) {
@@ -16,7 +17,7 @@ export function Hero({ hero }: { hero: Awaited<ReturnType<typeof getHero>> }) {
   return (
     <section
       aria-labelledby="hero-titulo"
-      className="zone-dark relative isolate flex flex-col overflow-hidden bg-surface-dark text-text-on-dark xl:min-h-[34rem] xl:justify-center"
+      className="zone-dark relative isolate flex flex-col overflow-hidden bg-surface-dark text-text-on-dark xl:min-h-[clamp(34rem,30vw,40rem)] xl:justify-center"
     >
       <div className={`relative z-10 mx-auto w-full max-w-page px-4 pt-12 md:px-6 xl:py-16 ${tall ? "pb-[93vw] sm:pb-8" : "pb-8"}`}>
         <div className="xl:max-w-[32rem]">
@@ -41,8 +42,8 @@ export function Hero({ hero }: { hero: Awaited<ReturnType<typeof getHero>> }) {
       <div
         className={
           tall
-            ? "hero-banner hero-banner-tall absolute inset-x-0 bottom-0 aspect-[1116/2000] sm:relative sm:inset-auto sm:aspect-[5/2] xl:absolute xl:inset-0 xl:-z-10 xl:aspect-auto"
-            : "hero-banner relative aspect-[16/9] w-full md:aspect-[5/2] xl:absolute xl:inset-0 xl:-z-10 xl:aspect-auto"
+            ? "hero-banner hero-banner-tall absolute inset-x-0 bottom-0 aspect-[1116/2000] sm:relative sm:inset-auto sm:aspect-[5/2] xl:absolute xl:inset-y-0 xl:left-auto xl:right-0 xl:-z-10 xl:aspect-[1584/672] xl:h-full xl:w-auto xl:max-w-full"
+            : "hero-banner relative aspect-[16/9] w-full md:aspect-[5/2] xl:absolute xl:inset-y-0 xl:left-auto xl:right-0 xl:-z-10 xl:aspect-[1584/672] xl:h-full xl:w-auto xl:max-w-full"
         }
       >
         <picture>

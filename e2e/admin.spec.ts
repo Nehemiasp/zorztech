@@ -325,6 +325,8 @@ test("«Avisarme cuando llegue» guarda el correo y el administrador repone el s
   const tienda = await cliente.newPage();
   await tienda.goto("/productos/smartphone-basico-61?variante=EJ-CEL-002-AZU");
   await expect(tienda.getByRole("button", { name: "Agotado" }).first()).toBeDisabled();
+  // Mientras React cambia el contenido que llegó por partes hay una copia oculta un instante: se espera a que quede una.
+  await expect(tienda.getByLabel("Tu correo")).toHaveCount(1);
   await tienda.getByLabel("Tu correo").fill(`espera-${unique()}@correo.test`);
   await tienda.getByRole("button", { name: "Avisarme" }).click();
   await expect(tienda.getByText(/Te escribimos a espera-/)).toBeVisible();

@@ -50,6 +50,7 @@ test("no admite atributos repetidos ni stock negativo", () => {
 test("solo acepta imágenes propias, no enlaces a sitios ajenos", () => {
   assert.ok(isAllowedImageUrl("/api/uploads/0123456789abcdef01234567.png"));
   assert.ok(isAllowedImageUrl("/img/placeholder/producto-1x1.svg"));
+  assert.ok(isAllowedImageUrl("/img/productos/laptop-hp-14/1.webp"));
   assert.ok(isAllowedImageUrl("https://abc123.public.blob.vercel-storage.com/productos/x.webp"));
   for (const bad of ["https://evil.test/x.png", "http://abc.public.blob.vercel-storage.com/x.png", "//evil.test/x.png", "/api/uploads/../../etc/passwd", "javascript:alert(1)"]) {
     assert.ok(!isAllowedImageUrl(bad), bad);

@@ -1,5 +1,6 @@
 import { db } from "../db";
 import { availableUnits } from "../availability";
+import { coverFirst } from "../catalog/cover";
 import { couponLabel, evaluateCoupon } from "../coupons";
 import { sweepIfDue } from "../orders/expiry";
 import { emptyCart, type CartIssue, type CartLine, type CartView } from "./types";
@@ -17,13 +18,15 @@ const lineSelect = {
       stock: true,
       reservedStock: true,
       isActive: true,
+      // La foto del color o la versión elegida; si no tiene, la general del producto.
+      images: { orderBy: { order: "asc" as const }, take: 1, select: { url: true, alt: true } },
       product: {
         select: {
           name: true,
           slug: true,
           isActive: true,
           category: { select: { isActive: true } },
-          images: { where: { variantId: null }, orderBy: { order: "asc" as const }, take: 1, select: { url: true, alt: true } },
+          images: { orderBy: coverFirst, take: 1, select: { url: true, alt: true } },
         },
       },
     },
@@ -52,7 +55,7 @@ export async function loadCartView(cartId: string | null): Promise<CartView> {
       productSlug: v.product.slug,
       variantName: v.name,
       sku: v.sku,
-      image: v.product.images[0] ?? null,
+      image: v.images[0] ?? v.product.images[0] ?? null,
       unitPrice: v.price,
       priceAtAdd: item.priceAtAdd,
       quantity: item.quantity,

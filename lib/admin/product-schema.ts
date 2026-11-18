@@ -51,9 +51,9 @@ const variantSchema = z
     return { ...v, compareAtPrice };
   });
 
-/** Solo se aceptan imágenes subidas desde el panel o los marcadores del proyecto: nada de enlaces a sitios ajenos. */
+/** Solo se aceptan imágenes subidas desde el panel o guardadas en el proyecto: nada de enlaces a sitios ajenos. */
 export function isAllowedImageUrl(url: string): boolean {
-  if (url.startsWith("/api/uploads/") || url.startsWith("/img/placeholder/")) return !url.includes("..");
+  if (url.startsWith("/api/uploads/") || url.startsWith("/img/placeholder/") || url.startsWith("/img/productos/")) return !url.includes("..");
   try {
     const u = new URL(url);
     return u.protocol === "https:" && u.hostname.endsWith(".public.blob.vercel-storage.com");

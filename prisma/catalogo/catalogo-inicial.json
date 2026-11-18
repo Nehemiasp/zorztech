@@ -1,0 +1,2141 @@
+{
+ "subcategorias": [
+  {
+   "slug": "audifonos",
+   "name": "Audífonos",
+   "parent": "audio"
+  },
+  {
+   "slug": "tarjetas-madre",
+   "name": "Tarjetas madre",
+   "parent": "componentes-de-pc"
+  },
+  {
+   "slug": "procesadores",
+   "name": "Procesadores",
+   "parent": "componentes-de-pc"
+  },
+  {
+   "slug": "tarjetas-de-video",
+   "name": "Tarjetas de video",
+   "parent": "componentes-de-pc"
+  },
+  {
+   "slug": "fuentes-de-poder",
+   "name": "Fuentes de poder",
+   "parent": "componentes-de-pc"
+  },
+  {
+   "slug": "memoria-ram",
+   "name": "Memoria RAM",
+   "parent": "componentes-de-pc"
+  },
+  {
+   "slug": "cases",
+   "name": "Cases",
+   "parent": "componentes-de-pc"
+  },
+  {
+   "slug": "enfriamiento",
+   "name": "Enfriamiento",
+   "parent": "componentes-de-pc"
+  }
+ ],
+ "marcas": [
+  "ADATA",
+  "AMD",
+  "AOC",
+  "ASUS",
+  "Cougar",
+  "Gigabyte",
+  "HP",
+  "Hiksemi",
+  "Intel",
+  "JBL",
+  "Kingston",
+  "MSI",
+  "VektorTech",
+  "Xiaomi"
+ ],
+ "productos": [
+  {
+   "slug": "audifonos-jbl-endurance-pace",
+   "name": "Audífonos JBL Endurance Pace",
+   "brand": "JBL",
+   "category": "audifonos",
+   "description": "Audífonos JBL Endurance Pace. Color negro.",
+   "specs": [],
+   "variants": [
+    {
+     "sku": "ZT-JBL-ENDURANCE-PACE-NEG",
+     "name": "Negro",
+     "price": 47500,
+     "attributes": {
+      "color": "Negro"
+     },
+     "mensaje": "JBL - Headphones - Endurance Pace - Black - Q475"
+    }
+   ],
+   "images": [
+    {
+     "url": "/img/productos/audifonos-jbl-endurance-pace/1.webp",
+     "alt": "Audífonos JBL Endurance Pace, negro (foto 1)",
+     "variantSku": null
+    },
+    {
+     "url": "/img/productos/audifonos-jbl-endurance-pace/2.webp",
+     "alt": "Audífonos JBL Endurance Pace, negro (foto 2)",
+     "variantSku": null
+    },
+    {
+     "url": "/img/productos/audifonos-jbl-endurance-pace/3.webp",
+     "alt": "Audífonos JBL Endurance Pace, negro (foto 3)",
+     "variantSku": null
+    },
+    {
+     "url": "/img/productos/audifonos-jbl-endurance-pace/4.webp",
+     "alt": "Audífonos JBL Endurance Pace, negro (foto 4)",
+     "variantSku": null
+    },
+    {
+     "url": "/img/productos/audifonos-jbl-endurance-pace/5.webp",
+     "alt": "Audífonos JBL Endurance Pace, negro (foto 5)",
+     "variantSku": null
+    }
+   ]
+  },
+  {
+   "slug": "audifonos-jbl-sense-lite",
+   "name": "Audífonos JBL Sense Lite",
+   "brand": "JBL",
+   "category": "audifonos",
+   "description": "Audífonos JBL Sense Lite. Color negro. Tipo: True wireless (TWS) · Tecnología: JBL OpenSound.",
+   "specs": [
+    {
+     "clave": "Tipo",
+     "valor": "True wireless (TWS)"
+    },
+    {
+     "clave": "Tecnología",
+     "valor": "JBL OpenSound"
+    }
+   ],
+   "variants": [
+    {
+     "sku": "ZT-JBL-SENSE-LITE-NEG",
+     "name": "Negro",
+     "price": 65000,
+     "attributes": {
+      "color": "Negro"
+     },
+     "mensaje": "Jbl Tws Sense Lite Black- tecn JBL Opensound - Q650"
+    }
+   ],
+   "images": [
+    {
+     "url": "/img/productos/audifonos-jbl-sense-lite/1.webp",
+     "alt": "Audífonos JBL Sense Lite, negro (foto 1)",
+     "variantSku": null
+    },
+    {
+     "url": "/img/productos/audifonos-jbl-sense-lite/2.webp",
+     "alt": "Audífonos JBL Sense Lite, negro (foto 2)",
+     "variantSku": null
+    },
+    {
+     "url": "/img/productos/audifonos-jbl-sense-lite/3.webp",
+     "alt": "Audífonos JBL Sense Lite, negro (foto 3)",
+     "variantSku": null
+    },
+    {
+     "url": "/img/productos/audifonos-jbl-sense-lite/4.webp",
+     "alt": "Audífonos JBL Sense Lite, negro (foto 4)",
+     "variantSku": null
+    },
+    {
+     "url": "/img/productos/audifonos-jbl-sense-lite/5.webp",
+     "alt": "Audífonos JBL Sense Lite, negro (foto 5)",
+     "variantSku": null
+    }
+   ]
+  },
+  {
+   "slug": "audifonos-jbl-live-buds-3",
+   "name": "Audífonos JBL Live Buds 3",
+   "brand": "JBL",
+   "category": "audifonos",
+   "description": "Audífonos JBL Live Buds 3. Color azul. Tipo: True wireless (TWS).",
+   "specs": [
+    {
+     "clave": "Tipo",
+     "valor": "True wireless (TWS)"
+    }
+   ],
+   "variants": [
+    {
+     "sku": "ZT-JBL-LIVE-BUDS3-AZU",
+     "name": "Azul",
+     "price": 85000,
+     "attributes": {
+      "color": "Azul"
+     },
+     "mensaje": "JBL LIVE - Buds 3 - Headphones - True wireless - Blue - Q850"
+    }
+   ],
+   "images": [
+    {
+     "url": "/img/productos/audifonos-jbl-live-buds-3/1.webp",
+     "alt": "Audífonos JBL Live Buds 3, azul (foto 1)",
+     "variantSku": null
+    },
+    {
+     "url": "/img/productos/audifonos-jbl-live-buds-3/2.webp",
+     "alt": "Audífonos JBL Live Buds 3, azul (foto 2)",
+     "variantSku": null
+    },
+    {
+     "url": "/img/productos/audifonos-jbl-live-buds-3/3.webp",
+     "alt": "Audífonos JBL Live Buds 3, azul (foto 3)",
+     "variantSku": null
+    },
+    {
+     "url": "/img/productos/audifonos-jbl-live-buds-3/4.webp",
+     "alt": "Audífonos JBL Live Buds 3, azul (foto 4)",
+     "variantSku": null
+    },
+    {
+     "url": "/img/productos/audifonos-jbl-live-buds-3/5.webp",
+     "alt": "Audífonos JBL Live Buds 3, azul (foto 5)",
+     "variantSku": null
+    }
+   ]
+  },
+  {
+   "slug": "audifonos-jbl-tune-beam",
+   "name": "Audífonos JBL Tune Beam",
+   "brand": "JBL",
+   "category": "audifonos",
+   "description": "Audífonos JBL Tune Beam. Disponible en ghost white y blanco.",
+   "specs": [],
+   "variants": [
+    {
+     "sku": "JBLTBEAM2GWHTAM",
+     "name": "Ghost White",
+     "price": 55000,
+     "attributes": {
+      "color": "Ghost White"
+     },
+     "mensaje": "JBL TUNE - Beam - Headphones - Ghost White - JBLTBEAM2GWHTAM - Q550"
+    },
+    {
+     "sku": "JBLTBEAM2WHTAM",
+     "name": "Blanco",
+     "price": 55000,
+     "attributes": {
+      "color": "Blanco"
+     },
+     "mensaje": "JBL TUNE - Beam - Headphones - White - JBLTBEAM2WHTAM - Q550"
+    }
+   ],
+   "images": [
+    {
+     "url": "/img/productos/audifonos-jbl-tune-beam/jbltbeam2gwhtam-1.webp",
+     "alt": "Audífonos JBL Tune Beam, ghost white (foto 1)",
+     "variantSku": "JBLTBEAM2GWHTAM"
+    },
+    {
+     "url": "/img/productos/audifonos-jbl-tune-beam/jbltbeam2gwhtam-2.webp",
+     "alt": "Audífonos JBL Tune Beam, ghost white (foto 2)",
+     "variantSku": "JBLTBEAM2GWHTAM"
+    },
+    {
+     "url": "/img/productos/audifonos-jbl-tune-beam/jbltbeam2gwhtam-3.webp",
+     "alt": "Audífonos JBL Tune Beam, ghost white (foto 3)",
+     "variantSku": "JBLTBEAM2GWHTAM"
+    },
+    {
+     "url": "/img/productos/audifonos-jbl-tune-beam/jbltbeam2gwhtam-4.webp",
+     "alt": "Audífonos JBL Tune Beam, ghost white (foto 4)",
+     "variantSku": "JBLTBEAM2GWHTAM"
+    },
+    {
+     "url": "/img/productos/audifonos-jbl-tune-beam/jbltbeam2gwhtam-5.webp",
+     "alt": "Audífonos JBL Tune Beam, ghost white (foto 5)",
+     "variantSku": "JBLTBEAM2GWHTAM"
+    },
+    {
+     "url": "/img/productos/audifonos-jbl-tune-beam/jbltbeam2whtam-1.webp",
+     "alt": "Audífonos JBL Tune Beam, blanco (foto 1)",
+     "variantSku": "JBLTBEAM2WHTAM"
+    },
+    {
+     "url": "/img/productos/audifonos-jbl-tune-beam/jbltbeam2whtam-2.webp",
+     "alt": "Audífonos JBL Tune Beam, blanco (foto 2)",
+     "variantSku": "JBLTBEAM2WHTAM"
+    },
+    {
+     "url": "/img/productos/audifonos-jbl-tune-beam/jbltbeam2whtam-3.webp",
+     "alt": "Audífonos JBL Tune Beam, blanco (foto 3)",
+     "variantSku": "JBLTBEAM2WHTAM"
+    },
+    {
+     "url": "/img/productos/audifonos-jbl-tune-beam/jbltbeam2whtam-4.webp",
+     "alt": "Audífonos JBL Tune Beam, blanco (foto 4)",
+     "variantSku": "JBLTBEAM2WHTAM"
+    },
+    {
+     "url": "/img/productos/audifonos-jbl-tune-beam/jbltbeam2whtam-5.webp",
+     "alt": "Audífonos JBL Tune Beam, blanco (foto 5)",
+     "variantSku": "JBLTBEAM2WHTAM"
+    },
+    {
+     "url": "/img/productos/audifonos-jbl-tune-beam/jbltbeam2whtam-6.webp",
+     "alt": "Audífonos JBL Tune Beam, blanco (foto 6)",
+     "variantSku": "JBLTBEAM2WHTAM"
+    },
+    {
+     "url": "/img/productos/audifonos-jbl-tune-beam/jbltbeam2whtam-7.webp",
+     "alt": "Audífonos JBL Tune Beam, blanco (foto 7)",
+     "variantSku": "JBLTBEAM2WHTAM"
+    }
+   ]
+  },
+  {
+   "slug": "audifonos-jbl-tune-buds-2",
+   "name": "Audífonos JBL Tune Buds 2",
+   "brand": "JBL",
+   "category": "audifonos",
+   "description": "Audífonos JBL Tune Buds 2. Disponible en ghost black y blanco. Tipo: True wireless (TWS).",
+   "specs": [
+    {
+     "clave": "Tipo",
+     "valor": "True wireless (TWS)"
+    }
+   ],
+   "variants": [
+    {
+     "sku": "ZT-JBL-TUNE-BUDS2-GBLK",
+     "name": "Ghost Black",
+     "price": 60000,
+     "attributes": {
+      "color": "Ghost Black"
+     },
+     "mensaje": "JBL - Headphones - Wireless - Tune Buds 2 TWS Ghost Black - Q600"
+    },
+    {
+     "sku": "ZT-JBL-TUNE-BUDS2-BLA",
+     "name": "Blanco",
+     "price": 60000,
+     "attributes": {
+      "color": "Blanco"
+     },
+     "mensaje": "JBL TUNE - Buds 2 - Auriculares internos - Inalámbrico - Blanco -  Q600"
+    }
+   ],
+   "images": [
+    {
+     "url": "/img/productos/audifonos-jbl-tune-buds-2/zt-jbl-tune-buds2-gblk-1.webp",
+     "alt": "Audífonos JBL Tune Buds 2, ghost black (foto 1)",
+     "variantSku": "ZT-JBL-TUNE-BUDS2-GBLK"
+    },
+    {
+     "url": "/img/productos/audifonos-jbl-tune-buds-2/zt-jbl-tune-buds2-gblk-2.webp",
+     "alt": "Audífonos JBL Tune Buds 2, ghost black (foto 2)",
+     "variantSku": "ZT-JBL-TUNE-BUDS2-GBLK"
+    },
+    {
+     "url": "/img/productos/audifonos-jbl-tune-buds-2/zt-jbl-tune-buds2-gblk-3.webp",
+     "alt": "Audífonos JBL Tune Buds 2, ghost black (foto 3)",
+     "variantSku": "ZT-JBL-TUNE-BUDS2-GBLK"
+    },
+    {
+     "url": "/img/productos/audifonos-jbl-tune-buds-2/zt-jbl-tune-buds2-gblk-4.webp",
+     "alt": "Audífonos JBL Tune Buds 2, ghost black (foto 4)",
+     "variantSku": "ZT-JBL-TUNE-BUDS2-GBLK"
+    },
+    {
+     "url": "/img/productos/audifonos-jbl-tune-buds-2/zt-jbl-tune-buds2-gblk-5.webp",
+     "alt": "Audífonos JBL Tune Buds 2, ghost black (foto 5)",
+     "variantSku": "ZT-JBL-TUNE-BUDS2-GBLK"
+    },
+    {
+     "url": "/img/productos/audifonos-jbl-tune-buds-2/zt-jbl-tune-buds2-bla-1.webp",
+     "alt": "Audífonos JBL Tune Buds 2, blanco (foto 1)",
+     "variantSku": "ZT-JBL-TUNE-BUDS2-BLA"
+    },
+    {
+     "url": "/img/productos/audifonos-jbl-tune-buds-2/zt-jbl-tune-buds2-bla-2.webp",
+     "alt": "Audífonos JBL Tune Buds 2, blanco (foto 2)",
+     "variantSku": "ZT-JBL-TUNE-BUDS2-BLA"
+    },
+    {
+     "url": "/img/productos/audifonos-jbl-tune-buds-2/zt-jbl-tune-buds2-bla-3.webp",
+     "alt": "Audífonos JBL Tune Buds 2, blanco (foto 3)",
+     "variantSku": "ZT-JBL-TUNE-BUDS2-BLA"
+    },
+    {
+     "url": "/img/productos/audifonos-jbl-tune-buds-2/zt-jbl-tune-buds2-bla-4.webp",
+     "alt": "Audífonos JBL Tune Buds 2, blanco (foto 4)",
+     "variantSku": "ZT-JBL-TUNE-BUDS2-BLA"
+    },
+    {
+     "url": "/img/productos/audifonos-jbl-tune-buds-2/zt-jbl-tune-buds2-bla-5.webp",
+     "alt": "Audífonos JBL Tune Buds 2, blanco (foto 5)",
+     "variantSku": "ZT-JBL-TUNE-BUDS2-BLA"
+    }
+   ]
+  },
+  {
+   "slug": "audifonos-jbl-tune-flex-2",
+   "name": "Audífonos JBL Tune Flex 2",
+   "brand": "JBL",
+   "category": "audifonos",
+   "description": "Audífonos JBL Tune Flex 2. Color blanco. Tipo: Internos, inalámbricos.",
+   "specs": [
+    {
+     "clave": "Tipo",
+     "valor": "Internos, inalámbricos"
+    }
+   ],
+   "variants": [
+    {
+     "sku": "ZT-JBL-TUNE-FLEX2-BLA",
+     "name": "Blanco",
+     "price": 55000,
+     "attributes": {
+      "color": "Blanco"
+     },
+     "mensaje": "JBL TUNE Flex - 2 - Auriculares internos - Inalámbrico - Blanco - Q550"
+    }
+   ],
+   "images": [
+    {
+     "url": "/img/productos/audifonos-jbl-tune-flex-2/1.webp",
+     "alt": "Audífonos JBL Tune Flex 2, blanco (foto 1)",
+     "variantSku": null
+    },
+    {
+     "url": "/img/productos/audifonos-jbl-tune-flex-2/2.webp",
+     "alt": "Audífonos JBL Tune Flex 2, blanco (foto 2)",
+     "variantSku": null
+    },
+    {
+     "url": "/img/productos/audifonos-jbl-tune-flex-2/3.webp",
+     "alt": "Audífonos JBL Tune Flex 2, blanco (foto 3)",
+     "variantSku": null
+    },
+    {
+     "url": "/img/productos/audifonos-jbl-tune-flex-2/4.webp",
+     "alt": "Audífonos JBL Tune Flex 2, blanco (foto 4)",
+     "variantSku": null
+    },
+    {
+     "url": "/img/productos/audifonos-jbl-tune-flex-2/5.webp",
+     "alt": "Audífonos JBL Tune Flex 2, blanco (foto 5)",
+     "variantSku": null
+    }
+   ]
+  },
+  {
+   "slug": "audifonos-jbl-endurance-race-2",
+   "name": "Audífonos JBL Endurance Race 2",
+   "brand": "JBL",
+   "category": "audifonos",
+   "description": "Audífonos JBL Endurance Race 2. Color blanco.",
+   "specs": [],
+   "variants": [
+    {
+     "sku": "ZT-JBL-ENDURANCE-RACE2-BLA",
+     "name": "Blanco",
+     "price": 65000,
+     "attributes": {
+      "color": "Blanco"
+     },
+     "mensaje": "JBL Endurance - Race 2 - Auriculares con diadema - Blanco - Q650"
+    }
+   ],
+   "images": [
+    {
+     "url": "/img/productos/audifonos-jbl-endurance-race-2/1.webp",
+     "alt": "Audífonos JBL Endurance Race 2, blanco (foto 1)",
+     "variantSku": null
+    },
+    {
+     "url": "/img/productos/audifonos-jbl-endurance-race-2/2.webp",
+     "alt": "Audífonos JBL Endurance Race 2, blanco (foto 2)",
+     "variantSku": null
+    },
+    {
+     "url": "/img/productos/audifonos-jbl-endurance-race-2/3.webp",
+     "alt": "Audífonos JBL Endurance Race 2, blanco (foto 3)",
+     "variantSku": null
+    },
+    {
+     "url": "/img/productos/audifonos-jbl-endurance-race-2/4.webp",
+     "alt": "Audífonos JBL Endurance Race 2, blanco (foto 4)",
+     "variantSku": null
+    },
+    {
+     "url": "/img/productos/audifonos-jbl-endurance-race-2/5.webp",
+     "alt": "Audífonos JBL Endurance Race 2, blanco (foto 5)",
+     "variantSku": null
+    }
+   ]
+  },
+  {
+   "slug": "audifonos-jbl-soundgear-clips",
+   "name": "Audífonos JBL Soundgear Clips",
+   "brand": "JBL",
+   "category": "audifonos",
+   "description": "Audífonos JBL Soundgear Clips. Color azul. Tipo: True wireless (TWS), ear cuff · Tecnología: JBL OpenSound.",
+   "specs": [
+    {
+     "clave": "Tipo",
+     "valor": "True wireless (TWS), ear cuff"
+    },
+    {
+     "clave": "Tecnología",
+     "valor": "JBL OpenSound"
+    }
+   ],
+   "variants": [
+    {
+     "sku": "ZT-JBL-SOUNDGEAR-CLIPS-AZU",
+     "name": "Azul",
+     "price": 85000,
+     "attributes": {
+      "color": "Azul"
+     },
+     "mensaje": "Jbl - Tws - Ear Cuff -Soundgear Clips -  Blue-Tecn JBL Opensound - Q850"
+    }
+   ],
+   "images": [
+    {
+     "url": "/img/productos/audifonos-jbl-soundgear-clips/1.webp",
+     "alt": "Audífonos JBL Soundgear Clips, azul (foto 1)",
+     "variantSku": null
+    },
+    {
+     "url": "/img/productos/audifonos-jbl-soundgear-clips/2.webp",
+     "alt": "Audífonos JBL Soundgear Clips, azul (foto 2)",
+     "variantSku": null
+    },
+    {
+     "url": "/img/productos/audifonos-jbl-soundgear-clips/3.webp",
+     "alt": "Audífonos JBL Soundgear Clips, azul (foto 3)",
+     "variantSku": null
+    },
+    {
+     "url": "/img/productos/audifonos-jbl-soundgear-clips/4.webp",
+     "alt": "Audífonos JBL Soundgear Clips, azul (foto 4)",
+     "variantSku": null
+    }
+   ]
+  },
+  {
+   "slug": "audifonos-jbl-vibe-buds-2",
+   "name": "Audífonos JBL Vibe Buds 2",
+   "brand": "JBL",
+   "category": "audifonos",
+   "description": "Audífonos JBL Vibe Buds 2. Color negro. Cancelación de ruido: Sí.",
+   "specs": [
+    {
+     "clave": "Cancelación de ruido",
+     "valor": "Sí"
+    }
+   ],
+   "variants": [
+    {
+     "sku": "ZT-JBL-VIBE-BUDS2-NEG",
+     "name": "Negro",
+     "price": 37500,
+     "attributes": {
+      "color": "Negro"
+     },
+     "mensaje": "JBL Vibe - Buds 2. - Headphones - NC- Black - Q375"
+    }
+   ],
+   "images": [
+    {
+     "url": "/img/productos/audifonos-jbl-vibe-buds-2/1.webp",
+     "alt": "Audífonos JBL Vibe Buds 2, negro (foto 1)",
+     "variantSku": null
+    },
+    {
+     "url": "/img/productos/audifonos-jbl-vibe-buds-2/2.webp",
+     "alt": "Audífonos JBL Vibe Buds 2, negro (foto 2)",
+     "variantSku": null
+    },
+    {
+     "url": "/img/productos/audifonos-jbl-vibe-buds-2/3.webp",
+     "alt": "Audífonos JBL Vibe Buds 2, negro (foto 3)",
+     "variantSku": null
+    },
+    {
+     "url": "/img/productos/audifonos-jbl-vibe-buds-2/4.webp",
+     "alt": "Audífonos JBL Vibe Buds 2, negro (foto 4)",
+     "variantSku": null
+    },
+    {
+     "url": "/img/productos/audifonos-jbl-vibe-buds-2/5.webp",
+     "alt": "Audífonos JBL Vibe Buds 2, negro (foto 5)",
+     "variantSku": null
+    }
+   ]
+  },
+  {
+   "slug": "monitor-aoc-22b35hm23",
+   "name": "Monitor AOC 22B35HM23 22\" Full HD 120 Hz",
+   "brand": "AOC",
+   "category": "monitores",
+   "description": "Monitor AOC 22B35HM23 22\" Full HD 120 Hz. Tamaño: 22 pulgadas, pantalla plana · Resolución: Full HD 1920 × 1080 · Frecuencia: 120 Hz · Tecnología: LED, Adaptive Sync.",
+   "specs": [
+    {
+     "clave": "Tamaño",
+     "valor": "22 pulgadas, pantalla plana"
+    },
+    {
+     "clave": "Resolución",
+     "valor": "Full HD 1920 × 1080"
+    },
+    {
+     "clave": "Frecuencia",
+     "valor": "120 Hz"
+    },
+    {
+     "clave": "Tecnología",
+     "valor": "LED, Adaptive Sync"
+    },
+    {
+     "clave": "Conexiones",
+     "valor": "HDMI, VGA, audio 3.5 mm"
+    }
+   ],
+   "variants": [
+    {
+     "sku": "22B35HM23",
+     "name": "Único",
+     "price": 75000,
+     "attributes": {},
+     "mensaje": "MONITOR AOC 22B35HM23 22 PULG PLANA FULL HD 1920 X 1080 120HZ LED ADAPTIVE SYNC HDMI / VGA / 3.5MM N - Q750"
+    }
+   ],
+   "images": [
+    {
+     "url": "/img/productos/monitor-aoc-22b35hm23/1.webp",
+     "alt": "Monitor AOC 22B35HM23 22\" Full HD 120 Hz (foto 1)",
+     "variantSku": null
+    }
+   ]
+  },
+  {
+   "slug": "monitor-xiaomi-27-200hz",
+   "name": "Monitor Xiaomi 27\" 200 Hz",
+   "brand": "Xiaomi",
+   "category": "monitores",
+   "description": "Monitor Xiaomi 27\" 200 Hz. Tamaño: 27 pulgadas · Panel: LCD con retroiluminación LED · Frecuencia: 200 Hz · Tiempo de respuesta: 1 ms.",
+   "specs": [
+    {
+     "clave": "Tamaño",
+     "valor": "27 pulgadas"
+    },
+    {
+     "clave": "Panel",
+     "valor": "LCD con retroiluminación LED"
+    },
+    {
+     "clave": "Frecuencia",
+     "valor": "200 Hz"
+    },
+    {
+     "clave": "Tiempo de respuesta",
+     "valor": "1 ms"
+    },
+    {
+     "clave": "Conexiones",
+     "valor": "HDMI"
+    }
+   ],
+   "variants": [
+    {
+     "sku": "ZT-XIAOMI-MON27-200HZ",
+     "name": "Único",
+     "price": 120000,
+     "attributes": {},
+     "mensaje": "Xiaomi - LED-backlit LCD monitor - 27\" - 200Hz 1ms HDMI - Q1200"
+    }
+   ],
+   "images": [
+    {
+     "url": "/img/productos/monitor-xiaomi-27-200hz/1.webp",
+     "alt": "Monitor Xiaomi 27\" 200 Hz (foto 1)",
+     "variantSku": null
+    },
+    {
+     "url": "/img/productos/monitor-xiaomi-27-200hz/2.webp",
+     "alt": "Monitor Xiaomi 27\" 200 Hz (foto 2)",
+     "variantSku": null
+    }
+   ]
+  },
+  {
+   "slug": "tarjeta-madre-asus-prime-b760m-a",
+   "name": "Tarjeta madre ASUS Prime B760M-A",
+   "brand": "ASUS",
+   "category": "tarjetas-madre",
+   "description": "Tarjeta madre ASUS Prime B760M-A. Formato: Micro ATX · Socket: LGA1700 · Chipset: Intel B760 · USB: USB 3.2 Gen 1, USB 3.2 Gen 2, USB-C 3.2 Gen 1.",
+   "specs": [
+    {
+     "clave": "Formato",
+     "valor": "Micro ATX"
+    },
+    {
+     "clave": "Socket",
+     "valor": "LGA1700"
+    },
+    {
+     "clave": "Chipset",
+     "valor": "Intel B760"
+    },
+    {
+     "clave": "USB",
+     "valor": "USB 3.2 Gen 1, USB 3.2 Gen 2, USB-C 3.2 Gen 1"
+    },
+    {
+     "clave": "Red",
+     "valor": "LAN 2.5 Gigabit"
+    },
+    {
+     "clave": "Audio",
+     "valor": "HD Audio de 8 canales"
+    },
+    {
+     "clave": "Video",
+     "valor": "Gráficos integrados (requiere CPU compatible)"
+    }
+   ],
+   "variants": [
+    {
+     "sku": "ZT-ASUS-PRIME-B760M-A",
+     "name": "Único",
+     "price": 90000,
+     "attributes": {},
+     "mensaje": "ASUS PRIME B760M-A - Placa base - micro ATX - Socket LGA1700 - B760 Chipset - USB 3.2 Gen 1, USB 3.2 Gen 2, USB-C 3.2 Gen 1 - 2.5 Gigabit LAN - Tarjeta gráfica (CPU necesaria) - HD Audio (8-canales) - Q900"
+    }
+   ],
+   "images": [
+    {
+     "url": "/img/productos/tarjeta-madre-asus-prime-b760m-a/1.webp",
+     "alt": "Tarjeta madre ASUS Prime B760M-A (foto 1)",
+     "variantSku": null
+    },
+    {
+     "url": "/img/productos/tarjeta-madre-asus-prime-b760m-a/2.webp",
+     "alt": "Tarjeta madre ASUS Prime B760M-A (foto 2)",
+     "variantSku": null
+    },
+    {
+     "url": "/img/productos/tarjeta-madre-asus-prime-b760m-a/3.webp",
+     "alt": "Tarjeta madre ASUS Prime B760M-A (foto 3)",
+     "variantSku": null
+    },
+    {
+     "url": "/img/productos/tarjeta-madre-asus-prime-b760m-a/4.webp",
+     "alt": "Tarjeta madre ASUS Prime B760M-A (foto 4)",
+     "variantSku": null
+    },
+    {
+     "url": "/img/productos/tarjeta-madre-asus-prime-b760m-a/5.webp",
+     "alt": "Tarjeta madre ASUS Prime B760M-A (foto 5)",
+     "variantSku": null
+    }
+   ]
+  },
+  {
+   "slug": "tarjeta-madre-gigabyte-b550m-k",
+   "name": "Tarjeta madre Gigabyte B550M K",
+   "brand": "Gigabyte",
+   "category": "tarjetas-madre",
+   "description": "Tarjeta madre Gigabyte B550M K. Formato: Micro ATX · Socket: AM4 · Memoria: DDR4.",
+   "specs": [
+    {
+     "clave": "Formato",
+     "valor": "Micro ATX"
+    },
+    {
+     "clave": "Socket",
+     "valor": "AM4"
+    },
+    {
+     "clave": "Memoria",
+     "valor": "DDR4"
+    }
+   ],
+   "variants": [
+    {
+     "sku": "ZT-GIGABYTE-B550M-K",
+     "name": "Único",
+     "price": 95000,
+     "attributes": {},
+     "mensaje": "Motherboard Gigabyte B550M K Socket AM4 DDR4 Micro ATX  - Q950"
+    }
+   ],
+   "images": [
+    {
+     "url": "/img/productos/tarjeta-madre-gigabyte-b550m-k/1.webp",
+     "alt": "Tarjeta madre Gigabyte B550M K (foto 1)",
+     "variantSku": null
+    },
+    {
+     "url": "/img/productos/tarjeta-madre-gigabyte-b550m-k/2.webp",
+     "alt": "Tarjeta madre Gigabyte B550M K (foto 2)",
+     "variantSku": null
+    },
+    {
+     "url": "/img/productos/tarjeta-madre-gigabyte-b550m-k/3.webp",
+     "alt": "Tarjeta madre Gigabyte B550M K (foto 3)",
+     "variantSku": null
+    },
+    {
+     "url": "/img/productos/tarjeta-madre-gigabyte-b550m-k/4.webp",
+     "alt": "Tarjeta madre Gigabyte B550M K (foto 4)",
+     "variantSku": null
+    }
+   ]
+  },
+  {
+   "slug": "tarjeta-madre-gigabyte-h610m-k-v2",
+   "name": "Tarjeta madre Gigabyte H610M K V2",
+   "brand": "Gigabyte",
+   "category": "tarjetas-madre",
+   "description": "Tarjeta madre Gigabyte H610M K V2. Formato: Micro ATX · Socket: LGA1700 (Intel 12.ª, 13.ª y 14.ª generación) · Memoria: 2 × DDR5.",
+   "specs": [
+    {
+     "clave": "Formato",
+     "valor": "Micro ATX"
+    },
+    {
+     "clave": "Socket",
+     "valor": "LGA1700 (Intel 12.ª, 13.ª y 14.ª generación)"
+    },
+    {
+     "clave": "Memoria",
+     "valor": "2 × DDR5"
+    }
+   ],
+   "variants": [
+    {
+     "sku": "ZT-GIGABYTE-H610M-K-V2",
+     "name": "Único",
+     "price": 90000,
+     "attributes": {},
+     "mensaje": "Motherboard Gigabyte H610M K V2 Socket LGA1700 12th, 13th y 14th Gen 2xDDR5 Micro ATX  - Q900"
+    }
+   ],
+   "images": [
+    {
+     "url": "/img/productos/tarjeta-madre-gigabyte-h610m-k-v2/1.webp",
+     "alt": "Tarjeta madre Gigabyte H610M K V2 (foto 1)",
+     "variantSku": null
+    },
+    {
+     "url": "/img/productos/tarjeta-madre-gigabyte-h610m-k-v2/2.webp",
+     "alt": "Tarjeta madre Gigabyte H610M K V2 (foto 2)",
+     "variantSku": null
+    },
+    {
+     "url": "/img/productos/tarjeta-madre-gigabyte-h610m-k-v2/3.webp",
+     "alt": "Tarjeta madre Gigabyte H610M K V2 (foto 3)",
+     "variantSku": null
+    },
+    {
+     "url": "/img/productos/tarjeta-madre-gigabyte-h610m-k-v2/4.webp",
+     "alt": "Tarjeta madre Gigabyte H610M K V2 (foto 4)",
+     "variantSku": null
+    },
+    {
+     "url": "/img/productos/tarjeta-madre-gigabyte-h610m-k-v2/5.webp",
+     "alt": "Tarjeta madre Gigabyte H610M K V2 (foto 5)",
+     "variantSku": null
+    }
+   ]
+  },
+  {
+   "slug": "procesador-intel-core-i3-14100",
+   "name": "Procesador Intel Core i3-14100",
+   "brand": "Intel",
+   "category": "procesadores",
+   "description": "Procesador Intel Core i3-14100. Frecuencia: 3.5 GHz · Núcleos / hilos: 4 / 8 · Caché: 12 MB · Socket: FCLGA1700.",
+   "specs": [
+    {
+     "clave": "Frecuencia",
+     "valor": "3.5 GHz"
+    },
+    {
+     "clave": "Núcleos / hilos",
+     "valor": "4 / 8"
+    },
+    {
+     "clave": "Caché",
+     "valor": "12 MB"
+    },
+    {
+     "clave": "Socket",
+     "valor": "FCLGA1700"
+    },
+    {
+     "clave": "Presentación",
+     "valor": "En caja"
+    }
+   ],
+   "variants": [
+    {
+     "sku": "ZT-INTEL-I3-14100",
+     "name": "Único",
+     "price": 150000,
+     "attributes": {},
+     "mensaje": "Intel Core i3 i3-14100 - 3.5 GHz - 4 núcleos - 8 hilos - 12 MB caché - FCLGA1700 Socket - Caja - Q1500"
+    }
+   ],
+   "images": [
+    {
+     "url": "/img/productos/procesador-intel-core-i3-14100/1.webp",
+     "alt": "Procesador Intel Core i3-14100 (foto 1)",
+     "variantSku": null
+    }
+   ]
+  },
+  {
+   "slug": "procesador-intel-core-i5-12400f",
+   "name": "Procesador Intel Core i5-12400F",
+   "brand": "Intel",
+   "category": "procesadores",
+   "description": "Procesador Intel Core i5-12400F. Frecuencia: 2.5 GHz · Núcleos / hilos: 6 / 12 · Caché: 18 MB · Socket: LGA1700.",
+   "specs": [
+    {
+     "clave": "Frecuencia",
+     "valor": "2.5 GHz"
+    },
+    {
+     "clave": "Núcleos / hilos",
+     "valor": "6 / 12"
+    },
+    {
+     "clave": "Caché",
+     "valor": "18 MB"
+    },
+    {
+     "clave": "Socket",
+     "valor": "LGA1700"
+    },
+    {
+     "clave": "Presentación",
+     "valor": "En caja"
+    }
+   ],
+   "variants": [
+    {
+     "sku": "ZT-INTEL-I5-12400F",
+     "name": "Único",
+     "price": 160000,
+     "attributes": {},
+     "mensaje": "Intel Core i5 12400F - 2.5 GHz - 6 núcleos - 12 hilos - 18 MB caché - LGA1700 Socket - Caja - Q1600"
+    }
+   ],
+   "images": [
+    {
+     "url": "/img/productos/procesador-intel-core-i5-12400f/1.webp",
+     "alt": "Procesador Intel Core i5-12400F (foto 1)",
+     "variantSku": null
+    }
+   ]
+  },
+  {
+   "slug": "procesador-amd-ryzen-5-5600gt",
+   "name": "Procesador AMD Ryzen 5 5600GT",
+   "brand": "AMD",
+   "category": "procesadores",
+   "description": "Procesador AMD Ryzen 5 5600GT. Frecuencia: 3.6 GHz · Núcleos: 6 · Socket: AM4.",
+   "specs": [
+    {
+     "clave": "Frecuencia",
+     "valor": "3.6 GHz"
+    },
+    {
+     "clave": "Núcleos",
+     "valor": "6"
+    },
+    {
+     "clave": "Socket",
+     "valor": "AM4"
+    }
+   ],
+   "variants": [
+    {
+     "sku": "ZT-AMD-R5-5600GT",
+     "name": "Único",
+     "price": 175000,
+     "attributes": {},
+     "mensaje": "Procesador Ryzen 5 5600GT 3.6GHz 6 Núcleos AM4 - Q1750"
+    }
+   ],
+   "images": [
+    {
+     "url": "/img/productos/procesador-amd-ryzen-5-5600gt/1.webp",
+     "alt": "Procesador AMD Ryzen 5 5600GT (foto 1)",
+     "variantSku": null
+    },
+    {
+     "url": "/img/productos/procesador-amd-ryzen-5-5600gt/2.webp",
+     "alt": "Procesador AMD Ryzen 5 5600GT (foto 2)",
+     "variantSku": null
+    },
+    {
+     "url": "/img/productos/procesador-amd-ryzen-5-5600gt/3.webp",
+     "alt": "Procesador AMD Ryzen 5 5600GT (foto 3)",
+     "variantSku": null
+    }
+   ]
+  },
+  {
+   "slug": "tarjeta-de-video-asus-dual-rtx-3050-oc-6gb",
+   "name": "Tarjeta de video ASUS Dual GeForce RTX 3050 OC 6 GB",
+   "brand": "ASUS",
+   "category": "tarjetas-de-video",
+   "description": "Tarjeta de video ASUS Dual GeForce RTX 3050 OC 6 GB. Memoria: 6 GB GDDR6 · Salidas: HDMI, DisplayPort · Interfaz: PCI Express 4.0.",
+   "specs": [
+    {
+     "clave": "Memoria",
+     "valor": "6 GB GDDR6"
+    },
+    {
+     "clave": "Salidas",
+     "valor": "HDMI, DisplayPort"
+    },
+    {
+     "clave": "Interfaz",
+     "valor": "PCI Express 4.0"
+    }
+   ],
+   "variants": [
+    {
+     "sku": "ZT-ASUS-DUAL-RTX3050-6G",
+     "name": "Único",
+     "price": 250000,
+     "attributes": {},
+     "mensaje": "Tarjeta de Video 6GB GDDR6 Asus GeForce RTX 3050 Dual GeForce OC HDMI DP PCI 4.0 -  Q2500"
+    }
+   ],
+   "images": [
+    {
+     "url": "/img/productos/tarjeta-de-video-asus-dual-rtx-3050-oc-6gb/1.webp",
+     "alt": "Tarjeta de video ASUS Dual GeForce RTX 3050 OC 6 GB (foto 1)",
+     "variantSku": null
+    },
+    {
+     "url": "/img/productos/tarjeta-de-video-asus-dual-rtx-3050-oc-6gb/2.webp",
+     "alt": "Tarjeta de video ASUS Dual GeForce RTX 3050 OC 6 GB (foto 2)",
+     "variantSku": null
+    },
+    {
+     "url": "/img/productos/tarjeta-de-video-asus-dual-rtx-3050-oc-6gb/3.webp",
+     "alt": "Tarjeta de video ASUS Dual GeForce RTX 3050 OC 6 GB (foto 3)",
+     "variantSku": null
+    },
+    {
+     "url": "/img/productos/tarjeta-de-video-asus-dual-rtx-3050-oc-6gb/4.webp",
+     "alt": "Tarjeta de video ASUS Dual GeForce RTX 3050 OC 6 GB (foto 4)",
+     "variantSku": null
+    },
+    {
+     "url": "/img/productos/tarjeta-de-video-asus-dual-rtx-3050-oc-6gb/5.webp",
+     "alt": "Tarjeta de video ASUS Dual GeForce RTX 3050 OC 6 GB (foto 5)",
+     "variantSku": null
+    },
+    {
+     "url": "/img/productos/tarjeta-de-video-asus-dual-rtx-3050-oc-6gb/6.webp",
+     "alt": "Tarjeta de video ASUS Dual GeForce RTX 3050 OC 6 GB (foto 6)",
+     "variantSku": null
+    },
+    {
+     "url": "/img/productos/tarjeta-de-video-asus-dual-rtx-3050-oc-6gb/7.webp",
+     "alt": "Tarjeta de video ASUS Dual GeForce RTX 3050 OC 6 GB (foto 7)",
+     "variantSku": null
+    },
+    {
+     "url": "/img/productos/tarjeta-de-video-asus-dual-rtx-3050-oc-6gb/8.webp",
+     "alt": "Tarjeta de video ASUS Dual GeForce RTX 3050 OC 6 GB (foto 8)",
+     "variantSku": null
+    },
+    {
+     "url": "/img/productos/tarjeta-de-video-asus-dual-rtx-3050-oc-6gb/9.webp",
+     "alt": "Tarjeta de video ASUS Dual GeForce RTX 3050 OC 6 GB (foto 9)",
+     "variantSku": null
+    },
+    {
+     "url": "/img/productos/tarjeta-de-video-asus-dual-rtx-3050-oc-6gb/10.webp",
+     "alt": "Tarjeta de video ASUS Dual GeForce RTX 3050 OC 6 GB (foto 10)",
+     "variantSku": null
+    }
+   ]
+  },
+  {
+   "slug": "fuente-de-poder-cougar-atlas-650w",
+   "name": "Fuente de poder Cougar Atlas 650 W 80 Plus Bronze",
+   "brand": "Cougar",
+   "category": "fuentes-de-poder",
+   "description": "Fuente de poder Cougar Atlas 650 W 80 Plus Bronze. Potencia: 650 W · Certificación: 80 Plus Bronze.",
+   "specs": [
+    {
+     "clave": "Potencia",
+     "valor": "650 W"
+    },
+    {
+     "clave": "Certificación",
+     "valor": "80 Plus Bronze"
+    }
+   ],
+   "variants": [
+    {
+     "sku": "ZT-COUGAR-ATLAS-650",
+     "name": "Único",
+     "price": 65000,
+     "attributes": {},
+     "mensaje": "Fuente de Poder 650W Cougar Atlas 80-PLUS Bronze - Q650"
+    }
+   ],
+   "images": [
+    {
+     "url": "/img/productos/fuente-de-poder-cougar-atlas-650w/1.webp",
+     "alt": "Fuente de poder Cougar Atlas 650 W 80 Plus Bronze (foto 1)",
+     "variantSku": null
+    },
+    {
+     "url": "/img/productos/fuente-de-poder-cougar-atlas-650w/2.webp",
+     "alt": "Fuente de poder Cougar Atlas 650 W 80 Plus Bronze (foto 2)",
+     "variantSku": null
+    },
+    {
+     "url": "/img/productos/fuente-de-poder-cougar-atlas-650w/3.webp",
+     "alt": "Fuente de poder Cougar Atlas 650 W 80 Plus Bronze (foto 3)",
+     "variantSku": null
+    },
+    {
+     "url": "/img/productos/fuente-de-poder-cougar-atlas-650w/4.webp",
+     "alt": "Fuente de poder Cougar Atlas 650 W 80 Plus Bronze (foto 4)",
+     "variantSku": null
+    },
+    {
+     "url": "/img/productos/fuente-de-poder-cougar-atlas-650w/5.webp",
+     "alt": "Fuente de poder Cougar Atlas 650 W 80 Plus Bronze (foto 5)",
+     "variantSku": null
+    },
+    {
+     "url": "/img/productos/fuente-de-poder-cougar-atlas-650w/6.webp",
+     "alt": "Fuente de poder Cougar Atlas 650 W 80 Plus Bronze (foto 6)",
+     "variantSku": null
+    },
+    {
+     "url": "/img/productos/fuente-de-poder-cougar-atlas-650w/7.webp",
+     "alt": "Fuente de poder Cougar Atlas 650 W 80 Plus Bronze (foto 7)",
+     "variantSku": null
+    },
+    {
+     "url": "/img/productos/fuente-de-poder-cougar-atlas-650w/8.webp",
+     "alt": "Fuente de poder Cougar Atlas 650 W 80 Plus Bronze (foto 8)",
+     "variantSku": null
+    }
+   ]
+  },
+  {
+   "slug": "fuente-de-poder-gigabyte-p650g",
+   "name": "Fuente de poder Gigabyte P650G 650 W 80 Plus Gold",
+   "brand": "Gigabyte",
+   "category": "fuentes-de-poder",
+   "description": "Fuente de poder Gigabyte P650G 650 W 80 Plus Gold. Potencia: 650 W · Certificación: 80 Plus Gold.",
+   "specs": [
+    {
+     "clave": "Potencia",
+     "valor": "650 W"
+    },
+    {
+     "clave": "Certificación",
+     "valor": "80 Plus Gold"
+    }
+   ],
+   "variants": [
+    {
+     "sku": "ZT-GIGABYTE-P650G",
+     "name": "Único",
+     "price": 70000,
+     "attributes": {},
+     "mensaje": "Fuente de Poder 650W Gigabyte P650G 80-PLUS GOLD - Q700"
+    }
+   ],
+   "images": [
+    {
+     "url": "/img/productos/fuente-de-poder-gigabyte-p650g/1.webp",
+     "alt": "Fuente de poder Gigabyte P650G 650 W 80 Plus Gold (foto 1)",
+     "variantSku": null
+    },
+    {
+     "url": "/img/productos/fuente-de-poder-gigabyte-p650g/2.webp",
+     "alt": "Fuente de poder Gigabyte P650G 650 W 80 Plus Gold (foto 2)",
+     "variantSku": null
+    },
+    {
+     "url": "/img/productos/fuente-de-poder-gigabyte-p650g/3.webp",
+     "alt": "Fuente de poder Gigabyte P650G 650 W 80 Plus Gold (foto 3)",
+     "variantSku": null
+    },
+    {
+     "url": "/img/productos/fuente-de-poder-gigabyte-p650g/4.webp",
+     "alt": "Fuente de poder Gigabyte P650G 650 W 80 Plus Gold (foto 4)",
+     "variantSku": null
+    },
+    {
+     "url": "/img/productos/fuente-de-poder-gigabyte-p650g/5.webp",
+     "alt": "Fuente de poder Gigabyte P650G 650 W 80 Plus Gold (foto 5)",
+     "variantSku": null
+    },
+    {
+     "url": "/img/productos/fuente-de-poder-gigabyte-p650g/6.webp",
+     "alt": "Fuente de poder Gigabyte P650G 650 W 80 Plus Gold (foto 6)",
+     "variantSku": null
+    }
+   ]
+  },
+  {
+   "slug": "memoria-ram-adata-xpg-spectrix-d35g-8gb",
+   "name": "Memoria RAM ADATA XPG Spectrix D35G RGB 8 GB DDR4 3600 MHz",
+   "brand": "ADATA",
+   "category": "memoria-ram",
+   "description": "Memoria RAM ADATA XPG Spectrix D35G RGB 8 GB DDR4 3600 MHz. Capacidad: 8 GB · Tipo: DDR4, para PC · Velocidad: 3600 MHz · Latencia: CL18.",
+   "specs": [
+    {
+     "clave": "Capacidad",
+     "valor": "8 GB"
+    },
+    {
+     "clave": "Tipo",
+     "valor": "DDR4, para PC"
+    },
+    {
+     "clave": "Velocidad",
+     "valor": "3600 MHz"
+    },
+    {
+     "clave": "Latencia",
+     "valor": "CL18"
+    },
+    {
+     "clave": "Voltaje",
+     "valor": "1.35 V"
+    },
+    {
+     "clave": "Iluminación",
+     "valor": "RGB"
+    }
+   ],
+   "variants": [
+    {
+     "sku": "AX4U36008G18I-SBKD35G",
+     "name": "Único",
+     "price": 105000,
+     "attributes": {},
+     "mensaje": "MEMORIA RAM PC 8GB ADATA XPG SPECTRIX D35G RGB DDR4 3600MHZ CL18 1.35V AX4U36008G18I-SBKD35G - Q1050"
+    }
+   ],
+   "images": [
+    {
+     "url": "/img/productos/memoria-ram-adata-xpg-spectrix-d35g-8gb/1.webp",
+     "alt": "Memoria RAM ADATA XPG Spectrix D35G RGB 8 GB DDR4 3600 MHz (foto 1)",
+     "variantSku": null
+    }
+   ]
+  },
+  {
+   "slug": "case-cougar-mx110-rgb",
+   "name": "Case Cougar MX110 RGB",
+   "brand": "Cougar",
+   "category": "cases",
+   "description": "Case Cougar MX110 RGB. Formato: Media torre ATX · Iluminación: RGB · Color: Negro · Fuente de poder: No incluida.",
+   "specs": [
+    {
+     "clave": "Formato",
+     "valor": "Media torre ATX"
+    },
+    {
+     "clave": "Iluminación",
+     "valor": "RGB"
+    },
+    {
+     "clave": "Color",
+     "valor": "Negro"
+    },
+    {
+     "clave": "Fuente de poder",
+     "valor": "No incluida"
+    }
+   ],
+   "variants": [
+    {
+     "sku": "ZT-COUGAR-MX110-RGB",
+     "name": "Negro",
+     "price": 40000,
+     "attributes": {
+      "color": "Negro"
+     },
+     "mensaje": "Case Gaming Cougar MX110 RGB Media Torre ATX Negro (Sin Fuente) - Q400"
+    }
+   ],
+   "images": [
+    {
+     "url": "/img/productos/case-cougar-mx110-rgb/1.webp",
+     "alt": "Case Cougar MX110 RGB, negro (foto 1)",
+     "variantSku": null
+    },
+    {
+     "url": "/img/productos/case-cougar-mx110-rgb/2.webp",
+     "alt": "Case Cougar MX110 RGB, negro (foto 2)",
+     "variantSku": null
+    },
+    {
+     "url": "/img/productos/case-cougar-mx110-rgb/3.webp",
+     "alt": "Case Cougar MX110 RGB, negro (foto 3)",
+     "variantSku": null
+    },
+    {
+     "url": "/img/productos/case-cougar-mx110-rgb/4.webp",
+     "alt": "Case Cougar MX110 RGB, negro (foto 4)",
+     "variantSku": null
+    }
+   ]
+  },
+  {
+   "slug": "case-vektortech-qgm-570",
+   "name": "Case VektorTech QGM-570",
+   "brand": "VektorTech",
+   "category": "cases",
+   "description": "Case VektorTech QGM-570. Formato: Media torre Micro-ATX · Panel: Vidrio templado · Color: Negro · Fuente de poder: No incluida.",
+   "specs": [
+    {
+     "clave": "Formato",
+     "valor": "Media torre Micro-ATX"
+    },
+    {
+     "clave": "Panel",
+     "valor": "Vidrio templado"
+    },
+    {
+     "clave": "Color",
+     "valor": "Negro"
+    },
+    {
+     "clave": "Fuente de poder",
+     "valor": "No incluida"
+    }
+   ],
+   "variants": [
+    {
+     "sku": "QGM-570",
+     "name": "Negro",
+     "price": 67500,
+     "attributes": {
+      "color": "Negro"
+     },
+     "mensaje": "Case Gaming VektorTech QGM-570 Media Torre Vidrio Templado Micro-ATX Negro (Sin Fuente) - Q675"
+    }
+   ],
+   "images": [
+    {
+     "url": "/img/productos/case-vektortech-qgm-570/1.webp",
+     "alt": "Case VektorTech QGM-570, negro (foto 1)",
+     "variantSku": null
+    },
+    {
+     "url": "/img/productos/case-vektortech-qgm-570/2.webp",
+     "alt": "Case VektorTech QGM-570, negro (foto 2)",
+     "variantSku": null
+    },
+    {
+     "url": "/img/productos/case-vektortech-qgm-570/3.webp",
+     "alt": "Case VektorTech QGM-570, negro (foto 3)",
+     "variantSku": null
+    },
+    {
+     "url": "/img/productos/case-vektortech-qgm-570/4.webp",
+     "alt": "Case VektorTech QGM-570, negro (foto 4)",
+     "variantSku": null
+    },
+    {
+     "url": "/img/productos/case-vektortech-qgm-570/5.webp",
+     "alt": "Case VektorTech QGM-570, negro (foto 5)",
+     "variantSku": null
+    },
+    {
+     "url": "/img/productos/case-vektortech-qgm-570/6.webp",
+     "alt": "Case VektorTech QGM-570, negro (foto 6)",
+     "variantSku": null
+    }
+   ]
+  },
+  {
+   "slug": "case-cougar-mx230-rgb",
+   "name": "Case Cougar MX230 RGB",
+   "brand": "Cougar",
+   "category": "cases",
+   "description": "Case Cougar MX230 RGB. Formato: Media torre ATX · Iluminación: RGB · Color: Negro · Fuente de poder: No incluida.",
+   "specs": [
+    {
+     "clave": "Formato",
+     "valor": "Media torre ATX"
+    },
+    {
+     "clave": "Iluminación",
+     "valor": "RGB"
+    },
+    {
+     "clave": "Color",
+     "valor": "Negro"
+    },
+    {
+     "clave": "Fuente de poder",
+     "valor": "No incluida"
+    }
+   ],
+   "variants": [
+    {
+     "sku": "ZT-COUGAR-MX230-RGB",
+     "name": "Negro",
+     "price": 65000,
+     "attributes": {
+      "color": "Negro"
+     },
+     "mensaje": "Case Gaming Cougar MX230 RGB Media Torre ATX Negro (Sin Fuente - Q650"
+    }
+   ],
+   "images": [
+    {
+     "url": "/img/productos/case-cougar-mx230-rgb/1.webp",
+     "alt": "Case Cougar MX230 RGB, negro (foto 1)",
+     "variantSku": null
+    },
+    {
+     "url": "/img/productos/case-cougar-mx230-rgb/2.webp",
+     "alt": "Case Cougar MX230 RGB, negro (foto 2)",
+     "variantSku": null
+    },
+    {
+     "url": "/img/productos/case-cougar-mx230-rgb/3.webp",
+     "alt": "Case Cougar MX230 RGB, negro (foto 3)",
+     "variantSku": null
+    },
+    {
+     "url": "/img/productos/case-cougar-mx230-rgb/4.webp",
+     "alt": "Case Cougar MX230 RGB, negro (foto 4)",
+     "variantSku": null
+    },
+    {
+     "url": "/img/productos/case-cougar-mx230-rgb/5.webp",
+     "alt": "Case Cougar MX230 RGB, negro (foto 5)",
+     "variantSku": null
+    },
+    {
+     "url": "/img/productos/case-cougar-mx230-rgb/6.webp",
+     "alt": "Case Cougar MX230 RGB, negro (foto 6)",
+     "variantSku": null
+    },
+    {
+     "url": "/img/productos/case-cougar-mx230-rgb/7.webp",
+     "alt": "Case Cougar MX230 RGB, negro (foto 7)",
+     "variantSku": null
+    }
+   ]
+  },
+  {
+   "slug": "case-cougar-airface-180",
+   "name": "Case Cougar Airface 180",
+   "brand": "Cougar",
+   "category": "cases",
+   "description": "Case Cougar Airface 180. Formato: Media torre · Panel: Vidrio templado · Filtro: Magnético · Iluminación: ARGB.",
+   "specs": [
+    {
+     "clave": "Formato",
+     "valor": "Media torre"
+    },
+    {
+     "clave": "Panel",
+     "valor": "Vidrio templado"
+    },
+    {
+     "clave": "Filtro",
+     "valor": "Magnético"
+    },
+    {
+     "clave": "Iluminación",
+     "valor": "ARGB"
+    },
+    {
+     "clave": "Color",
+     "valor": "Blanco"
+    },
+    {
+     "clave": "Fuente de poder",
+     "valor": "No incluida"
+    }
+   ],
+   "variants": [
+    {
+     "sku": "ZT-COUGAR-AIRFACE-180-BLA",
+     "name": "Blanco",
+     "price": 70000,
+     "attributes": {
+      "color": "Blanco"
+     },
+     "mensaje": "Case Gaming Cougar AIRFACE 180 Blanco Media Torre Vidrio Templado Filtro Magnético ARGB (Sin Fuente) - Q700"
+    }
+   ],
+   "images": [
+    {
+     "url": "/img/productos/case-cougar-airface-180/1.webp",
+     "alt": "Case Cougar Airface 180, blanco (foto 1)",
+     "variantSku": null
+    },
+    {
+     "url": "/img/productos/case-cougar-airface-180/2.webp",
+     "alt": "Case Cougar Airface 180, blanco (foto 2)",
+     "variantSku": null
+    },
+    {
+     "url": "/img/productos/case-cougar-airface-180/3.webp",
+     "alt": "Case Cougar Airface 180, blanco (foto 3)",
+     "variantSku": null
+    },
+    {
+     "url": "/img/productos/case-cougar-airface-180/4.webp",
+     "alt": "Case Cougar Airface 180, blanco (foto 4)",
+     "variantSku": null
+    },
+    {
+     "url": "/img/productos/case-cougar-airface-180/5.webp",
+     "alt": "Case Cougar Airface 180, blanco (foto 5)",
+     "variantSku": null
+    },
+    {
+     "url": "/img/productos/case-cougar-airface-180/6.webp",
+     "alt": "Case Cougar Airface 180, blanco (foto 6)",
+     "variantSku": null
+    },
+    {
+     "url": "/img/productos/case-cougar-airface-180/7.webp",
+     "alt": "Case Cougar Airface 180, blanco (foto 7)",
+     "variantSku": null
+    },
+    {
+     "url": "/img/productos/case-cougar-airface-180/8.webp",
+     "alt": "Case Cougar Airface 180, blanco (foto 8)",
+     "variantSku": null
+    },
+    {
+     "url": "/img/productos/case-cougar-airface-180/9.webp",
+     "alt": "Case Cougar Airface 180, blanco (foto 9)",
+     "variantSku": null
+    }
+   ]
+  },
+  {
+   "slug": "enfriador-liquido-cougar-poseidon-elite-argb-240",
+   "name": "Enfriador líquido Cougar Poseidon Elite ARGB 240 mm",
+   "brand": "Cougar",
+   "category": "enfriamiento",
+   "description": "Enfriador líquido Cougar Poseidon Elite ARGB 240 mm. Disponible en negro y blanco. Radiador: 240 mm · Iluminación: ARGB.",
+   "specs": [
+    {
+     "clave": "Radiador",
+     "valor": "240 mm"
+    },
+    {
+     "clave": "Iluminación",
+     "valor": "ARGB"
+    }
+   ],
+   "variants": [
+    {
+     "sku": "ZT-COUGAR-POSEIDON-ELITE-240-NEG",
+     "name": "Negro",
+     "price": 80000,
+     "attributes": {
+      "color": "Negro"
+     },
+     "mensaje": "Enfriador Líquido 240mm Cougar Poseidon Elite ARGB Negro - Q800"
+    },
+    {
+     "sku": "ZT-COUGAR-POSEIDON-ELITE-240-BLA",
+     "name": "Blanco",
+     "price": 82500,
+     "attributes": {
+      "color": "Blanco"
+     },
+     "mensaje": "Enfriador Líquido 240mm Cougar Poseidon Elite ARGB Blanco - Q825"
+    }
+   ],
+   "images": [
+    {
+     "url": "/img/productos/enfriador-liquido-cougar-poseidon-elite-argb-240/zt-cougar-poseidon-elite-240-neg-1.webp",
+     "alt": "Enfriador líquido Cougar Poseidon Elite ARGB 240 mm, negro (foto 1)",
+     "variantSku": "ZT-COUGAR-POSEIDON-ELITE-240-NEG"
+    },
+    {
+     "url": "/img/productos/enfriador-liquido-cougar-poseidon-elite-argb-240/zt-cougar-poseidon-elite-240-neg-2.webp",
+     "alt": "Enfriador líquido Cougar Poseidon Elite ARGB 240 mm, negro (foto 2)",
+     "variantSku": "ZT-COUGAR-POSEIDON-ELITE-240-NEG"
+    },
+    {
+     "url": "/img/productos/enfriador-liquido-cougar-poseidon-elite-argb-240/zt-cougar-poseidon-elite-240-neg-3.webp",
+     "alt": "Enfriador líquido Cougar Poseidon Elite ARGB 240 mm, negro (foto 3)",
+     "variantSku": "ZT-COUGAR-POSEIDON-ELITE-240-NEG"
+    },
+    {
+     "url": "/img/productos/enfriador-liquido-cougar-poseidon-elite-argb-240/zt-cougar-poseidon-elite-240-neg-4.webp",
+     "alt": "Enfriador líquido Cougar Poseidon Elite ARGB 240 mm, negro (foto 4)",
+     "variantSku": "ZT-COUGAR-POSEIDON-ELITE-240-NEG"
+    },
+    {
+     "url": "/img/productos/enfriador-liquido-cougar-poseidon-elite-argb-240/zt-cougar-poseidon-elite-240-neg-5.webp",
+     "alt": "Enfriador líquido Cougar Poseidon Elite ARGB 240 mm, negro (foto 5)",
+     "variantSku": "ZT-COUGAR-POSEIDON-ELITE-240-NEG"
+    },
+    {
+     "url": "/img/productos/enfriador-liquido-cougar-poseidon-elite-argb-240/zt-cougar-poseidon-elite-240-bla-1.webp",
+     "alt": "Enfriador líquido Cougar Poseidon Elite ARGB 240 mm, blanco (foto 1)",
+     "variantSku": "ZT-COUGAR-POSEIDON-ELITE-240-BLA"
+    },
+    {
+     "url": "/img/productos/enfriador-liquido-cougar-poseidon-elite-argb-240/zt-cougar-poseidon-elite-240-bla-2.webp",
+     "alt": "Enfriador líquido Cougar Poseidon Elite ARGB 240 mm, blanco (foto 2)",
+     "variantSku": "ZT-COUGAR-POSEIDON-ELITE-240-BLA"
+    },
+    {
+     "url": "/img/productos/enfriador-liquido-cougar-poseidon-elite-argb-240/zt-cougar-poseidon-elite-240-bla-3.webp",
+     "alt": "Enfriador líquido Cougar Poseidon Elite ARGB 240 mm, blanco (foto 3)",
+     "variantSku": "ZT-COUGAR-POSEIDON-ELITE-240-BLA"
+    },
+    {
+     "url": "/img/productos/enfriador-liquido-cougar-poseidon-elite-argb-240/zt-cougar-poseidon-elite-240-bla-4.webp",
+     "alt": "Enfriador líquido Cougar Poseidon Elite ARGB 240 mm, blanco (foto 4)",
+     "variantSku": "ZT-COUGAR-POSEIDON-ELITE-240-BLA"
+    },
+    {
+     "url": "/img/productos/enfriador-liquido-cougar-poseidon-elite-argb-240/zt-cougar-poseidon-elite-240-bla-5.webp",
+     "alt": "Enfriador líquido Cougar Poseidon Elite ARGB 240 mm, blanco (foto 5)",
+     "variantSku": "ZT-COUGAR-POSEIDON-ELITE-240-BLA"
+    }
+   ]
+  },
+  {
+   "slug": "enfriador-liquido-cougar-poseidon-vistek-argb",
+   "name": "Enfriador líquido Cougar Poseidon Vistek ARGB con pantalla LCD",
+   "brand": "Cougar",
+   "category": "enfriamiento",
+   "description": "Enfriador líquido Cougar Poseidon Vistek ARGB con pantalla LCD. Radiador de 240 mm o 360 mm. Pantalla: LCD IPS digital de 1.9 pulgadas · Iluminación: ARGB · Color: Negro.",
+   "specs": [
+    {
+     "clave": "Pantalla",
+     "valor": "LCD IPS digital de 1.9 pulgadas"
+    },
+    {
+     "clave": "Iluminación",
+     "valor": "ARGB"
+    },
+    {
+     "clave": "Color",
+     "valor": "Negro"
+    }
+   ],
+   "variants": [
+    {
+     "sku": "ZT-COUGAR-POSEIDON-VISTEK-240",
+     "name": "240 mm",
+     "price": 92500,
+     "attributes": {
+      "radiador": "240 mm"
+     },
+     "mensaje": "Enfriador líquido 240 mm Cougar Poseidon Vistek ARGB con display LCD IPS 1.9\" digital negro - Q925"
+    },
+    {
+     "sku": "ZT-COUGAR-POSEIDON-VISTEK-360",
+     "name": "360 mm",
+     "price": 110000,
+     "attributes": {
+      "radiador": "360 mm"
+     },
+     "mensaje": "Enfriador líquido 360 mm Cougar Poseidon Vistek ARGB con display LCD IPS 1.9\" digital negro - Q1100"
+    }
+   ],
+   "images": [
+    {
+     "url": "/img/productos/enfriador-liquido-cougar-poseidon-vistek-argb/zt-cougar-poseidon-vistek-240-1.webp",
+     "alt": "Enfriador líquido Cougar Poseidon Vistek ARGB con pantalla LCD, 240 mm (foto 1)",
+     "variantSku": "ZT-COUGAR-POSEIDON-VISTEK-240"
+    },
+    {
+     "url": "/img/productos/enfriador-liquido-cougar-poseidon-vistek-argb/zt-cougar-poseidon-vistek-240-2.webp",
+     "alt": "Enfriador líquido Cougar Poseidon Vistek ARGB con pantalla LCD, 240 mm (foto 2)",
+     "variantSku": "ZT-COUGAR-POSEIDON-VISTEK-240"
+    },
+    {
+     "url": "/img/productos/enfriador-liquido-cougar-poseidon-vistek-argb/zt-cougar-poseidon-vistek-240-3.webp",
+     "alt": "Enfriador líquido Cougar Poseidon Vistek ARGB con pantalla LCD, 240 mm (foto 3)",
+     "variantSku": "ZT-COUGAR-POSEIDON-VISTEK-240"
+    },
+    {
+     "url": "/img/productos/enfriador-liquido-cougar-poseidon-vistek-argb/zt-cougar-poseidon-vistek-360-1.webp",
+     "alt": "Enfriador líquido Cougar Poseidon Vistek ARGB con pantalla LCD, 360 mm (foto 1)",
+     "variantSku": "ZT-COUGAR-POSEIDON-VISTEK-360"
+    },
+    {
+     "url": "/img/productos/enfriador-liquido-cougar-poseidon-vistek-argb/zt-cougar-poseidon-vistek-360-2.webp",
+     "alt": "Enfriador líquido Cougar Poseidon Vistek ARGB con pantalla LCD, 360 mm (foto 2)",
+     "variantSku": "ZT-COUGAR-POSEIDON-VISTEK-360"
+    },
+    {
+     "url": "/img/productos/enfriador-liquido-cougar-poseidon-vistek-argb/zt-cougar-poseidon-vistek-360-3.webp",
+     "alt": "Enfriador líquido Cougar Poseidon Vistek ARGB con pantalla LCD, 360 mm (foto 3)",
+     "variantSku": "ZT-COUGAR-POSEIDON-VISTEK-360"
+    }
+   ]
+  },
+  {
+   "slug": "ssd-adata-su650-512gb",
+   "name": "SSD ADATA SU650 512 GB 2.5\"",
+   "brand": "ADATA",
+   "category": "almacenamiento",
+   "description": "SSD ADATA SU650 512 GB 2.5\". Capacidad: 512 GB · Formato: 2.5 pulgadas · Tipo: Estado sólido interno.",
+   "specs": [
+    {
+     "clave": "Capacidad",
+     "valor": "512 GB"
+    },
+    {
+     "clave": "Formato",
+     "valor": "2.5 pulgadas"
+    },
+    {
+     "clave": "Tipo",
+     "valor": "Estado sólido interno"
+    }
+   ],
+   "variants": [
+    {
+     "sku": "ASU650SS-512GT-R",
+     "name": "512 GB",
+     "price": 75000,
+     "attributes": {
+      "capacidad": "512 GB"
+     },
+     "mensaje": "HD INTERNO 512GB 2.5 SOLIDO ADATA ASU650SS-512GT-R - Q750"
+    }
+   ],
+   "images": [
+    {
+     "url": "/img/productos/ssd-adata-su650-512gb/1.webp",
+     "alt": "SSD ADATA SU650 512 GB 2.5\", 512 gb (foto 1)",
+     "variantSku": null
+    }
+   ]
+  },
+  {
+   "slug": "ssd-msi-spatium-m371-500gb",
+   "name": "SSD MSI Spatium M371 500 GB M.2 NVMe",
+   "brand": "MSI",
+   "category": "almacenamiento",
+   "description": "SSD MSI Spatium M371 500 GB M.2 NVMe. Capacidad: 500 GB · Formato: M.2 2280 · Interfaz: PCIe Gen3 x4 · Lectura / escritura: 2200 MB/s / 1150 MB/s.",
+   "specs": [
+    {
+     "clave": "Capacidad",
+     "valor": "500 GB"
+    },
+    {
+     "clave": "Formato",
+     "valor": "M.2 2280"
+    },
+    {
+     "clave": "Interfaz",
+     "valor": "PCIe Gen3 x4"
+    },
+    {
+     "clave": "Lectura / escritura",
+     "valor": "2200 MB/s / 1150 MB/s"
+    }
+   ],
+   "variants": [
+    {
+     "sku": "S78-440K160-P83",
+     "name": "500 GB",
+     "price": 85000,
+     "attributes": {
+      "capacidad": "500 GB"
+     },
+     "mensaje": "HD INTERNO SOLIDO 500GB MSI SPATIUM M371 M.2 2280 PCIE GEN3 X4 2200MB/S / 1150MB/S S78-440K160-P83 N - Q850"
+    }
+   ],
+   "images": [
+    {
+     "url": "/img/productos/ssd-msi-spatium-m371-500gb/1.webp",
+     "alt": "SSD MSI Spatium M371 500 GB M.2 NVMe, 500 gb (foto 1)",
+     "variantSku": null
+    }
+   ]
+  },
+  {
+   "slug": "ssd-kingston-a400-240gb",
+   "name": "SSD Kingston A400 240 GB 2.5\"",
+   "brand": "Kingston",
+   "category": "almacenamiento",
+   "description": "SSD Kingston A400 240 GB 2.5\". Capacidad: 240 GB · Formato: 2.5 pulgadas · Velocidad: 500 MB/s.",
+   "specs": [
+    {
+     "clave": "Capacidad",
+     "valor": "240 GB"
+    },
+    {
+     "clave": "Formato",
+     "valor": "2.5 pulgadas"
+    },
+    {
+     "clave": "Velocidad",
+     "valor": "500 MB/s"
+    }
+   ],
+   "variants": [
+    {
+     "sku": "ZT-KINGSTON-A400-240",
+     "name": "240 GB",
+     "price": 75000,
+     "attributes": {
+      "capacidad": "240 GB"
+     },
+     "mensaje": "Unidad SSD 2.5\" 240GB Kingston A400 500MBs - Q750"
+    }
+   ],
+   "images": [
+    {
+     "url": "/img/productos/ssd-kingston-a400-240gb/1.webp",
+     "alt": "SSD Kingston A400 240 GB 2.5\", 240 gb (foto 1)",
+     "variantSku": null
+    },
+    {
+     "url": "/img/productos/ssd-kingston-a400-240gb/2.webp",
+     "alt": "SSD Kingston A400 240 GB 2.5\", 240 gb (foto 2)",
+     "variantSku": null
+    },
+    {
+     "url": "/img/productos/ssd-kingston-a400-240gb/3.webp",
+     "alt": "SSD Kingston A400 240 GB 2.5\", 240 gb (foto 3)",
+     "variantSku": null
+    }
+   ]
+  },
+  {
+   "slug": "ssd-hiksemi-wave-256gb",
+   "name": "SSD Hiksemi Wave 256 GB M.2 SATA",
+   "brand": "Hiksemi",
+   "category": "almacenamiento",
+   "description": "SSD Hiksemi Wave 256 GB M.2 SATA. Capacidad: 256 GB · Formato: M.2 · Interfaz: SATA.",
+   "specs": [
+    {
+     "clave": "Capacidad",
+     "valor": "256 GB"
+    },
+    {
+     "clave": "Formato",
+     "valor": "M.2"
+    },
+    {
+     "clave": "Interfaz",
+     "valor": "SATA"
+    }
+   ],
+   "variants": [
+    {
+     "sku": "HS-SSD-WAVE(N)256G",
+     "name": "256 GB",
+     "price": 70000,
+     "attributes": {
+      "capacidad": "256 GB"
+     },
+     "mensaje": "HD INTERNO SÓLIDO 256GB M.2 SATA HIKSEMI WAVE HS-SSD-WAVE(N) 256G 311508524 - Q700"
+    }
+   ],
+   "images": [
+    {
+     "url": "/img/productos/ssd-hiksemi-wave-256gb/1.webp",
+     "alt": "SSD Hiksemi Wave 256 GB M.2 SATA, 256 gb (foto 1)",
+     "variantSku": null
+    }
+   ]
+  },
+  {
+   "slug": "laptop-hp-14-ep2111wm",
+   "name": "Laptop HP 14\" 14-ep2111wm Intel N150 4 GB RAM 128 GB",
+   "brand": "HP",
+   "category": "laptops",
+   "description": "Laptop HP 14\" 14-ep2111wm Intel N150 4 GB RAM 128 GB. Color rosado. Pantalla: 14 pulgadas · Procesador: Intel N150 · Memoria RAM: 4 GB · Almacenamiento: 128 GB UFS.",
+   "specs": [
+    {
+     "clave": "Pantalla",
+     "valor": "14 pulgadas"
+    },
+    {
+     "clave": "Procesador",
+     "valor": "Intel N150"
+    },
+    {
+     "clave": "Memoria RAM",
+     "valor": "4 GB"
+    },
+    {
+     "clave": "Almacenamiento",
+     "valor": "128 GB UFS"
+    },
+    {
+     "clave": "Sistema",
+     "valor": "Windows 11 Home"
+    },
+    {
+     "clave": "Teclado",
+     "valor": "En inglés"
+    }
+   ],
+   "variants": [
+    {
+     "sku": "14-EP2111WM",
+     "name": "Rosado",
+     "price": 280000,
+     "attributes": {
+      "color": "Rosado"
+     },
+     "mensaje": "Laptop HP 14\" 14-ep2111wm Intel N150 4GB RAM 128GB UFS W11 Home Rosado Teclado en ingles - Q2800"
+    }
+   ],
+   "images": [
+    {
+     "url": "/img/productos/laptop-hp-14-ep2111wm/1.webp",
+     "alt": "Laptop HP 14\" 14-ep2111wm Intel N150 4 GB RAM 128 GB, rosado (foto 1)",
+     "variantSku": null
+    },
+    {
+     "url": "/img/productos/laptop-hp-14-ep2111wm/2.webp",
+     "alt": "Laptop HP 14\" 14-ep2111wm Intel N150 4 GB RAM 128 GB, rosado (foto 2)",
+     "variantSku": null
+    },
+    {
+     "url": "/img/productos/laptop-hp-14-ep2111wm/3.webp",
+     "alt": "Laptop HP 14\" 14-ep2111wm Intel N150 4 GB RAM 128 GB, rosado (foto 3)",
+     "variantSku": null
+    },
+    {
+     "url": "/img/productos/laptop-hp-14-ep2111wm/4.webp",
+     "alt": "Laptop HP 14\" 14-ep2111wm Intel N150 4 GB RAM 128 GB, rosado (foto 4)",
+     "variantSku": null
+    },
+    {
+     "url": "/img/productos/laptop-hp-14-ep2111wm/5.webp",
+     "alt": "Laptop HP 14\" 14-ep2111wm Intel N150 4 GB RAM 128 GB, rosado (foto 5)",
+     "variantSku": null
+    },
+    {
+     "url": "/img/productos/laptop-hp-14-ep2111wm/6.webp",
+     "alt": "Laptop HP 14\" 14-ep2111wm Intel N150 4 GB RAM 128 GB, rosado (foto 6)",
+     "variantSku": null
+    }
+   ]
+  },
+  {
+   "slug": "laptop-hp-14-dq6100",
+   "name": "Laptop HP 14\" Intel Celeron N150 4 GB RAM 128 GB",
+   "brand": "HP",
+   "category": "laptops",
+   "description": "Laptop HP 14\" Intel Celeron N150 4 GB RAM 128 GB. Disponible en verde claro y azul cielo. Pantalla: 14 pulgadas · Procesador: Intel Celeron N150 · Memoria RAM: 4 GB · Almacenamiento: 128 GB UFS.",
+   "specs": [
+    {
+     "clave": "Pantalla",
+     "valor": "14 pulgadas"
+    },
+    {
+     "clave": "Procesador",
+     "valor": "Intel Celeron N150"
+    },
+    {
+     "clave": "Memoria RAM",
+     "valor": "4 GB"
+    },
+    {
+     "clave": "Almacenamiento",
+     "valor": "128 GB UFS"
+    },
+    {
+     "clave": "Sistema",
+     "valor": "Windows 11 Home (modo S)"
+    },
+    {
+     "clave": "Teclado",
+     "valor": "En inglés"
+    }
+   ],
+   "variants": [
+    {
+     "sku": "14-DQ6103DX",
+     "name": "Verde claro",
+     "price": 290000,
+     "attributes": {
+      "color": "Verde claro"
+     },
+     "mensaje": "Laptop HP 14-dq6103dx 14\" Intel Celeron N150 4GB RAM 128GB UFS W11S Home Verde Claro Teclado Inglés -2900 <Se editó este mensaje.>"
+    },
+    {
+     "sku": "14-DQ6102DX",
+     "name": "Azul cielo",
+     "price": 290000,
+     "attributes": {
+      "color": "Azul cielo"
+     },
+     "mensaje": "Laptop HP 14-DQ6102dx 14\" Intel Celeron N150 4GB RAM 128GB UFS W11S Home Azul Cielo Teclado Inglés - Q2900"
+    }
+   ],
+   "images": [
+    {
+     "url": "/img/productos/laptop-hp-14-dq6100/14-dq6103dx-1.webp",
+     "alt": "Laptop HP 14\" Intel Celeron N150 4 GB RAM 128 GB, verde claro (foto 1)",
+     "variantSku": "14-DQ6103DX"
+    },
+    {
+     "url": "/img/productos/laptop-hp-14-dq6100/14-dq6103dx-2.webp",
+     "alt": "Laptop HP 14\" Intel Celeron N150 4 GB RAM 128 GB, verde claro (foto 2)",
+     "variantSku": "14-DQ6103DX"
+    },
+    {
+     "url": "/img/productos/laptop-hp-14-dq6100/14-dq6103dx-3.webp",
+     "alt": "Laptop HP 14\" Intel Celeron N150 4 GB RAM 128 GB, verde claro (foto 3)",
+     "variantSku": "14-DQ6103DX"
+    },
+    {
+     "url": "/img/productos/laptop-hp-14-dq6100/14-dq6103dx-4.webp",
+     "alt": "Laptop HP 14\" Intel Celeron N150 4 GB RAM 128 GB, verde claro (foto 4)",
+     "variantSku": "14-DQ6103DX"
+    },
+    {
+     "url": "/img/productos/laptop-hp-14-dq6100/14-dq6103dx-5.webp",
+     "alt": "Laptop HP 14\" Intel Celeron N150 4 GB RAM 128 GB, verde claro (foto 5)",
+     "variantSku": "14-DQ6103DX"
+    },
+    {
+     "url": "/img/productos/laptop-hp-14-dq6100/14-dq6102dx-1.webp",
+     "alt": "Laptop HP 14\" Intel Celeron N150 4 GB RAM 128 GB, azul cielo (foto 1)",
+     "variantSku": "14-DQ6102DX"
+    },
+    {
+     "url": "/img/productos/laptop-hp-14-dq6100/14-dq6102dx-2.webp",
+     "alt": "Laptop HP 14\" Intel Celeron N150 4 GB RAM 128 GB, azul cielo (foto 2)",
+     "variantSku": "14-DQ6102DX"
+    },
+    {
+     "url": "/img/productos/laptop-hp-14-dq6100/14-dq6102dx-3.webp",
+     "alt": "Laptop HP 14\" Intel Celeron N150 4 GB RAM 128 GB, azul cielo (foto 3)",
+     "variantSku": "14-DQ6102DX"
+    },
+    {
+     "url": "/img/productos/laptop-hp-14-dq6100/14-dq6102dx-4.webp",
+     "alt": "Laptop HP 14\" Intel Celeron N150 4 GB RAM 128 GB, azul cielo (foto 4)",
+     "variantSku": "14-DQ6102DX"
+    },
+    {
+     "url": "/img/productos/laptop-hp-14-dq6100/14-dq6102dx-5.webp",
+     "alt": "Laptop HP 14\" Intel Celeron N150 4 GB RAM 128 GB, azul cielo (foto 5)",
+     "variantSku": "14-DQ6102DX"
+    },
+    {
+     "url": "/img/productos/laptop-hp-14-dq6100/14-dq6102dx-6.webp",
+     "alt": "Laptop HP 14\" Intel Celeron N150 4 GB RAM 128 GB, azul cielo (foto 6)",
+     "variantSku": "14-DQ6102DX"
+    }
+   ]
+  },
+  {
+   "slug": "laptop-hp-omnibook-3-16",
+   "name": "Laptop HP OmniBook 3 16\" táctil AMD Ryzen 5 8 GB RAM 256 GB",
+   "brand": "HP",
+   "category": "laptops",
+   "description": "Laptop HP OmniBook 3 16\" táctil AMD Ryzen 5 8 GB RAM 256 GB. Color plateada. Pantalla: 16 pulgadas, táctil · Procesador: AMD Ryzen 5 · Gráficos: AMD Radeon 610M · Memoria RAM: 8 GB.",
+   "specs": [
+    {
+     "clave": "Pantalla",
+     "valor": "16 pulgadas, táctil"
+    },
+    {
+     "clave": "Procesador",
+     "valor": "AMD Ryzen 5"
+    },
+    {
+     "clave": "Gráficos",
+     "valor": "AMD Radeon 610M"
+    },
+    {
+     "clave": "Memoria RAM",
+     "valor": "8 GB"
+    },
+    {
+     "clave": "Almacenamiento",
+     "valor": "256 GB SSD"
+    },
+    {
+     "clave": "Sistema",
+     "valor": "Windows 11 Home"
+    },
+    {
+     "clave": "Teclado",
+     "valor": "En inglés"
+    }
+   ],
+   "variants": [
+    {
+     "sku": "ZT-HP-OMNIBOOK3-16",
+     "name": "Plateada",
+     "price": 510000,
+     "attributes": {
+      "color": "Plateada"
+     },
+     "mensaje": "Laptop HP OmniBook 3 Touchscreen 16\" AMD Ryzen 5 40 8GB RAM 256GB SSD AMD Radeon 610M W11 Home Plateada Teclado Ingles Q5100"
+    }
+   ],
+   "images": [
+    {
+     "url": "/img/productos/laptop-hp-omnibook-3-16/1.webp",
+     "alt": "Laptop HP OmniBook 3 16\" táctil AMD Ryzen 5 8 GB RAM 256 GB, plateada (foto 1)",
+     "variantSku": null
+    },
+    {
+     "url": "/img/productos/laptop-hp-omnibook-3-16/2.webp",
+     "alt": "Laptop HP OmniBook 3 16\" táctil AMD Ryzen 5 8 GB RAM 256 GB, plateada (foto 2)",
+     "variantSku": null
+    },
+    {
+     "url": "/img/productos/laptop-hp-omnibook-3-16/3.webp",
+     "alt": "Laptop HP OmniBook 3 16\" táctil AMD Ryzen 5 8 GB RAM 256 GB, plateada (foto 3)",
+     "variantSku": null
+    },
+    {
+     "url": "/img/productos/laptop-hp-omnibook-3-16/4.webp",
+     "alt": "Laptop HP OmniBook 3 16\" táctil AMD Ryzen 5 8 GB RAM 256 GB, plateada (foto 4)",
+     "variantSku": null
+    },
+    {
+     "url": "/img/productos/laptop-hp-omnibook-3-16/5.webp",
+     "alt": "Laptop HP OmniBook 3 16\" táctil AMD Ryzen 5 8 GB RAM 256 GB, plateada (foto 5)",
+     "variantSku": null
+    }
+   ]
+  }
+ ]
+}

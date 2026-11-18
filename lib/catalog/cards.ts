@@ -1,4 +1,5 @@
 import { db } from "../db";
+import { coverFirst } from "./cover";
 import { productAvailability, type Availability } from "../availability";
 
 export interface CategoryTileData {
@@ -39,7 +40,7 @@ export const cardSelect = {
   isSample: true,
   brand: { select: { name: true } },
   // En las tarjetas solo van fotos del producto, no las propias de una variante.
-  images: { where: { variantId: null }, orderBy: { order: "asc" }, take: 1, select: { url: true, alt: true } },
+  images: { orderBy: coverFirst, take: 1, select: { url: true, alt: true } },
   variants: {
     where: { isActive: true },
     select: { id: true, price: true, compareAtPrice: true, stock: true, reservedStock: true, lowStockThreshold: true },

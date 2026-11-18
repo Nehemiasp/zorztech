@@ -54,7 +54,7 @@ export function CategoryPromo({
         {!side && (
           <span className="mt-3 inline-flex items-center gap-1 text-sm font-medium text-brand-primary-strong">
             Ver todo
-            <ArrowRight aria-hidden size={16} className="transition-transform duration-250 ease-out group-hover:translate-x-0.5" />
+            <ArrowRight aria-hidden size={16} className="transition-transform duration-150 ease-out group-hover:translate-x-0.5" />
           </span>
         )}
       </div>
@@ -68,7 +68,7 @@ export function CategoryPromo({
             height={400}
             sizes={side ? "160px" : "(min-width: 1024px) 260px, 45vw"}
             className={cn(
-              "absolute right-2 top-1/2 aspect-square -translate-y-1/2 object-contain mix-blend-multiply transition-transform duration-300 ease-out group-hover:scale-[1.03] motion-reduce:transition-none",
+              "absolute right-2 top-1/2 aspect-square -translate-y-1/2 object-contain mix-blend-multiply transition-transform duration-200 ease-out group-hover:scale-[1.03] motion-reduce:transition-none",
               side ? "w-[92%]" : "w-[88%]",
             )}
           />
@@ -112,7 +112,7 @@ export function ShippingPromo({ shipping, className }: { shipping: ShippingSetti
       <span className="block">
         <span className="flex items-center gap-1 text-lg font-semibold">
           {title}
-          <ArrowRight aria-hidden size={18} className="shrink-0 text-brand-accent transition-transform duration-250 ease-out group-hover:translate-x-0.5" />
+          <ArrowRight aria-hidden size={18} className="shrink-0 text-brand-accent transition-transform duration-150 ease-out group-hover:translate-x-0.5" />
         </span>
         <span className="mt-1 block text-sm text-text-on-dark-muted">{detail}</span>
       </span>

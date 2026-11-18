@@ -14,7 +14,7 @@ interface Props {
 }
 
 const iconButton =
-  "relative inline-flex size-11 items-center justify-center rounded-md text-text-on-dark transition-colors duration-250 ease-out hover:bg-surface-dark-raised active:bg-surface-dark-alt";
+  "relative inline-flex size-11 items-center justify-center rounded-md text-text-on-dark transition-colors duration-150 ease-out hover:bg-surface-dark-raised active:bg-surface-dark-alt";
 
 export function HeaderShell({ categories }: Props) {
   const cartCount = useCart().cart.count;
@@ -71,7 +71,7 @@ export function HeaderShell({ categories }: Props) {
 
           <Link
             href={signedIn ? "/cuenta" : "/ingresar"}
-            className="hidden min-h-11 items-center gap-2 rounded-md px-3 text-base transition-colors duration-250 ease-out hover:bg-surface-dark-raised active:bg-surface-dark-alt md:inline-flex"
+            className="hidden min-h-11 items-center gap-2 rounded-md px-3 text-base transition-colors duration-150 ease-out hover:bg-surface-dark-raised active:bg-surface-dark-alt md:inline-flex"
           >
             <User aria-hidden size={20} strokeWidth={1.75} />
             {signedIn ? "Mi cuenta" : "Ingresar"}
@@ -98,7 +98,7 @@ export function HeaderShell({ categories }: Props) {
             <li key={c.slug}>
               <Link
                 href={`/categorias/${c.slug}`}
-                className="inline-flex min-h-11 items-center px-2 text-sm font-medium text-text-on-dark-muted transition-colors duration-250 ease-out hover:text-text-on-dark lg:px-2.5"
+                className="inline-flex min-h-11 items-center px-2 text-sm font-medium text-text-on-dark-muted transition-colors duration-150 ease-out hover:text-text-on-dark lg:px-2.5"
               >
                 {c.name}
               </Link>

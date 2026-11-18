@@ -57,20 +57,22 @@ export default async function HomePage() {
       <div className="mx-auto max-w-page px-4 pt-4 md:px-6 md:pt-6">
         <div className="grid gap-4 lg:grid-cols-[2fr_1fr]">
           <Hero hero={hero} />
-          <div className="grid gap-4 sm:grid-cols-2 lg:flex lg:flex-col">
+          <div className="hero-step grid gap-4 sm:grid-cols-2 lg:flex lg:flex-col" style={{ "--step": 2 } as React.CSSProperties}>
             {sidePromo && <CategoryPromo rail={sidePromo} size="side" />}
             <ShippingPromo shipping={shipping} />
           </div>
         </div>
       </div>
 
-      <Rail id="categorias" anchor="categorias" title="Categorías">
-        {categories.map((category) => (
-          <RailItem key={category.id} size="category">
-            <CategoryTile category={category} />
-          </RailItem>
-        ))}
-      </Rail>
+      <div className="hero-step" style={{ "--step": 3 } as React.CSSProperties}>
+        <Rail id="categorias" anchor="categorias" title="Categorías">
+          {categories.map((category) => (
+            <RailItem key={category.id} size="category">
+              <CategoryTile category={category} />
+            </RailItem>
+          ))}
+        </Rail>
+      </div>
 
       {featured.length > 0 && (
         <Rail id="destacados" title="Productos destacados">

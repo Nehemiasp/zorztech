@@ -20,7 +20,7 @@ function visiblePages(page: number, pageCount: number): (number | "gap")[] {
   return out;
 }
 
-const item = "inline-flex min-h-11 min-w-11 items-center justify-center rounded-md px-3 transition-colors duration-250 ease-out";
+const item = "inline-flex min-h-11 min-w-11 items-center justify-center rounded-md px-3 transition-colors duration-150 ease-out";
 
 export function Pagination({ page, pageCount, hrefFor }: Props) {
   if (pageCount <= 1) return null;

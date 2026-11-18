@@ -73,8 +73,8 @@
 
   --container-page: 80rem;
 
-  /* Movimiento: curva suave que frena al final; todas las clases ease-out la usan */
-  --ease-out: cubic-bezier(0.33, 1, 0.68, 1);
+  /* Animaciones de entrada: curva suave que frena al final (las interacciones siguen con ease-out, rápidas) */
+  --ease-enter: cubic-bezier(0.22, 1, 0.36, 1);
 }
 
 @layer base {
@@ -144,7 +144,7 @@
   }
 
   .hero-step {
-    animation: hero-rise 650ms var(--ease-out) both;
+    animation: hero-rise 700ms var(--ease-enter) backwards;
     animation-delay: calc(var(--step, 0) * 110ms);
   }
 
@@ -192,13 +192,23 @@
  * (por ejemplo, el fondo del ::backdrop). Con «reducir movimiento» no se anima nada.
  */
 
+/* Cambio de página dentro de la tienda: un fundido corto (solo opacidad, para no mover elementos fijos) */
+@keyframes page-fade {
+  from {
+    opacity: 0;
+  }
+}
+.page-enter {
+  animation: page-fade 420ms var(--ease-enter) backwards;
+}
+
 /* Secciones que entran al hacer scroll (las marca components/scroll-reveal.tsx) */
 .reveal {
   opacity: 0;
   transform: translateY(18px);
   transition:
-    opacity 700ms var(--ease-out),
-    transform 700ms var(--ease-out);
+    opacity 700ms var(--ease-enter),
+    transform 700ms var(--ease-enter);
   transition-delay: var(--reveal-delay, 0ms);
 }
 .reveal.is-revealed {
@@ -211,10 +221,10 @@ dialog.motion-drawer,
 dialog.motion-sheet,
 dialog.motion-fade {
   transition:
-    transform 380ms var(--ease-out),
-    opacity 380ms var(--ease-out),
-    overlay 380ms var(--ease-out) allow-discrete,
-    display 380ms var(--ease-out) allow-discrete;
+    transform 320ms var(--ease-enter),
+    opacity 320ms var(--ease-enter),
+    overlay 320ms var(--ease-enter) allow-discrete,
+    display 320ms var(--ease-enter) allow-discrete;
 }
 dialog.motion-drawer:not([open]) {
   transform: translateX(100%);
@@ -243,9 +253,9 @@ dialog.motion-drawer::backdrop,
 dialog.motion-sheet::backdrop,
 dialog.motion-fade::backdrop {
   transition:
-    opacity 380ms var(--ease-out),
-    overlay 380ms var(--ease-out) allow-discrete,
-    display 380ms var(--ease-out) allow-discrete;
+    opacity 320ms var(--ease-enter),
+    overlay 320ms var(--ease-enter) allow-discrete,
+    display 320ms var(--ease-enter) allow-discrete;
 }
 dialog.motion-drawer:not([open])::backdrop,
 dialog.motion-sheet:not([open])::backdrop,
@@ -261,6 +271,9 @@ dialog.motion-fade:not([open])::backdrop {
 }
 
 @media (prefers-reduced-motion: reduce) {
+  .page-enter {
+    animation: none;
+  }
   .reveal {
     opacity: 1;
     transform: none;

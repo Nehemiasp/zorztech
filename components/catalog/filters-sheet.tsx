@@ -26,7 +26,7 @@ export function FiltersSheet({ activeCount, children }: { activeCount: number; c
       <dialog
         ref={ref}
         aria-label="Filtros"
-        className="m-0 mt-auto max-h-[88dvh] w-full max-w-none overflow-y-auto rounded-t-lg bg-surface-light p-0 text-text-on-light backdrop:bg-black/50 lg:hidden"
+        className="motion-sheet m-0 mt-auto max-h-[88dvh] w-full max-w-none overflow-y-auto rounded-t-lg bg-surface-light p-0 text-text-on-light backdrop:bg-black/50 lg:hidden"
       >
         <div className="sticky top-0 flex items-center justify-between border-b border-border bg-surface-light px-4 py-2">
           <h2 className="text-lg">Filtros</h2>

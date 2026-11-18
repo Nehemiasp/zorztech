@@ -11,7 +11,7 @@ export interface GalleryImage {
 }
 
 const control =
-  "inline-flex size-11 items-center justify-center rounded-md bg-surface-light/90 text-text-on-light transition-colors duration-150 ease-out hover:bg-surface-light";
+  "inline-flex size-11 items-center justify-center rounded-md bg-surface-light/90 text-text-on-light transition-colors duration-250 ease-out hover:bg-surface-light";
 
 /**
  * Galería: las imágenes se deslizan con el dedo (scroll con anclaje) y las miniaturas llevan a cada una.
@@ -114,7 +114,7 @@ export function Gallery({ images }: { images: GalleryImage[] }) {
           if (e.key === "ArrowLeft") step(-1);
           if (e.key === "ArrowRight") step(1);
         }}
-        className="m-auto max-h-[96dvh] w-[min(96vw,60rem)] max-w-none bg-transparent p-0 backdrop:bg-black/80"
+        className="motion-fade m-auto max-h-[96dvh] w-[min(96vw,60rem)] max-w-none bg-transparent p-0 backdrop:bg-black/80"
       >
         <div className="relative">
           <CatalogImage

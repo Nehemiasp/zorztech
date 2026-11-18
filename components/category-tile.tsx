@@ -6,7 +6,7 @@ import { CatalogImage } from "./catalog-image";
 export function CategoryTile({ category }: { category: CategoryTileData }) {
   return (
     <Link href={`/categorias/${category.slug}`} className="group flex flex-col items-center rounded-sm text-center">
-      <div className="aspect-square w-full overflow-hidden rounded-full bg-surface-tint transition-shadow duration-150 ease-out group-hover:ring-2 group-hover:ring-brand-primary">
+      <div className="aspect-square w-full overflow-hidden rounded-full bg-surface-tint transition-shadow duration-250 ease-out group-hover:ring-2 group-hover:ring-brand-primary">
         {category.image && (
           <CatalogImage
             src={category.image}

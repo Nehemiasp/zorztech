@@ -46,7 +46,7 @@ export function Rail({
   };
 
   const arrow =
-    "inline-flex size-10 items-center justify-center rounded-full border border-border-strong bg-surface-light text-text-on-light transition-colors duration-150 ease-out hover:bg-surface-light-alt disabled:cursor-not-allowed disabled:opacity-40";
+    "inline-flex size-10 items-center justify-center rounded-full border border-border-strong bg-surface-light text-text-on-light transition-colors duration-250 ease-out hover:bg-surface-light-alt disabled:cursor-not-allowed disabled:opacity-40";
   const scrollable = !(edges.start && edges.end);
 
   return (

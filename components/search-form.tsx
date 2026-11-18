@@ -150,7 +150,7 @@ export function SearchForm({ className, autoFocus = false }: { className?: strin
       </div>
       <button
         type="submit"
-        className="inline-flex min-h-11 items-center gap-2 rounded-r-md bg-brand-primary px-4 font-medium text-brand-white transition-colors duration-150 ease-out hover:bg-brand-primary-strong active:bg-brand-primary-deep"
+        className="inline-flex min-h-11 items-center gap-2 rounded-r-md bg-brand-primary px-4 font-medium text-brand-white transition-colors duration-250 ease-out hover:bg-brand-primary-strong active:bg-brand-primary-deep"
       >
         <Search aria-hidden size={20} strokeWidth={1.75} />
         <span className="hidden sm:inline">Buscar</span>

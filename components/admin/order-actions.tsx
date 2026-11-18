@@ -64,7 +64,7 @@ export function StatusActions({ code, options }: { code: string; options: Status
         ))}
       </div>
 
-      <dialog ref={dialog} aria-label="Confirmar cambio" className="m-auto w-[min(92vw,26rem)] rounded-lg bg-surface-light p-6 text-text-on-light backdrop:bg-black/50">
+      <dialog ref={dialog} aria-label="Confirmar cambio" className="motion-fade m-auto w-[min(92vw,26rem)] rounded-lg bg-surface-light p-6 text-text-on-light backdrop:bg-black/50">
         <h2 className="text-lg">¿Confirmas el cambio?</h2>
         <p ref={confirmText} className="mt-2 text-text-muted" />
         <div className="mt-5 flex flex-wrap justify-end gap-2">

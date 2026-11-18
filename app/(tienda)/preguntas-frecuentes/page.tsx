@@ -79,7 +79,7 @@ export default function FaqPage() {
           <details key={f.q} className="group py-1">
             <summary className="flex min-h-11 cursor-pointer items-center justify-between gap-4 py-2 font-medium text-text-on-light">
               {f.q}
-              <span aria-hidden className="text-text-muted transition-transform duration-150 ease-out group-open:rotate-45">+</span>
+              <span aria-hidden className="text-text-muted transition-transform duration-250 ease-out group-open:rotate-45">+</span>
             </summary>
             <div className="pb-3 text-text-muted">{f.a}</div>
           </details>

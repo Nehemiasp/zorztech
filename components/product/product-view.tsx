@@ -145,7 +145,7 @@ export function ProductView({ variants: rawVariants, images, fallbackImage, prod
                     />
                     <span
                       className={cn(
-                        "inline-flex min-h-11 items-center gap-2 rounded-md border px-4 transition-colors duration-150 ease-out",
+                        "inline-flex min-h-11 items-center gap-2 rounded-md border px-4 transition-colors duration-250 ease-out",
                         "peer-focus-visible:outline-2 peer-focus-visible:outline-offset-2 peer-focus-visible:outline-brand-primary",
                         checked
                           ? "border-brand-primary bg-surface-light-alt font-medium ring-1 ring-brand-primary"
@@ -227,7 +227,7 @@ export function ProductView({ variants: rawVariants, images, fallbackImage, prod
       <div
         aria-hidden={buyVisible}
         className={cn(
-          "fixed inset-x-0 bottom-0 z-30 flex items-center justify-between gap-4 border-t border-border bg-surface-light px-4 py-3 transition-transform duration-200 ease-out lg:hidden",
+          "fixed inset-x-0 bottom-0 z-30 flex items-center justify-between gap-4 border-t border-border bg-surface-light px-4 py-3 transition-transform duration-300 ease-out lg:hidden",
           buyVisible && "translate-y-full",
         )}
       >

@@ -20,7 +20,7 @@ const legalLinks = [
   { href: "/creditos", label: "Créditos de imágenes" },
 ];
 
-const linkClass = "inline-flex min-h-11 items-center text-text-on-dark-muted transition-colors duration-150 ease-out hover:text-text-on-dark";
+const linkClass = "inline-flex min-h-11 items-center text-text-on-dark-muted transition-colors duration-250 ease-out hover:text-text-on-dark";
 
 export async function SiteFooter() {
   const [categories, settings] = await Promise.all([getNavCategories(), getStoreSettings()]);

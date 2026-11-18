@@ -28,7 +28,7 @@ export function CartDrawer() {
       onClick={(e) => {
         if (e.target === ref.current) closeDrawer();
       }}
-      className="m-0 ml-auto h-dvh max-h-none w-full max-w-md bg-surface-light p-0 text-text-on-light backdrop:bg-black/50"
+      className="motion-drawer m-0 ml-auto h-dvh max-h-none w-full max-w-md bg-surface-light p-0 text-text-on-light backdrop:bg-black/50"
     >
       <div className="flex h-full flex-col">
         <div className="flex items-center justify-between border-b border-border px-4 py-2">

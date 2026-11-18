@@ -131,8 +131,8 @@ export function ListingView({ basePath, filters, result, facets, categories, cat
         {result.items.length > 0 ? (
           <>
             <ul className="mt-6 grid grid-cols-2 gap-x-4 gap-y-8 md:grid-cols-3 md:gap-x-6">
-              {result.items.map((product) => (
-                <li key={product.id}>
+              {result.items.map((product, i) => (
+                <li key={product.id} data-reveal style={{ "--reveal-delay": `${(i % 3) * 70}ms` } as React.CSSProperties}>
                   <ProductCard product={product} />
                 </li>
               ))}

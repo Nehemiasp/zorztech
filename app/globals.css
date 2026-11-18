@@ -72,6 +72,9 @@
   --spacing: 0.25rem;
 
   --container-page: 80rem;
+
+  /* Movimiento: curva suave que frena al final; todas las clases ease-out la usan */
+  --ease-out: cubic-bezier(0.33, 1, 0.68, 1);
 }
 
 @layer base {
@@ -128,11 +131,11 @@
     white-space: nowrap;
   }
 
-  /* Secuencia de entrada del hero: la única animación orquestada del sitio */
+  /* Secuencia de entrada del hero */
   @keyframes hero-rise {
     from {
       opacity: 0;
-      transform: translateY(12px);
+      transform: translateY(14px);
     }
     to {
       opacity: 1;
@@ -141,8 +144,8 @@
   }
 
   .hero-step {
-    animation: hero-rise 280ms ease-out both;
-    animation-delay: calc(var(--step, 0) * 90ms);
+    animation: hero-rise 650ms var(--ease-out) both;
+    animation-delay: calc(var(--step, 0) * 110ms);
   }
 
   @media (prefers-reduced-motion: reduce) {
@@ -181,5 +184,94 @@
   /* Esquina inferior derecha cortada con la inclinación de la Z (38° respecto a la vertical) */
   .cut-corner {
     clip-path: polygon(0 0, 100% 0, 100% calc(100% - 2.25rem), calc(100% - 1.75rem) 100%, 0 100%);
+  }
+}
+
+/*
+ * Movimiento suave de la tienda. Va fuera de las capas para ganarle a las utilidades de Tailwind
+ * (por ejemplo, el fondo del ::backdrop). Con «reducir movimiento» no se anima nada.
+ */
+
+/* Secciones que entran al hacer scroll (las marca components/scroll-reveal.tsx) */
+.reveal {
+  opacity: 0;
+  transform: translateY(18px);
+  transition:
+    opacity 700ms var(--ease-out),
+    transform 700ms var(--ease-out);
+  transition-delay: var(--reveal-delay, 0ms);
+}
+.reveal.is-revealed {
+  opacity: 1;
+  transform: none;
+}
+
+/* Ventanas: el carrito entra desde la derecha, los filtros desde abajo y el resto aparece con un fundido */
+dialog.motion-drawer,
+dialog.motion-sheet,
+dialog.motion-fade {
+  transition:
+    transform 380ms var(--ease-out),
+    opacity 380ms var(--ease-out),
+    overlay 380ms var(--ease-out) allow-discrete,
+    display 380ms var(--ease-out) allow-discrete;
+}
+dialog.motion-drawer:not([open]) {
+  transform: translateX(100%);
+}
+dialog.motion-sheet:not([open]) {
+  transform: translateY(100%);
+}
+dialog.motion-fade:not([open]) {
+  opacity: 0;
+  transform: scale(0.98);
+}
+@starting-style {
+  dialog.motion-drawer[open] {
+    transform: translateX(100%);
+  }
+  dialog.motion-sheet[open] {
+    transform: translateY(100%);
+  }
+  dialog.motion-fade[open] {
+    opacity: 0;
+    transform: scale(0.98);
+  }
+}
+
+dialog.motion-drawer::backdrop,
+dialog.motion-sheet::backdrop,
+dialog.motion-fade::backdrop {
+  transition:
+    opacity 380ms var(--ease-out),
+    overlay 380ms var(--ease-out) allow-discrete,
+    display 380ms var(--ease-out) allow-discrete;
+}
+dialog.motion-drawer:not([open])::backdrop,
+dialog.motion-sheet:not([open])::backdrop,
+dialog.motion-fade:not([open])::backdrop {
+  opacity: 0;
+}
+@starting-style {
+  dialog.motion-drawer[open]::backdrop,
+  dialog.motion-sheet[open]::backdrop,
+  dialog.motion-fade[open]::backdrop {
+    opacity: 0;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .reveal {
+    opacity: 1;
+    transform: none;
+    transition: none;
+  }
+  dialog.motion-drawer,
+  dialog.motion-sheet,
+  dialog.motion-fade,
+  dialog.motion-drawer::backdrop,
+  dialog.motion-sheet::backdrop,
+  dialog.motion-fade::backdrop {
+    transition: none;
   }
 }

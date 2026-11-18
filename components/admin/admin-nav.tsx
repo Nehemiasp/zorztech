@@ -27,7 +27,7 @@ export function AdminNav() {
                 href={l.href}
                 aria-current={active ? "page" : undefined}
                 className={cn(
-                  "flex min-h-11 items-center rounded-md px-3 transition-colors duration-150 ease-out",
+                  "flex min-h-11 items-center rounded-md px-3 transition-colors duration-250 ease-out",
                   active ? "bg-surface-dark-alt text-text-on-dark" : "text-text-on-light hover:bg-surface-light-alt",
                 )}
               >

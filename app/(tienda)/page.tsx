@@ -1,19 +1,22 @@
 import { CategoryTile } from "@/components/category-tile";
-import { CategoryCarousel } from "@/components/home/category-carousel";
 import { Hero } from "@/components/home/hero";
+import { Rail } from "@/components/home/rail";
+import { RailItem } from "@/components/home/rail-item";
 import { TrustStrip } from "@/components/home/trust-strip";
 import { ProductCard } from "@/components/product-card";
-import { getBestSellers, getFeaturedProducts, getNavCategories } from "@/lib/catalog/cards";
+import { getBestSellers, getCategoryRails, getFeaturedProducts, getNavCategories, getNewArrivals } from "@/lib/catalog/cards";
 import { getHero } from "@/lib/settings";
 import { siteConfig } from "@/lib/site";
 
 export const revalidate = 60;
 
 export default async function HomePage() {
-  const [categories, featured, bestSellers, hero] = await Promise.all([
+  const [categories, featured, bestSellers, newArrivals, rails, hero] = await Promise.all([
     getNavCategories(),
-    getFeaturedProducts(8),
-    getBestSellers(4),
+    getFeaturedProducts(10),
+    getBestSellers(10),
+    getNewArrivals(10),
+    getCategoryRails(10),
     getHero(),
   ]);
 
@@ -33,58 +36,57 @@ export default async function HomePage() {
       />
       <Hero hero={hero} />
 
-      <section id="categorias" aria-labelledby="categorias-titulo" className="scroll-mt-4 bg-surface-light">
-        <div className="mx-auto max-w-page px-4 py-14 md:px-6 md:py-20">
-          <h2 id="categorias-titulo" className="text-xl md:text-2xl">
-            Categorías
-          </h2>
-          <div className="mt-8">
-            <CategoryCarousel label="Categorías">
-              {categories.map((category) => (
-                <li key={category.id} className="w-[44%] shrink-0 snap-start md:w-auto">
-                  <CategoryTile category={category} />
-                </li>
-              ))}
-            </CategoryCarousel>
-          </div>
-        </div>
-      </section>
+      <Rail id="categorias" anchor="categorias" title="Categorías">
+        {categories.map((category) => (
+          <RailItem key={category.id} size="category">
+            <CategoryTile category={category} />
+          </RailItem>
+        ))}
+      </Rail>
 
       {featured.length > 0 && (
-        <section aria-labelledby="destacados-titulo" className="bg-surface-light">
-          <div className="mx-auto max-w-page px-4 pb-14 md:px-6 md:pb-20">
-            <h2 id="destacados-titulo" className="text-xl md:text-2xl">
-              Productos destacados
-            </h2>
-            <ul className="mt-8 grid grid-cols-2 gap-x-4 gap-y-8 md:grid-cols-3 md:gap-x-6 lg:grid-cols-4">
-              {featured.map((product) => (
-                <li key={product.id}>
-                  <ProductCard product={product} />
-                </li>
-              ))}
-            </ul>
-          </div>
-        </section>
+        <Rail id="destacados" title="Productos destacados">
+          {featured.map((product) => (
+            <RailItem key={product.id}>
+              <ProductCard product={product} />
+            </RailItem>
+          ))}
+        </Rail>
       )}
-
-      <TrustStrip />
 
       {bestSellers.length > 0 && (
-        <section aria-labelledby="vendidos-titulo" className="bg-surface-light">
-          <div className="mx-auto max-w-page px-4 py-14 md:px-6 md:py-20">
-            <h2 id="vendidos-titulo" className="text-xl md:text-2xl">
-              Lo más vendido
-            </h2>
-            <ul className="mt-8 grid grid-cols-2 gap-x-4 gap-y-8 md:grid-cols-3 md:gap-x-6 lg:grid-cols-4">
-              {bestSellers.map((product) => (
-                <li key={product.id}>
-                  <ProductCard product={product} />
-                </li>
-              ))}
-            </ul>
-          </div>
-        </section>
+        <Rail id="vendidos" title="Lo más vendido">
+          {bestSellers.map((product) => (
+            <RailItem key={product.id}>
+              <ProductCard product={product} />
+            </RailItem>
+          ))}
+        </Rail>
       )}
+
+      {newArrivals.length > 0 && (
+        <Rail id="novedades" title="Novedades">
+          {newArrivals.map((product) => (
+            <RailItem key={product.id}>
+              <ProductCard product={product} />
+            </RailItem>
+          ))}
+        </Rail>
+      )}
+
+      <div className="my-6">
+        <TrustStrip />
+      </div>
+
+      {rails.map(({ category, products }) => (
+        <Rail key={category.id} id={`fila-${category.slug}`} title={category.name} href={`/categorias/${category.slug}`}>
+          {products.map((product) => (
+            <RailItem key={product.id}>
+              <ProductCard product={product} />
+            </RailItem>
+          ))}
+        </Rail>
+      ))}
     </>
   );
 }

@@ -21,8 +21,6 @@ export interface ProductCardData {
   compareAtPrice: number | null;
   hasPriceRange: boolean;
   availability: Availability;
-  /** Si el producto tiene una sola variante, se puede agregar al carrito desde la tarjeta. */
-  singleVariantId: string | null;
 }
 
 export async function getNavCategories(): Promise<CategoryTileData[]> {
@@ -78,7 +76,6 @@ export function toCard(p: CardRow): ProductCardData | null {
     compareAtPrice: cheapest.compareAtPrice,
     hasPriceRange: p.variants.some((v) => v.price !== cheapest.price),
     availability: productAvailability(p.variants),
-    singleVariantId: p.variants.length === 1 ? p.variants[0].id : null,
   };
 }
 
@@ -90,6 +87,67 @@ export async function getFeaturedProducts(limit = 8): Promise<ProductCardData[]>
     select: cardSelect,
   });
   return rows.map(toCard).filter((p): p is ProductCardData => p !== null);
+}
+
+/** Últimos productos activos agregados al catálogo. `exclude` evita repetir los que ya salen como destacados. */
+export async function getNewArrivals(limit = 8, exclude: string[] = []): Promise<ProductCardData[]> {
+  const rows = await db.product.findMany({
+    where: { isActive: true, category: { isActive: true }, id: { notIn: exclude } },
+    orderBy: [{ createdAt: "desc" }, { name: "asc" }],
+    take: limit,
+    select: cardSelect,
+  });
+  return rows.map(toCard).filter((p): p is ProductCardData => p !== null);
+}
+
+export interface CategoryRail {
+  category: CategoryTileData;
+  products: ProductCardData[];
+}
+
+/**
+ * Una fila por categoría principal (con sus subcategorías) para el inicio, en el orden del panel.
+ * Lo disponible va primero y lo agotado al final; las categorías sin productos activos no salen.
+ */
+export async function getCategoryRails(perRail = 10): Promise<CategoryRail[]> {
+  const [categories, rows] = await Promise.all([
+    db.category.findMany({
+      where: { isActive: true },
+      orderBy: { order: "asc" },
+      select: { id: true, name: true, slug: true, image: true, parentId: true },
+    }),
+    db.product.findMany({
+      where: { isActive: true, category: { isActive: true } },
+      orderBy: [{ createdAt: "desc" }, { name: "asc" }],
+      take: 500,
+      select: { ...cardSelect, categoryId: true },
+    }),
+  ]);
+  const byId = new Map(categories.map((c) => [c.id, c]));
+  const topOf = (id: string) => {
+    let c = byId.get(id);
+    while (c?.parentId) c = byId.get(c.parentId);
+    return c;
+  };
+  const rank = { disponible: 0, ultimas: 0, agotado: 1 } as const;
+  const grouped = new Map<string, ProductCardData[]>();
+  for (const row of rows) {
+    const top = topOf(row.categoryId);
+    const card = toCard(row);
+    if (!top || top.parentId || !card) continue;
+    grouped.set(top.id, [...(grouped.get(top.id) ?? []), card]);
+  }
+  return categories
+    .filter((c) => c.parentId === null && grouped.has(c.id))
+    .map((c) => ({
+      category: { id: c.id, name: c.name, slug: c.slug, image: c.image },
+      products: grouped
+        .get(c.id)!
+        .map((p, i) => ({ p, i }))
+        .sort((a, b) => rank[a.p.availability] - rank[b.p.availability] || a.i - b.i)
+        .slice(0, perRail)
+        .map(({ p }) => p),
+    }));
 }
 
 /** Más vendidos según pedidos pagados reales. Sin ventas devuelve una lista vacía y la sección se oculta. */

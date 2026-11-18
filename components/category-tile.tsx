@@ -12,12 +12,12 @@ export function CategoryTile({ category }: { category: CategoryTileData }) {
             alt=""
             width={800}
             height={600}
-            sizes="(min-width: 1024px) 16vw, (min-width: 640px) 33vw, 50vw"
+            sizes="(min-width: 1024px) 12vw, (min-width: 640px) 20vw, 30vw"
             className="size-full object-cover"
           />
         )}
       </div>
-      <span className="mt-3 block text-lg font-medium group-hover:underline">{category.name}</span>
+      <span className="mt-2 block font-medium leading-snug group-hover:underline">{category.name}</span>
     </Link>
   );
 }

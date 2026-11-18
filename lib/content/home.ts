@@ -18,7 +18,7 @@ export const hero: {
     src: "/img/promo/banner-escritorio.webp",
     alt: "Equipo gaming con monitor curvo, torre con ventiladores de colores, tarjeta gráfica, procesador, teclado, mouse y audífonos",
   },
-  imageMobile: { src: "/img/promo/banner-gaming-movil.webp" },
+  imageMobile: { src: "/img/promo/banner-movil.webp" },
 };
 
 export const trust = [

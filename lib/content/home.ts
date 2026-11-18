@@ -15,8 +15,8 @@ export const hero: {
   primaryCta: { label: "Explorar categorías", href: "#categorias" },
   secondaryCta: { label: "Seguir mi pedido", href: "/pedido/seguimiento" },
   image: {
-    src: "/img/promo/banner-gaming.webp",
-    alt: "Equipo gaming con monitor, torre con ventiladores de colores, teclado, mouse, audífonos y tarjeta gráfica",
+    src: "/img/promo/banner-escritorio.webp",
+    alt: "Equipo gaming con monitor curvo, torre con ventiladores de colores, tarjeta gráfica, procesador, teclado, mouse y audífonos",
   },
   imageMobile: { src: "/img/promo/banner-gaming-movil.webp" },
 };

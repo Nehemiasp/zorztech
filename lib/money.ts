@@ -9,6 +9,13 @@ export function formatGTQ(cents: number): string {
   return formatter.format(cents / 100);
 }
 
+const wholeFormatter = new Intl.NumberFormat("es-GT", { style: "currency", currency: "GTQ", maximumFractionDigits: 0 });
+
+/** Igual que formatGTQ, pero sin «.00» cuando el monto es exacto (para avisos: «Envío gratis desde Q400»). */
+export function formatGTQShort(cents: number): string {
+  return cents % 100 === 0 ? wholeFormatter.format(cents / 100) : formatGTQ(cents);
+}
+
 /** Porcentaje de ahorro entero entre un precio anterior y el actual. */
 export function discountPercent(compareAtPrice: number, price: number): number {
   if (compareAtPrice <= price) return 0;

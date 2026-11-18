@@ -1,8 +1,8 @@
 const widths = {
   /** Dos y un poco por pantalla en celular, cinco en escritorio. */
   product: "w-[44%] sm:w-[30%] md:w-[calc((100%-3*1.5rem)/4)] lg:w-[calc((100%-4*1.5rem)/5)]",
-  /** Tres y un poco en celular, ocho en escritorio. */
-  category: "w-[29%] sm:w-[21%] md:w-[calc((100%-5*1.5rem)/6)] lg:w-[calc((100%-7*1.5rem)/8)]",
+  /** Tres y un poco en celular, nueve en escritorio. */
+  category: "w-[27%] sm:w-[18%] md:w-[calc((100%-6*1.5rem)/7)] lg:w-[calc((100%-8*1.5rem)/9)]",
 } as const;
 
 /** Elemento de una fila del inicio. */

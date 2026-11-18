@@ -12,7 +12,6 @@ export const pendingData = {
   hours: "[Horario de atención]",
   socials: "[Redes sociales]",
   paymentMethods: "[Métodos de pago por confirmar]",
-  warranty: "[Garantía del producto]",
   deliveryTime: "[Tiempo de entrega]",
 } as const;
 

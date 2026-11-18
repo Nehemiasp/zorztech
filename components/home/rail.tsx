@@ -51,9 +51,9 @@ export function Rail({
 
   return (
     <section id={anchor} aria-labelledby={`${id}-titulo`} className="scroll-mt-4 bg-surface-light">
-      <div className="mx-auto max-w-page px-4 py-8 md:px-6 md:py-10">
+      <div className="mx-auto max-w-page px-4 py-6 md:px-6 md:py-8">
         <div className="flex items-center justify-between gap-4">
-          <h2 id={`${id}-titulo`} className="text-xl md:text-2xl">
+          <h2 id={`${id}-titulo`} className="text-lg md:text-xl">
             {title}
           </h2>
           <div className="flex shrink-0 items-center gap-2">

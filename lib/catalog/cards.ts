@@ -103,6 +103,10 @@ export async function getNewArrivals(limit = 8, exclude: string[] = []): Promise
 export interface CategoryRail {
   category: CategoryTileData;
   products: ProductCardData[];
+  /** Productos activos de la categoría (no solo los de la fila). */
+  total: number;
+  /** Precio más bajo entre lo disponible, en centavos; null si todo está agotado. */
+  minPrice: number | null;
 }
 
 /**
@@ -139,15 +143,20 @@ export async function getCategoryRails(perRail = 10): Promise<CategoryRail[]> {
   }
   return categories
     .filter((c) => c.parentId === null && grouped.has(c.id))
-    .map((c) => ({
-      category: { id: c.id, name: c.name, slug: c.slug, image: c.image },
-      products: grouped
-        .get(c.id)!
-        .map((p, i) => ({ p, i }))
-        .sort((a, b) => rank[a.p.availability] - rank[b.p.availability] || a.i - b.i)
-        .slice(0, perRail)
-        .map(({ p }) => p),
-    }));
+    .map((c) => {
+      const all = grouped.get(c.id)!;
+      const available = all.filter((p) => p.availability !== "agotado");
+      return {
+        category: { id: c.id, name: c.name, slug: c.slug, image: c.image },
+        products: all
+          .map((p, i) => ({ p, i }))
+          .sort((a, b) => rank[a.p.availability] - rank[b.p.availability] || a.i - b.i)
+          .slice(0, perRail)
+          .map(({ p }) => p),
+        total: all.length,
+        minPrice: available.length ? Math.min(...available.map((p) => p.price)) : null,
+      };
+    });
 }
 
 /** Más vendidos según pedidos pagados reales. Sin ventas devuelve una lista vacía y la sección se oculta. */

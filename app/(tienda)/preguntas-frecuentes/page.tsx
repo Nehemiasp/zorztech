@@ -56,7 +56,8 @@ const faqs: { q: string; a: React.ReactNode }[] = [
     q: "¿Qué garantía tienen los productos?",
     a: (
       <>
-        Consulta <Link href="/garantias" className={link}>Garantías</Link>. <Marker>[Garantía del producto]</Marker>
+        Todos nuestros productos tienen garantía según las condiciones del fabricante o proveedor, y te informamos el plazo al comprar.
+        En <Link href="/garantias" className={link}>Garantías</Link> verás qué cubre y cómo reclamarla.
       </>
     ),
   },

@@ -140,7 +140,7 @@ export default async function ProductPage({ params, searchParams }: Props) {
               <div>
                 <dt className="font-medium">Garantía</dt>
                 <dd className="text-text-muted">
-                  <Marker>{pendingData.warranty}</Marker>{" "}
+                  Según el fabricante o proveedor; te informamos el plazo al comprar. Cubre defectos de fábrica.{" "}
                   <Link href="/garantias" className="text-brand-primary-strong underline underline-offset-2">
                     Ver garantías
                   </Link>

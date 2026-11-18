@@ -41,3 +41,19 @@ export const trust = [
     pending: "hours",
   },
 ] as const;
+
+/** Frase de cada categoría para los banners del inicio. Una categoría sin frase muestra solo su nombre. */
+export const categoryTaglines: Record<string, string> = {
+  celulares: "Celulares para el día a día",
+  laptops: "Laptops para estudiar y trabajar",
+  audio: "Audífonos y sonido para todos los días",
+  accesorios: "Accesorios que sí vas a usar",
+  gaming: "Todo para jugar mejor",
+  "hogar-inteligente": "Tu casa, más inteligente",
+  tablets: "Tablets para ver, leer y crear",
+  monitores: "Monitores para trabajar y jugar",
+  "componentes-de-pc": "Arma o mejora tu PC",
+  almacenamiento: "Más espacio y velocidad para tu equipo",
+  redes: "Internet estable en toda tu casa",
+  smartwatches: "Tu día, en la muñeca",
+};

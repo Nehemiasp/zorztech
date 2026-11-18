@@ -16,7 +16,7 @@ export function ProductCard({ product }: { product: ProductCardData }) {
 
   return (
     <article className="group relative flex flex-col">
-      <div className="relative aspect-square overflow-hidden rounded-md bg-surface-light-alt">
+      <div className="relative aspect-square overflow-hidden rounded-md border border-border bg-surface-light transition-colors duration-150 ease-out group-hover:border-border-strong">
         {product.image && (
           <CatalogImage
             src={product.image.url}
@@ -27,6 +27,11 @@ export function ProductCard({ product }: { product: ProductCardData }) {
             className="size-full object-cover transition-transform duration-200 ease-out group-hover:scale-[1.03] motion-reduce:transition-none motion-reduce:group-hover:scale-100"
           />
         )}
+        {saving > 0 && !product.isSample && (
+          <span className="absolute left-2 top-2 rounded-sm bg-state-error px-2 py-0.5 text-sm font-semibold text-brand-white">
+            −{saving} %<span className="sr-only"> de descuento</span>
+          </span>
+        )}
         {product.isSample && (
           <span className="absolute left-2 top-2 rounded-sm bg-surface-dark-alt px-2 py-0.5 text-sm text-text-on-dark">
             Producto de ejemplo
@@ -36,7 +41,7 @@ export function ProductCard({ product }: { product: ProductCardData }) {
 
       <div className="mt-3 flex flex-1 flex-col gap-1">
         {product.brand && <p className="text-sm text-text-muted">{product.brand}</p>}
-        <h3 className="text-base font-medium leading-snug">
+        <h3 className="line-clamp-2 text-base font-medium leading-snug" title={product.name}>
           <Link
             href={`/productos/${product.slug}`}
             className="rounded-sm after:absolute after:inset-0 group-hover:underline"
@@ -46,15 +51,15 @@ export function ProductCard({ product }: { product: ProductCardData }) {
         </h3>
 
         <p className="mt-1 flex flex-wrap items-baseline gap-x-2">
-          <span className="text-lg font-medium">
+          <span className="text-lg font-semibold">
             {product.hasPriceRange && <span className="text-sm font-normal text-text-muted">Desde </span>}
             {formatGTQ(product.price)}
           </span>
           {product.compareAtPrice && saving > 0 && (
-            <>
-              <s className="text-sm text-text-muted">{formatGTQ(product.compareAtPrice)}</s>
-              <span className="text-sm text-state-success">{saving} % menos</span>
-            </>
+            <s className="text-sm text-text-muted">
+              <span className="sr-only">Antes </span>
+              {formatGTQ(product.compareAtPrice)}
+            </s>
           )}
         </p>
 

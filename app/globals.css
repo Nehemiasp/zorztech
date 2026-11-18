@@ -22,6 +22,7 @@
   --color-surface-dark-raised: #13243d; /* campos y bloques sobre el azul marino */
   --color-surface-light: #ffffff; /* zonas de compra */
   --color-surface-light-alt: #f2f5fa;
+  --color-surface-tint: #eaf2fe; /* fondo azul muy claro de piezas promocionales (fotos con fondo blanco se funden) */
 
   /* Texto */
   --color-text-on-dark: #ffffff;
@@ -45,8 +46,8 @@
   --color-focus: #0563f1;
 
   /* Tipografía: escala 1.25 sobre 16 px */
-  --font-display: var(--font-sora), ui-sans-serif, system-ui, sans-serif;
-  --font-body: var(--font-plex), ui-sans-serif, system-ui, sans-serif;
+  --font-display: var(--font-inter), ui-sans-serif, system-ui, sans-serif;
+  --font-body: var(--font-inter), ui-sans-serif, system-ui, sans-serif;
   --text-sm: 0.875rem;
   --text-sm--line-height: 1.5;
   --text-base: 1rem;
@@ -94,7 +95,7 @@
   h3 {
     font-family: var(--font-display);
     font-weight: 600;
-    letter-spacing: -0.01em;
+    letter-spacing: -0.02em;
     text-wrap: balance;
   }
 
@@ -162,24 +163,19 @@
     transform-origin: 0 0;
   }
 
-  /* Versión vertical: se funde con el fondo negro donde empieza, para que no se vea el corte detrás del texto */
-  @media (max-width: 639px) {
-    .hero-banner-tall {
-      mask-image: linear-gradient(to bottom, transparent, #000 18%);
-    }
+  /* Brillo de la marca, solo en piezas promocionales (sección 3.3 del brief) */
+  .promo-glow::before {
+    content: "";
+    position: absolute;
+    inset: auto -30% -60% auto;
+    width: 80%;
+    aspect-ratio: 1;
+    border-radius: 9999px;
+    background: radial-gradient(closest-side, color-mix(in srgb, var(--color-brand-bright) 45%, transparent), transparent);
+    pointer-events: none;
   }
-
-  /* Scrim para que el texto del hero se lea aunque la imagen cambie: solo sobre el lado del texto, en escritorio */
-  @media (min-width: 1280px) {
-    .hero-banner {
-      mask-image: linear-gradient(90deg, transparent, #000 15%);
-    }
-    .hero-banner::after {
-      content: "";
-      position: absolute;
-      inset: 0;
-      background: linear-gradient(90deg, color-mix(in srgb, var(--color-surface-dark) 70%, transparent), transparent 55%);
-    }
+  .promo-glow > * {
+    position: relative;
   }
 
   /* Esquina inferior derecha cortada con la inclinación de la Z (38° respecto a la vertical) */

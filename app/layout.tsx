@@ -1,16 +1,10 @@
 import type { Metadata, Viewport } from "next";
-import { IBM_Plex_Sans, Sora } from "next/font/google";
+import { Inter } from "next/font/google";
 import { siteConfig } from "@/lib/site";
 import "./globals.css";
 
-// Máximo tres pesos en el proyecto: 400 y 500 en texto, 600 en títulos.
-const sora = Sora({ subsets: ["latin"], weight: ["600"], display: "swap", variable: "--font-sora" });
-const plex = IBM_Plex_Sans({
-  subsets: ["latin"],
-  weight: ["400", "500"],
-  display: "swap",
-  variable: "--font-plex",
-});
+// Una sola familia, sobria y muy legible, con números tabulares: 400 y 500 en texto, 600 en títulos.
+const inter = Inter({ subsets: ["latin"], weight: ["400", "500", "600"], display: "swap", variable: "--font-inter" });
 
 // El CSP lleva un nonce distinto en cada petición (proxy.ts), así que ninguna página puede prerenderse.
 export const dynamic = "force-dynamic";
@@ -38,7 +32,7 @@ export const viewport: Viewport = {
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
-    <html lang="es" className={`${sora.variable} ${plex.variable}`}>
+    <html lang="es" className={inter.variable}>
       <body>
         <a
           href="#contenido"

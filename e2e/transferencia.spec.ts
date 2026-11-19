@@ -96,10 +96,20 @@ test.describe("pago por transferencia", () => {
       await expect(visorPanel).toBeHidden();
       await page.goto(`/admin/pedidos?q=${codigo}`);
       await expect(page.getByText("Con comprobante")).toBeVisible();
+      // Confirma el pago desde la ventana del comprobante, con un segundo paso.
       await page.goto(`/admin/pedidos/${codigo}`);
-      await page.getByRole("button", { name: "Marcar como pagado" }).click();
-      await page.getByRole("dialog", { name: "Confirmar cambio" }).getByRole("button", { name: "Sí, continuar" }).click();
+      await page.getByRole("button", { name: /Ver comprobante 1/ }).click();
+      await expect(visorPanel.getByText(/Monto esperado: Q/)).toBeVisible();
+      await visorPanel.getByRole("button", { name: "Confirmar pago" }).click();
+      await visorPanel.getByRole("button", { name: "Volver" }).click();
+      await expect(page.getByText(/pasó a «Pagado»/)).toHaveCount(0); // «Volver» no aprueba
+      await visorPanel.getByRole("button", { name: "Confirmar pago" }).click();
+      await visorPanel.getByRole("button", { name: "Sí, confirmar pago" }).click();
       await expect(page.getByText(/pasó a «Pagado»/)).toBeVisible();
+      await expect(visorPanel).toBeHidden();
+      // Ya pagado, la ventana del comprobante solo muestra la imagen.
+      await page.getByRole("button", { name: /Ver comprobante 1/ }).click();
+      await expect(visorPanel.getByRole("button", { name: "Confirmar pago" })).toHaveCount(0);
 
       // El cliente ve su pedido pagado.
       await tienda.goto(`/pedido/${codigo}/confirmacion`);

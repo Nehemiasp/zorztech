@@ -1,6 +1,6 @@
 "use client";
 
-import { useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { ChevronLeft, ChevronRight, ExternalLink, X } from "lucide-react";
 import { buttonStyles } from "@/components/ui/button";
 
@@ -13,10 +13,26 @@ export interface ProofItem {
 /**
  * Comprobantes de transferencia en una ventana sobre la página, sin abrir otra pestaña.
  * «thumbs» muestra miniaturas (panel); «links» muestra enlaces de texto (cliente).
+ * `footer` agrega acciones al pie de la ventana (en el panel, confirmar el pago). Cada vez que cambia `closeSignal`,
+ * la ventana se cierra (por ejemplo, después de confirmar).
  */
-export function ProofViewer({ items, variant = "links" }: { items: ProofItem[]; variant?: "thumbs" | "links" }) {
+export function ProofViewer({
+  items,
+  variant = "links",
+  footer,
+  closeSignal,
+}: {
+  items: ProofItem[];
+  variant?: "thumbs" | "links";
+  footer?: React.ReactNode;
+  closeSignal?: number;
+}) {
   const dialog = useRef<HTMLDialogElement>(null);
   const [index, setIndex] = useState(0);
+
+  useEffect(() => {
+    if (closeSignal) dialog.current?.close();
+  }, [closeSignal]);
   if (items.length === 0) return null;
 
   const open = (i: number) => {
@@ -26,7 +42,7 @@ export function ProofViewer({ items, variant = "links" }: { items: ProofItem[]; 
   const step = (delta: number) => setIndex((i) => (i + delta + items.length) % items.length);
   const current = items[index];
   const iconButton =
-    "inline-flex size-11 items-center justify-center rounded-full bg-surface-light text-text-on-light transition-colors duration-150 ease-out hover:bg-surface-light-alt";
+    "inline-flex size-11 shrink-0 items-center justify-center rounded-full bg-surface-light text-text-on-light transition-colors duration-150 ease-out hover:bg-surface-light-alt";
 
   return (
     <>
@@ -80,7 +96,7 @@ export function ProofViewer({ items, variant = "links" }: { items: ProofItem[]; 
             </button>
           </div>
 
-          <div className="relative flex h-[min(72dvh,40rem)] items-center justify-center overflow-hidden rounded-md bg-surface-dark">
+          <div className={`relative flex ${footer ? "h-[min(60dvh,36rem)]" : "h-[min(72dvh,40rem)]"} items-center justify-center overflow-hidden rounded-md bg-surface-dark`}>
             {/* eslint-disable-next-line @next/next/no-img-element -- imagen privada servida por la API, sin optimizador */}
             <img src={current.src} alt={`Comprobante ${index + 1}`} className="size-full object-contain" />
             {items.length > 1 && (
@@ -97,13 +113,14 @@ export function ProofViewer({ items, variant = "links" }: { items: ProofItem[]; 
             )}
           </div>
 
-          <p className="text-center">
+          <div className={`flex flex-col gap-3 ${footer ? "sm:flex-row sm:items-center sm:justify-between" : "items-center"}`}>
             <a href={current.src} target="_blank" rel="noopener noreferrer" className={buttonStyles("secondary-dark", "gap-2")}>
               <ExternalLink aria-hidden size={18} />
               Abrir en tamaño original
               <span className="sr-only"> (se abre en otra pestaña)</span>
             </a>
-          </p>
+            {footer}
+          </div>
         </div>
       </dialog>
     </>

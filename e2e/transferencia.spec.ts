@@ -58,7 +58,12 @@ test.describe("pago por transferencia", () => {
       await tienda.getByLabel(/Foto o captura/).setInputFiles({ name: "comprobante.png", mimeType: "image/png", buffer: png });
       await tienda.getByRole("button", { name: "Enviar comprobante" }).click();
       await expect(tienda.getByText(/Recibimos tu comprobante/)).toBeVisible();
-      await expect(tienda.getByRole("link", { name: /Ver comprobante 1/ })).toBeVisible();
+      // El comprobante se ve en una ventana sobre la página, sin abrir otra pestaña.
+      await tienda.getByRole("button", { name: "Ver comprobante 1" }).click();
+      const visor = tienda.getByRole("dialog", { name: "Comprobante 1 de 1" });
+      await expect(visor.getByRole("img", { name: "Comprobante 1" })).toBeVisible();
+      await visor.getByRole("button", { name: "Cerrar" }).click();
+      await expect(visor).toBeHidden();
 
       // El enlace directo del pedido funciona sin sesión ni cookie; el comprobante no se ve sin ese enlace.
       const enlace = (await tienda.getByText(/\/confirmacion\?t=/).first().textContent())!.trim();
@@ -84,7 +89,11 @@ test.describe("pago por transferencia", () => {
       await page.goto(`/admin/pedidos/${codigo}`);
       await expect(page.getByText("transferencia", { exact: true })).toBeVisible();
       await expect(page.getByText("Comprobantes del cliente")).toBeVisible();
-      await expect(page.getByRole("link", { name: /Abrir comprobante 1/ })).toBeVisible();
+      await page.getByRole("button", { name: /Ver comprobante 1/ }).click();
+      const visorPanel = page.getByRole("dialog", { name: "Comprobante 1 de 1" });
+      await expect(visorPanel.getByRole("img", { name: "Comprobante 1" })).toBeVisible();
+      await page.keyboard.press("Escape");
+      await expect(visorPanel).toBeHidden();
       await page.goto(`/admin/pedidos?q=${codigo}`);
       await expect(page.getByText("Con comprobante")).toBeVisible();
       await page.goto(`/admin/pedidos/${codigo}`);

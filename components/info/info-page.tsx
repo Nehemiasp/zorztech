@@ -1,5 +1,4 @@
 import { Breadcrumbs } from "@/components/breadcrumbs";
-import { Marker } from "@/components/marker";
 
 /** Estructura común de las páginas de información: migas de pan, un título y texto con largo de línea cómodo. */
 export function InfoPage({ title, intro, children }: { title: string; intro?: string; children: React.ReactNode }) {
@@ -19,15 +18,5 @@ export function InfoSection({ title, children }: { title: string; children: Reac
       <h2 className="text-xl">{title}</h2>
       <div className="mt-3 space-y-3 text-text-muted">{children}</div>
     </section>
-  );
-}
-
-/** Texto que debe entregar el dueño. Se ve como marcador, con una nota de qué va ahí. */
-export function PolicyPlaceholder({ marker, hint }: { marker: string; hint: string }) {
-  return (
-    <p>
-      <Marker>{marker}</Marker>
-      <span className="mt-1 block text-sm">{hint}</span>
-    </p>
   );
 }

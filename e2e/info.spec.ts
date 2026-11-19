@@ -37,9 +37,13 @@ test.describe("páginas de información", () => {
     await expect(page.getByText(/Recogida en tienda/)).toHaveCount(0);
   });
 
-  test("las políticas pendientes se ven como marcador, no como texto inventado", async ({ page }) => {
+  test("las políticas muestran el texto del dueño, sin marcadores pendientes", async ({ page }) => {
+    for (const ruta of ["/devoluciones", "/garantias", "/terminos", "/privacidad"]) {
+      await page.goto(ruta);
+      await expect(page.locator("main .marker"), ruta).toHaveCount(0);
+    }
     await page.goto("/devoluciones");
-    await expect(page.getByText("[Política de devoluciones del cliente]")).toBeVisible();
+    await expect(page.getByText("Toda solicitud de cambio o devolución deberá comunicarse directamente a ZorzTech.")).toBeVisible();
   });
 
   test("el pie de página lleva a cada página de información", async ({ page }) => {

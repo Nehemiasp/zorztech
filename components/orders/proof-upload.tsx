@@ -3,6 +3,7 @@
 import { useRef, useState } from "react";
 import { useRouter } from "next/navigation";
 import { buttonStyles } from "@/components/ui/button";
+import { ProofViewer } from "./proof-viewer";
 
 const MAX_SIDE = 1600;
 
@@ -73,18 +74,7 @@ export function ProofUpload({ code, token, count, max }: Props) {
       </h2>
       <p className="mt-1 text-text-muted">Sube una foto o captura del comprobante para que confirmemos tu pago más rápido. Es opcional.</p>
 
-      {count > 0 && (
-        <ul className="mt-3 space-y-1">
-          {Array.from({ length: count }, (_, i) => (
-            <li key={i}>
-              <a href={`/api/pedidos/${encodeURIComponent(code)}/comprobante/${i}${suffix}`} target="_blank" rel="noopener noreferrer" className="inline-flex min-h-11 items-center text-brand-primary-strong underline underline-offset-2">
-                Ver comprobante {i + 1}
-                <span className="sr-only"> (se abre en otra pestaña)</span>
-              </a>
-            </li>
-          ))}
-        </ul>
-      )}
+      <ProofViewer items={Array.from({ length: count }, (_, i) => ({ src: `/api/pedidos/${encodeURIComponent(code)}/comprobante/${i}${suffix}` }))} />
 
       {count < max ? (
         <div className="mt-3 space-y-3">

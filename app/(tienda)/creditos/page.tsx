@@ -11,24 +11,6 @@ const link = "text-brand-primary-strong underline underline-offset-2";
 
 const credits: { category: string; title: string; author: string; license: string; licenseUrl?: string; source: string; sourceUrl: string }[] = [
   {
-    category: "Almacenamiento",
-    title: "USB Stick",
-    author: "ccnull.de Bilddatenbank",
-    license: "CC BY 2.0",
-    licenseUrl: "https://creativecommons.org/licenses/by/2.0/",
-    source: "Flickr",
-    sourceUrl: "https://www.flickr.com/photos/115225894@N07/54413288961",
-  },
-  {
-    category: "Redes",
-    title: "weißer Router auf weißen Hintergrund",
-    author: "ccnull.de Bilddatenbank",
-    license: "CC BY 2.0",
-    licenseUrl: "https://creativecommons.org/licenses/by/2.0/",
-    source: "Flickr",
-    sourceUrl: "https://www.flickr.com/photos/115225894@N07/53646461136",
-  },
-  {
     category: "Tablets",
     title: "Tablet Computer",
     author: "Birch Landing Home",
@@ -43,22 +25,6 @@ const credits: { category: string; title: string; author: string; license: strin
     license: "CC0 (dominio público)",
     source: "Flickr",
     sourceUrl: "https://www.flickr.com/photos/198895458@N04/53097405789",
-  },
-  {
-    category: "Componentes de PC",
-    title: "CPU Processor",
-    author: "Lenharth Systems",
-    license: "CC0 (dominio público)",
-    source: "StockSnap",
-    sourceUrl: "https://stocksnap.io/photo/cpu-processor-SPQ6DQLFLF",
-  },
-  {
-    category: "Smartwatches",
-    title: "Smartwatch digital device technology",
-    author: "Autor no indicado",
-    license: "CC0 (dominio público)",
-    source: "rawpixel",
-    sourceUrl: "https://www.rawpixel.com/image/6042008/photo-image-cloud-light-public-domain",
   },
 ];
 

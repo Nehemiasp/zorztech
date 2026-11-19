@@ -7,7 +7,7 @@ import { CatalogImage } from "./catalog-image";
  * esos archivos: el optimizador de imágenes guarda en caché por dirección y seguiría mostrando la foto vieja.
  * Debe coincidir con images.localPatterns en next.config.ts.
  */
-export const CATEGORY_IMAGES_VERSION = "2";
+export const CATEGORY_IMAGES_VERSION = "3";
 
 const imageSrc = (image: string) => (image.startsWith("/img/categorias/") ? `${image}?v=${CATEGORY_IMAGES_VERSION}` : image);
 

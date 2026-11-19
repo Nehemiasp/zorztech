@@ -17,7 +17,7 @@ const nextConfig: NextConfig = {
     // (ver CATEGORY_IMAGES_VERSION en components/category-tile.tsx).
     localPatterns: [
       { pathname: "/**", search: "" },
-      { pathname: "/img/categorias/**", search: "?v=2" },
+      { pathname: "/img/categorias/**", search: "?v=3" },
     ],
     // Imágenes que se suben desde el panel a Vercel Blob.
     remotePatterns: [{ protocol: "https", hostname: "*.public.blob.vercel-storage.com" }],

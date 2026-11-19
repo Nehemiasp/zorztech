@@ -134,7 +134,7 @@ export function TransferPromo({ transfer }: { transfer: TransferSettings }) {
 
   return (
     <section aria-labelledby="transferencia-titulo" className="mx-auto max-w-page px-4 py-4 md:px-6">
-      <div className="flex flex-col gap-6 overflow-hidden rounded-lg border border-border border-l-4 border-l-brand-primary bg-surface-light p-5 md:p-6 xl:flex-row xl:items-center xl:justify-between xl:border-l xl:border-l-border xl:px-8 xl:py-7">
+      <div className="flex flex-col gap-6 overflow-hidden rounded-lg border border-border bg-surface-light p-5 md:p-6 xl:flex-row xl:items-center xl:justify-between xl:px-8 xl:py-7">
         <div className="flex items-center gap-4 xl:gap-6">
           <span className="inline-flex size-12 shrink-0 items-center justify-center rounded-full bg-surface-tint text-brand-primary md:size-14 xl:size-16">
             <Landmark aria-hidden size={26} strokeWidth={1.75} />

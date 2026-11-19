@@ -45,7 +45,8 @@ test("el correo de «enviado» lleva el número de guía y la empresa", async ()
   };
   const shipped = orderStatusEmail({ ...base, status: "enviado", trackingNumber: "GT-1", carrier: "Paquetería <x>" })!;
   assert.match(shipped.text, /Número de guía: GT-1 \(Paquetería <x>\)/);
-  assert.match(shipped.html, /GT-1 \(Paquetería &lt;x&gt;\)/, "el HTML escapa la empresa");
+  assert.match(shipped.html, />GT-1</, "el número de guía va destacado");
+  assert.match(shipped.html, /Paquetería &lt;x&gt;/, "el HTML escapa la empresa");
   const preparing = orderStatusEmail({ ...base, status: "en_preparacion", trackingNumber: "GT-1" })!;
   assert.doesNotMatch(preparing.text, /guía/i);
 });

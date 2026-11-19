@@ -80,3 +80,13 @@ test("los adjuntos pasan a Resend y el correo de «enviado» avisa que la guía 
   assert.doesNotMatch(noGuide.text, /adjuntamos/i);
   assert.equal(buildResendPayload(noGuide, "tienda@correo.test").attachments, undefined);
 });
+
+test("los correos llevan el logo de la tienda, el código del pedido y el avance", () => {
+  for (const [name, message] of Object.entries(templates)) {
+    assert.match(message.html, /<img src="[^"]+\/brand\/zorztech-logo-correo\.png"[^>]*alt="ZorzTech"/, `${name}: logo con texto alternativo`);
+  }
+  assert.match(templates.pagado.html, /Pedido ZT-ABC123/);
+  // El avance marca el paso actual: «pagado» es el primero de cuatro.
+  assert.equal((templates.pagado.html.match(/&#10003;/g) ?? []).length, 1);
+  assert.equal((templates.enviado.html.match(/&#10003;/g) ?? []).length, 3);
+});

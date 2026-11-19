@@ -64,6 +64,8 @@ export async function getAdminOrder(code: string) {
       payments: { orderBy: { createdAt: "desc" }, select: { id: true, provider: true, providerRef: true, status: true, amount: true, createdAt: true } },
       events: { orderBy: { createdAt: "desc" } },
       user: { select: { id: true, name: true, email: true } },
+      // Solo los datos de la guía, no el archivo.
+      shipmentDocument: { select: { type: true, size: true, uploadedAt: true } },
     },
   });
   if (!order) return null;

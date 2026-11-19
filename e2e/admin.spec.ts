@@ -72,8 +72,24 @@ test.describe("pedidos en el panel", () => {
     // Preparar → enviar → entregar
     await page.getByRole("button", { name: "Empezar a preparar" }).click();
     await expect(page.getByText(/pasó a «En preparación»/)).toBeVisible();
+    // Enviar pide el número de guía; la foto o PDF es opcional.
+    await expect(page.getByRole("button", { name: "Marcar listo para recoger" })).toHaveCount(0);
     await page.getByRole("button", { name: "Marcar como enviado" }).click();
-    await expect(page.getByText(/pasó a «Enviado»/)).toBeVisible();
+    const envio = page.getByRole("dialog", { name: "Marcar como enviado" });
+    await expect(envio).toBeVisible();
+    await envio.getByRole("button", { name: "Marcar como enviado" }).click();
+    await expect(envio).toBeVisible(); // sin número de guía no avanza
+    await envio.getByLabel("Número de guía").fill("GT-2026-0042");
+    await envio.getByLabel("Empresa de envío (opcional)").fill("Paquetería de prueba");
+    await envio.getByLabel("Foto o PDF de la guía (opcional)").setInputFiles({
+      name: "guia.png",
+      mimeType: "image/png",
+      buffer: Buffer.from("iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mNkYPhfDwAChwGA60e6kgAAAABJRU5ErkJggg==", "base64"),
+    });
+    await envio.getByRole("button", { name: "Marcar como enviado" }).click();
+    await expect(page.getByText(/pasó a «Enviado» con la guía GT-2026-0042/)).toBeVisible();
+    await expect(envio).toBeHidden();
+    await expect(page.getByRole("link", { name: /Ver foto de la guía/ })).toBeVisible();
     await page.getByRole("button", { name: "Marcar como entregado" }).click();
     await expect(page.getByText(/pasó a «Entregado»/)).toBeVisible();
     await expect(page.getByText("Este pedido está en un estado final")).toBeVisible();
@@ -82,6 +98,15 @@ test.describe("pedidos en el panel", () => {
     await tienda.goto(`/pedido/seguimiento?codigo=${codigo}`);
     await expect(tienda.getByRole("status").filter({ hasText: "Entregado" })).toBeVisible();
     await expect(tienda.getByText("Cliente pidió factura")).toHaveCount(0);
+    await expect(tienda.getByText("GT-2026-0042")).toBeVisible();
+    await expect(tienda.getByText("· Paquetería de prueba")).toBeVisible();
+    const guia = await tienda.request.get(`/api/pedidos/${codigo}/guia`);
+    expect(guia.status()).toBe(200);
+    expect(guia.headers()["content-type"]).toBe("image/png");
+    // Sin acceso al pedido, la guía no se ve.
+    const anonimo = await browser.newContext();
+    expect((await anonimo.request.get(`/api/pedidos/${codigo}/guia`)).status()).toBe(404);
+    await anonimo.close();
     await cliente.close();
 
     // Exportación a CSV con los filtros de la lista.

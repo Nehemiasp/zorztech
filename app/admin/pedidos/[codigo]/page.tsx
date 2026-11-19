@@ -33,8 +33,10 @@ export default async function AdminOrderPage({ params }: { params: Promise<{ cod
   const order = await getAdminOrder(normalizeOrderCode((await params).codigo));
   if (!order) notFound();
 
+  // Cada forma de entrega tiene su paso: a domicilio se envía (con guía); en tienda, queda listo para recoger.
+  const notForThisMethod: OrderStatus = order.shippingMethod === "domicilio" ? "listo_para_recoger" : "enviado";
   const options: StatusOption[] = allowedTransitions(order.status)
-    .filter((to) => manual[to])
+    .filter((to) => manual[to] && to !== notForThisMethod)
     .map((to) => ({ to, ...manual[to]! }));
   const payment = order.payments[0];
   const proofEvents = order.events.filter((e) => e.type === "comprobante").reverse();
@@ -99,6 +101,31 @@ export default async function AdminOrderPage({ params }: { params: Promise<{ cod
           <Panel title="Cambiar estado">
             <StatusActions code={order.code} options={options} />
           </Panel>
+
+          {order.trackingNumber && (
+            <Panel title="Guía de envío">
+              <dl className="space-y-1">
+                <div className="flex justify-between gap-3">
+                  <dt className="text-text-muted">Número de guía</dt>
+                  <dd className="break-all text-right font-medium">{order.trackingNumber}</dd>
+                </div>
+                {order.carrier && (
+                  <div className="flex justify-between gap-3">
+                    <dt className="text-text-muted">Empresa</dt>
+                    <dd className="text-right">{order.carrier}</dd>
+                  </div>
+                )}
+              </dl>
+              {order.shipmentDocument && (
+                <p className="mt-3">
+                  <a href={`/api/pedidos/${order.code}/guia`} target="_blank" rel="noopener noreferrer" className="text-brand-primary-strong underline underline-offset-2">
+                    Ver {order.shipmentDocument.type === "application/pdf" ? "PDF" : "foto"} de la guía
+                    <span className="sr-only"> (se abre en otra pestaña)</span>
+                  </a>
+                </p>
+              )}
+            </Panel>
+          )}
 
           <Panel title="Cliente">
             <p>

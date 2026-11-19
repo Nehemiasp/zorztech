@@ -25,6 +25,8 @@ export interface OrderEmailData {
   pickupLocation?: { name: string; address: string; hours: string } | null;
   /** Enlace directo para ver el pedido sin iniciar sesión. Si falta, se usa el seguimiento con código y correo. */
   viewUrl?: string;
+  trackingNumber?: string | null;
+  carrier?: string | null;
 }
 
 function layout(title: string, bodyHtml: string): string {
@@ -109,6 +111,9 @@ export function orderStatusEmail(order: OrderEmailData): EmailMessage | null {
     pickup && order.pickupLocation
       ? `\nDónde recoger: ${order.pickupLocation.name}, ${order.pickupLocation.address}. Horario: ${order.pickupLocation.hours}.`
       : "";
+  const guide = order.status === "enviado" && order.trackingNumber ? `${order.trackingNumber}${order.carrier ? ` (${order.carrier})` : ""}` : "";
+  const guideHtml = guide ? `<p style="margin:16px 0 0"><strong>Número de guía:</strong> ${esc(guide)}</p>` : "";
+  const guideText = guide ? `\nNúmero de guía: ${guide}` : "";
   const action = order.viewUrl ?? (order.status === "pago_fallido" ? `${siteConfig.url}/pedido/${order.code}/confirmacion` : trackingUrl());
   const actionLabel = order.status === "pago_fallido" ? "Intentar de nuevo" : "Seguir mi pedido";
 
@@ -117,9 +122,9 @@ export function orderStatusEmail(order: OrderEmailData): EmailMessage | null {
     subject: `${statusLabel[order.status]}: pedido ${order.code}`,
     html: layout(
       title,
-      `<p style="margin:0 0 16px;line-height:1.5">${esc(text)}</p>${itemsTable(order)}${pickup}${button(action, actionLabel)}<p style="font-size:13px;color:${color.muted};margin:16px 0 0">Para seguir tu pedido sin cuenta, usa el código ${esc(order.code)} y este correo.</p>`,
+      `<p style="margin:0 0 16px;line-height:1.5">${esc(text)}</p>${guideHtml}${itemsTable(order)}${pickup}${button(action, actionLabel)}<p style="font-size:13px;color:${color.muted};margin:16px 0 0">Para seguir tu pedido sin cuenta, usa el código ${esc(order.code)} y este correo.</p>`,
     ),
-    text: `${title}\n\n${text}\n\n${itemsText(order)}${pickupText}\n\n${actionLabel}: ${action}\nPara seguir tu pedido sin cuenta usa el código ${order.code} y este correo.`,
+    text: `${title}\n\n${text}${guideText}\n\n${itemsText(order)}${pickupText}\n\n${actionLabel}: ${action}\nPara seguir tu pedido sin cuenta usa el código ${order.code} y este correo.`,
   };
 }
 

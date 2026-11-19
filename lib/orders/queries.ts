@@ -9,6 +9,7 @@ export const getOrderByCode = cache(async (code: string) =>
       pickupLocation: true,
       events: { orderBy: { createdAt: "asc" } },
       payments: { orderBy: { createdAt: "desc" }, take: 1, select: { status: true, provider: true } },
+      shipmentDocument: { select: { type: true } },
     },
   }),
 );

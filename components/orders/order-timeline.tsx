@@ -17,6 +17,23 @@ export function OrderTimeline({ order }: { order: OrderDetail }) {
       </p>
       <p className="text-text-muted">{statusDescription[order.status]}</p>
 
+      {order.trackingNumber && (order.status === "enviado" || order.status === "entregado") && (
+        <div className="mt-4 rounded-md border border-border bg-surface-light-alt p-4">
+          <p>
+            Número de guía: <strong className="font-medium tracking-wide">{order.trackingNumber}</strong>
+            {order.carrier && <span className="text-text-muted"> · {order.carrier}</span>}
+          </p>
+          {order.shipmentDocument && (
+            <p className="mt-1">
+              <a href={`/api/pedidos/${order.code}/guia`} target="_blank" rel="noopener noreferrer" className="text-brand-primary-strong underline underline-offset-2">
+                Ver {order.shipmentDocument.type === "application/pdf" ? "PDF" : "foto"} de la guía
+                <span className="sr-only"> (se abre en otra pestaña)</span>
+              </a>
+            </p>
+          )}
+        </div>
+      )}
+
       {!stoppedEarly && (
         <ol className="mt-5 space-y-0" aria-label="Avance del pedido">
           {steps.map((s, i) => {

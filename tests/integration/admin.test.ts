@@ -11,6 +11,9 @@ import { createOrderFromCart } from "../../lib/orders/create";
 import { changeOrderStatus } from "../../lib/orders/admin";
 import { expireStaleReservations } from "../../lib/orders/expiry";
 import { applyPaymentResult } from "../../lib/orders/payment-result";
+import { readGuideFile, readShipmentDocument, shipOrder } from "../../lib/orders/shipment";
+import { loadShipping } from "../../lib/settings";
+import { homeShippingCost } from "../../lib/shipping";
 
 const run = Math.random().toString(36).slice(2, 8);
 const PRICE = 100000;
@@ -26,13 +29,16 @@ const coupons: string[] = [];
 const stock = () => db.productVariant.findUniqueOrThrow({ where: { id: variantId }, select: { stock: true, reservedStock: true } });
 const setStock = (n: number) => db.productVariant.update({ where: { id: variantId }, data: { stock: n, reservedStock: 0 } });
 
-async function buy(quantity = 1, couponCode?: string) {
+async function buy(quantity = 1, couponCode?: string, method: "recogida" | "domicilio" = "recogida") {
   const cart = await db.cart.create({ data: { sessionId: `adm-${run}-${Math.random().toString(36).slice(2)}`, couponCode } });
   carts.push(cart.id);
   await db.cartItem.create({ data: { cartId: cart.id, variantId, quantity, priceAtAdd: PRICE } });
   const input = (expected: number): CheckoutInput => ({
     contact: { name: "Cliente de prueba", email: `adm-${run}@correo.test`, phone: "55551234" },
-    delivery: { method: "recogida", pickupLocationId: pickupId },
+    delivery:
+      method === "recogida"
+        ? { method: "recogida", pickupLocationId: pickupId }
+        : { method: "domicilio", nombre: "Cliente de prueba", telefono: "55551234", departamento: "Guatemala", municipio: "Guatemala", direccion: "6a avenida 12-34, zona 1" },
     billing: { taxId: "CF", taxName: "Consumidor final" },
     paymentMethod: "simulado",
     acceptTerms: true,
@@ -42,9 +48,11 @@ async function buy(quantity = 1, couponCode?: string) {
   return { cartId: cart.id, input };
 }
 
-async function paidOrder(quantity = 1) {
-  const { cartId, input } = await buy(quantity);
-  const result = await createOrderFromCart(input(PRICE * quantity), null, cartId);
+async function paidOrder(quantity = 1, method: "recogida" | "domicilio" = "recogida") {
+  const { cartId, input } = await buy(quantity, undefined, method);
+  const goods = PRICE * quantity;
+  const shipping = method === "domicilio" ? homeShippingCost(goods, await loadShipping()) : 0;
+  const result = await createOrderFromCart(input(goods + shipping), null, cartId);
   assert.ok(result.ok);
   orders.push(result.code);
   const order = await db.order.findUniqueOrThrow({ where: { code: result.code }, include: { payments: true } });
@@ -77,21 +85,55 @@ after(async () => {
 });
 
 describe("estados del pedido desde el panel", () => {
-  test("del pago a la entrega, paso a paso, sin saltos", async () => {
+  test("del pago a la entrega, paso a paso, sin saltos (recogida en tienda)", async () => {
     await setStock(10);
     const order = await paidOrder();
     assert.deepEqual(await stock(), { stock: 9, reservedStock: 0 });
 
     const skip = await changeOrderStatus({ code: order.code, to: "entregado", actorId: adminId });
     assert.ok(!skip.ok && /no puede pasar/.test(skip.message));
-    for (const to of ["en_preparacion", "enviado", "entregado"] as const) {
+    assert.ok((await changeOrderStatus({ code: order.code, to: "en_preparacion", actorId: adminId })).ok);
+    const shipped = await shipOrder({ code: order.code, trackingNumber: "GT123", actorId: adminId });
+    assert.ok(!shipped.ok && /recoger en tienda/.test(shipped.message), "un pedido para recoger no lleva guía");
+    for (const to of ["listo_para_recoger", "entregado"] as const) {
       const r = await changeOrderStatus({ code: order.code, to, actorId: adminId });
       assert.ok(r.ok, r.message);
     }
     const events = await db.orderEvent.findMany({ where: { orderId: order.id, type: "estado" }, orderBy: { createdAt: "asc" } });
-    assert.deepEqual(events.map((e) => e.toStatus), ["pagado", "en_preparacion", "enviado", "entregado"]);
+    assert.deepEqual(events.map((e) => e.toStatus), ["pagado", "en_preparacion", "listo_para_recoger", "entregado"]);
     assert.equal(events.at(-1)?.actorId, adminId, "el cambio queda a nombre de quien lo hizo");
     assert.deepEqual(await stock(), { stock: 9, reservedStock: 0 }, "entregar no toca el inventario");
+  });
+
+  test("enviar a domicilio pide el número de guía y guarda la foto o PDF", async () => {
+    await setStock(10);
+    const order = await paidOrder(1, "domicilio");
+    assert.ok((await changeOrderStatus({ code: order.code, to: "en_preparacion", actorId: adminId })).ok);
+
+    const noGuide = await changeOrderStatus({ code: order.code, to: "enviado", actorId: adminId });
+    assert.ok(!noGuide.ok && /número de guía/.test(noGuide.message), "sin guía no se puede marcar como enviado");
+    const pickup = await changeOrderStatus({ code: order.code, to: "listo_para_recoger", actorId: adminId });
+    assert.ok(!pickup.ok, "un pedido a domicilio no queda «listo para recoger»");
+
+    const fake = await readGuideFile(new File([new TextEncoder().encode("<html>no soy una guía</html>")], "guia.pdf", { type: "application/pdf" }));
+    assert.ok(!fake.ok, "el tipo se lee de los bytes, no del nombre ni del tipo declarado");
+    const pdfBytes = new TextEncoder().encode("%PDF-1.4\n1 0 obj<<>>endobj\ntrailer<<>>\n%%EOF");
+    const pdf = await readGuideFile(new File([pdfBytes], "guia.pdf", { type: "application/pdf" }));
+    assert.ok(pdf.ok && pdf.file);
+
+    const r = await shipOrder({ code: order.code, trackingNumber: "GT-2026-0001", carrier: "Paquetería de prueba", file: pdf.file, actorId: adminId });
+    assert.ok(r.ok, r.message);
+    const saved = await db.order.findUniqueOrThrow({ where: { id: order.id }, select: { status: true, trackingNumber: true, carrier: true } });
+    assert.deepEqual(saved, { status: "enviado", trackingNumber: "GT-2026-0001", carrier: "Paquetería de prueba" });
+    const doc = await readShipmentDocument(order.code);
+    assert.equal(doc?.type, "application/pdf");
+    assert.deepEqual([...doc!.data], [...pdfBytes]);
+    const event = await db.orderEvent.findFirstOrThrow({ where: { orderId: order.id, toStatus: "enviado" } });
+    assert.match(event.note ?? "", /GT-2026-0001/, "la guía queda en el historial");
+
+    const again = await shipOrder({ code: order.code, trackingNumber: "OTRA", actorId: adminId });
+    assert.ok(again.ok, "repetir no falla");
+    assert.equal((await db.order.findUniqueOrThrow({ where: { id: order.id } })).trackingNumber, "GT-2026-0001", "ni cambia la guía guardada");
   });
 
   test("cancelar un pedido pagado devuelve las unidades y reembolsar usa al proveedor", async () => {

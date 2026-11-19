@@ -115,6 +115,8 @@ export async function sendOrderStatusEmail(orderId: string): Promise<void> {
       items: order.items,
       pickupLocation: order.pickupLocation,
       viewUrl: orderViewUrl(order.code),
+      trackingNumber: order.trackingNumber,
+      carrier: order.carrier,
     });
     if (message) await sendEmail(message);
   } catch (error) {

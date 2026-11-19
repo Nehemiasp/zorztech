@@ -245,12 +245,16 @@ model Order {
   coupon               Coupon?         @relation(fields: [couponId], references: [id], onDelete: SetNull)
   // Hasta cuándo está reservado el stock de un pedido pendiente_pago.
   reservationExpiresAt DateTime?
+  // Número de guía y empresa de envío: se piden al marcar el pedido como enviado.
+  trackingNumber       String?
+  carrier              String?
   createdAt            DateTime        @default(now())
   updatedAt            DateTime        @updatedAt
   paidAt               DateTime?
   items                OrderItem[]
   payments             Payment[]
   events               OrderEvent[]
+  shipmentDocument     ShipmentDocument?
 
   @@index([userId])
   @@index([cartId])
@@ -310,6 +314,19 @@ model OrderEvent {
 
   @@index([orderId, createdAt])
   @@map("order_events")
+}
+
+// Foto o PDF de la guía de envío (opcional). En su propia tabla para que listar pedidos no cargue el archivo.
+model ShipmentDocument {
+  id         String   @id @default(cuid())
+  orderId    String   @unique
+  order      Order    @relation(fields: [orderId], references: [id], onDelete: Cascade)
+  type       String
+  size       Int
+  data       Bytes
+  uploadedAt DateTime @default(now())
+
+  @@map("shipment_documents")
 }
 
 model PickupLocation {

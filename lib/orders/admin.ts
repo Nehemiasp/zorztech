@@ -25,6 +25,11 @@ export async function changeOrderStatus(input: { code: string; to: OrderStatus; 
   if (!canTransition(order.status, input.to)) {
     return { ok: false, message: `Un pedido «${statusLabel[order.status]}» no puede pasar a «${statusLabel[input.to]}».` };
   }
+  // Enviado necesita el número de guía (shipOrder en shipment.ts); cada forma de entrega tiene su propio paso.
+  if (input.to === "enviado") return { ok: false, message: "Para marcarlo como enviado escribe el número de guía." };
+  if (input.to === "listo_para_recoger" && order.shippingMethod !== "recogida") {
+    return { ok: false, message: "Este pedido es con envío a domicilio: se marca como enviado, no como listo para recoger." };
+  }
 
   let note = input.note?.trim() || undefined;
 

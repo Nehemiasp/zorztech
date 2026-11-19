@@ -1,7 +1,7 @@
 import { formatGTQ } from "../money";
 import { statusLabel } from "../orders/status";
 import { siteConfig } from "../site";
-import type { EmailMessage } from "./index";
+import { FOOTER_MARK, type EmailMessage } from "./payload";
 import type { OrderStatus, ShippingMethod } from "../generated/prisma/client";
 import type { TransferSettings } from "../transfer";
 
@@ -35,7 +35,7 @@ function layout(title: string, bodyHtml: string): string {
 <table role="presentation" width="560" cellpadding="0" cellspacing="0" style="max-width:560px;width:100%;background:#ffffff;border-radius:8px;overflow:hidden">
 <tr><td style="background:${color.navy};padding:20px 24px;color:#ffffff;font-size:20px;font-weight:bold">${esc(siteConfig.name)}</td></tr>
 <tr><td style="padding:24px"><h1 style="margin:0 0 16px;font-size:22px">${esc(title)}</h1>${bodyHtml}</td></tr>
-<tr><td style="padding:16px 24px;border-top:1px solid ${color.line};font-size:13px;color:${color.muted}">Este correo es una notificación de tu compra en ${esc(siteConfig.name)}.</td></tr>
+<tr><td style="padding:16px 24px;border-top:1px solid ${color.line};font-size:13px;color:${color.muted}">${FOOTER_MARK}</td></tr>
 </table></td></tr></table></body></html>`;
 }
 
@@ -163,6 +163,8 @@ export function passwordResetEmail(to: string, name: string, url: string): Email
   const text = `Hola ${name}, recibimos una solicitud para cambiar tu contraseña. El enlace funciona durante 1 hora. Si no fuiste tú, ignora este correo.`;
   return {
     to,
+    // Sin copia a la tienda: el enlace permite cambiar la contraseña y solo debe llegarle al cliente.
+    copyToStore: false,
     subject: "Cambia tu contraseña de ZorzTech",
     html: layout("Cambia tu contraseña", `<p style="margin:0;line-height:1.5">${esc(text)}</p>${button(url, "Elegir nueva contraseña")}`),
     text: `${text}\n\nElegir nueva contraseña: ${url}`,

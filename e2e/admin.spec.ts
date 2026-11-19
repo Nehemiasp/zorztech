@@ -173,7 +173,8 @@ test.describe("catálogo en el panel", () => {
     await page.getByLabel("Buscar por nombre o SKU").fill(sufijo);
     await page.getByRole("button", { name: "Filtrar" }).click();
     await page.getByRole("button", { name: `Desactivar ${nombre}` }).click();
-    await expect(page.getByRole("button", { name: `Activar ${nombre}` })).toBeVisible();
+    // Nombre exacto: «Activar …» también coincide como parte de «Desactivar …», que ya estaba en pantalla.
+    await expect(page.getByRole("button", { name: `Activar ${nombre}`, exact: true })).toBeVisible();
     const res = await page.goto(`/productos/${slug}`);
     expect(res?.status()).toBe(404);
   });

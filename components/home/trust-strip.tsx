@@ -26,7 +26,7 @@ export async function TrustStrip() {
     {
       icon: CreditCard,
       title: "Pago",
-      long: <>En línea y en quetzales: {show(contact.paymentMethods)}.</>,
+      long: <>Pagas en quetzales: {show(contact.paymentMethods)}.</>,
       short: <>{show(contact.paymentMethods)}, en quetzales.</>,
     },
     {

@@ -33,7 +33,7 @@ export const defaultContact: ContactSettings = {
   email: "Zorztech@hotmail.com",
   hours: "08:00 a 22:00",
   socials: "IG: ZorzTech",
-  paymentMethods: "Transferencia, VisaPago y VisaCuotas",
+  paymentMethods: "Transferencia y depósito",
 };
 
 /** Enlace tel: de un teléfono. Un número de 8 dígitos se toma como de Guatemala (+502). */

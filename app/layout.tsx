@@ -33,7 +33,9 @@ export const viewport: Viewport = {
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
-    <html lang="es" className={inter.variable}>
+    // data-scroll-behavior: al cambiar de página, Next salta arriba sin el desplazamiento suave
+    // (que se queda solo para los enlaces dentro de la misma página).
+    <html lang="es" className={inter.variable} data-scroll-behavior="smooth">
       <body>
         <a
           href="#contenido"

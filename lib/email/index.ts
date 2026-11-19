@@ -21,7 +21,7 @@ export async function sendEmail(message: EmailMessage): Promise<boolean> {
   const payload = buildResendPayload(message, await contactEmail());
   const key = process.env.RESEND_API_KEY;
   if (!key) {
-    console.info(`[correo] De: ${payload.from} | Para: ${message.to}${payload.cc ? ` | Cc: ${payload.cc.join(", ")}` : ""} | Asunto: ${message.subject}\n${payload.text}`);
+    console.info(`[correo] De: ${payload.from} | Para: ${message.to}${payload.cc ? ` | Cc: ${payload.cc.join(", ")}` : ""}${payload.attachments ? ` | Adjuntos: ${payload.attachments.map((a) => a.filename).join(", ")}` : ""} | Asunto: ${message.subject}\n${payload.text}`);
     return true;
   }
   try {

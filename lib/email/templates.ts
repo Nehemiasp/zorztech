@@ -27,6 +27,8 @@ export interface OrderEmailData {
   viewUrl?: string;
   trackingNumber?: string | null;
   carrier?: string | null;
+  /** La guía (foto o PDF) va adjunta al correo. */
+  guideAttached?: boolean;
 }
 
 function layout(title: string, bodyHtml: string): string {
@@ -112,8 +114,11 @@ export function orderStatusEmail(order: OrderEmailData): EmailMessage | null {
       ? `\nDónde recoger: ${order.pickupLocation.name}, ${order.pickupLocation.address}. Horario: ${order.pickupLocation.hours}.`
       : "";
   const guide = order.status === "enviado" && order.trackingNumber ? `${order.trackingNumber}${order.carrier ? ` (${order.carrier})` : ""}` : "";
-  const guideHtml = guide ? `<p style="margin:16px 0 0"><strong>Número de guía:</strong> ${esc(guide)}</p>` : "";
-  const guideText = guide ? `\nNúmero de guía: ${guide}` : "";
+  const attachedNote = guide && order.guideAttached ? "Te adjuntamos la guía de envío en este correo." : "";
+  const guideHtml = guide
+    ? `<p style="margin:16px 0 0"><strong>Número de guía:</strong> ${esc(guide)}</p>${attachedNote ? `<p style="margin:4px 0 0;color:${color.muted};font-size:14px">${attachedNote}</p>` : ""}`
+    : "";
+  const guideText = guide ? `\nNúmero de guía: ${guide}${attachedNote ? `\n${attachedNote}` : ""}` : "";
   const action = order.viewUrl ?? (order.status === "pago_fallido" ? `${siteConfig.url}/pedido/${order.code}/confirmacion` : trackingUrl());
   const actionLabel = order.status === "pago_fallido" ? "Intentar de nuevo" : "Seguir mi pedido";
 

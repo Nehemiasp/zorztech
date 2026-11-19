@@ -10,6 +10,8 @@ export interface EmailMessage {
    * manos del cliente, como el enlace para cambiar la contraseña.
    */
   copyToStore?: boolean;
+  /** Archivos adjuntos (por ejemplo, la guía de envío). `content` va en base64. */
+  attachments?: { filename: string; content: string }[];
 }
 
 /** Remitente único de la tienda. Resend solo acepta direcciones del dominio verificado (zorztech.com). */
@@ -48,6 +50,7 @@ export function buildResendPayload(message: EmailMessage, contactEmail: string |
     ...(copy ? { cc: [contact] } : {}),
     ...(contact ? { reply_to: contact } : {}),
     subject: message.subject,
+    ...(message.attachments?.length ? { attachments: message.attachments } : {}),
     html,
     text: `${message.text}\n\n—\n${footer}`,
   };

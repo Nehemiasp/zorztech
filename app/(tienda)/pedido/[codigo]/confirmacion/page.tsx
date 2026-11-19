@@ -1,5 +1,4 @@
 import type { Metadata } from "next";
-import Link from "next/link";
 import { notFound, redirect } from "next/navigation";
 import { CopyButton } from "@/components/orders/copy-button";
 import { OrderSummary } from "@/components/orders/order-summary";
@@ -160,21 +159,21 @@ export default async function ConfirmationPage({ params, searchParams }: Props) 
         <OrderSummary order={order} />
       </div>
 
-      <div className="mt-10 rounded-lg bg-surface-light-alt p-4">
+      <div className="mt-10 rounded-lg border border-border bg-surface-light-alt p-5">
         <p className="font-medium">Tu enlace para ver este pedido</p>
-        <p className="mt-1 break-all text-sm text-text-muted">{orderViewUrl(order.code)}</p>
         <p className="mt-1 text-sm text-text-muted">Guárdalo: con él ves tu pedido desde cualquier dispositivo, sin iniciar sesión. No lo compartas con nadie.</p>
-        <CopyButton value={orderViewUrl(order.code)} label="enlace de mi pedido" />
+        <div className="mt-3 flex flex-col gap-2 sm:flex-row sm:items-center">
+          <p className="min-h-11 min-w-0 flex-1 break-all rounded-sm border border-border bg-surface-light px-3 py-2.5 text-sm text-text-muted">{orderViewUrl(order.code)}</p>
+          <CopyButton value={orderViewUrl(order.code)} label="enlace de mi pedido" variant="button" text="Copiar enlace" />
+        </div>
       </div>
 
-      <p className="mt-6 flex flex-wrap gap-x-6 gap-y-2">
-        <Link href={`/pedido/seguimiento?codigo=${encodeURIComponent(order.code)}`} className="text-brand-primary-strong underline underline-offset-2">
-          Seguir mi pedido
-        </Link>
-        <Link href="/" className="text-brand-primary-strong underline underline-offset-2">
+      <div className="mt-8 flex flex-col gap-3 sm:flex-row">
+        <LinkButton href={`/pedido/seguimiento?codigo=${encodeURIComponent(order.code)}`}>Seguir mi pedido</LinkButton>
+        <LinkButton href="/" variant="secondary-light">
           Seguir comprando
-        </Link>
-      </p>
+        </LinkButton>
+      </div>
     </div>
   );
 }

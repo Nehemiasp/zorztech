@@ -121,8 +121,22 @@ describe("estados del pedido desde el panel", () => {
     const pdf = await readGuideFile(new File([pdfBytes], "guia.pdf", { type: "application/pdf" }));
     assert.ok(pdf.ok && pdf.file);
 
-    const r = await shipOrder({ code: order.code, trackingNumber: "GT-2026-0001", carrier: "Paquetería de prueba", file: pdf.file, actorId: adminId });
+    // Sin RESEND_API_KEY el correo se escribe en la consola: ahí se ve que sale con la guía adjunta.
+    const logs: string[] = [];
+    const info = console.info;
+    console.info = (...args: unknown[]) => void logs.push(args.join(" "));
+    let r;
+    try {
+      r = await shipOrder({ code: order.code, trackingNumber: "GT-2026-0001", carrier: "Paquetería de prueba", file: pdf.file, actorId: adminId });
+    } finally {
+      console.info = info;
+    }
     assert.ok(r.ok, r.message);
+    if (!process.env.RESEND_API_KEY) {
+      const mail = logs.find((l) => l.includes(`pedido ${order.code}`));
+      assert.ok(mail?.includes(`Adjuntos: guia-${order.code}.pdf`), "el correo de «enviado» lleva la guía adjunta");
+      assert.ok(mail?.includes("Número de guía: GT-2026-0001 (Paquetería de prueba)"));
+    }
     const saved = await db.order.findUniqueOrThrow({ where: { id: order.id }, select: { status: true, trackingNumber: true, carrier: true } });
     assert.deepEqual(saved, { status: "enviado", trackingNumber: "GT-2026-0001", carrier: "Paquetería de prueba" });
     const doc = await readShipmentDocument(order.code);

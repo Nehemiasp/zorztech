@@ -69,3 +69,14 @@ test("si el cliente es la propia tienda no se manda copia duplicada; el pie se e
   const odd = buildResendPayload(templates.pagado, "a&b@correo.test");
   assert.ok(odd.html.includes("a&amp;b@correo.test"));
 });
+
+test("los adjuntos pasan a Resend y el correo de «enviado» avisa que la guía va adjunta", () => {
+  const withGuide = orderStatusEmail({ ...order, status: "enviado", trackingNumber: "GT-1", guideAttached: true })!;
+  assert.match(withGuide.text, /Te adjuntamos la guía de envío/);
+  withGuide.attachments = [{ filename: "guia-ZT-ABC123.pdf", content: "JVBERi0=" }];
+  assert.deepEqual(buildResendPayload(withGuide, "tienda@correo.test").attachments, [{ filename: "guia-ZT-ABC123.pdf", content: "JVBERi0=" }]);
+
+  const noGuide = orderStatusEmail({ ...order, status: "enviado", trackingNumber: "GT-1" })!;
+  assert.doesNotMatch(noGuide.text, /adjuntamos/i);
+  assert.equal(buildResendPayload(noGuide, "tienda@correo.test").attachments, undefined);
+});

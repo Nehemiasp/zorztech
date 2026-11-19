@@ -102,6 +102,11 @@ export async function sendOrderStatusEmail(orderId: string): Promise<void> {
       include: { items: true, pickupLocation: true },
     });
     if (!order) return;
+    // Al enviarse, la guía (foto o PDF) va adjunta si el administrador la subió.
+    const guide =
+      order.status === "enviado" && order.trackingNumber
+        ? await db.shipmentDocument.findUnique({ where: { orderId: order.id }, select: { type: true, data: true } })
+        : null;
     const message = orderStatusEmail({
       code: order.code,
       customerName: order.customerName,
@@ -117,7 +122,12 @@ export async function sendOrderStatusEmail(orderId: string): Promise<void> {
       viewUrl: orderViewUrl(order.code),
       trackingNumber: order.trackingNumber,
       carrier: order.carrier,
+      guideAttached: Boolean(guide),
     });
+    if (message && guide) {
+      const extension = guide.type === "application/pdf" ? "pdf" : guide.type.split("/")[1];
+      message.attachments = [{ filename: `guia-${order.code}.${extension}`, content: Buffer.from(guide.data).toString("base64") }];
+    }
     if (message) await sendEmail(message);
   } catch (error) {
     console.error("[pedido] No se pudo enviar el correo", error instanceof Error ? error.message : error);

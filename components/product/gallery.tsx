@@ -22,6 +22,7 @@ export function Gallery({ images }: { images: GalleryImage[] }) {
   const zoom = useRef<HTMLDialogElement>(null);
   const [index, setIndex] = useState(0);
   const [zoomIndex, setZoomIndex] = useState(0);
+  const swipeStart = useRef<number | null>(null);
 
   const goTo = useCallback((i: number) => {
     const el = track.current;
@@ -109,38 +110,59 @@ export function Gallery({ images }: { images: GalleryImage[] }) {
 
       <dialog
         ref={zoom}
-        aria-label="Foto ampliada"
+        aria-label={`Foto ampliada ${zoomIndex + 1} de ${images.length}`}
         onKeyDown={(e) => {
           if (e.key === "ArrowLeft") step(-1);
           if (e.key === "ArrowRight") step(1);
         }}
-        className="motion-fade m-auto max-h-[96dvh] w-[min(96vw,60rem)] max-w-none bg-transparent p-0 backdrop:bg-black/80"
+        onClick={(e) => {
+          if (e.target === zoom.current) zoom.current?.close();
+        }}
+        className="motion-fade m-auto max-h-[96dvh] w-[min(96vw,60rem)] max-w-none rounded-lg bg-surface-light p-3 text-text-on-light backdrop:bg-black/80 sm:p-4"
       >
-        <div className="relative">
-          <CatalogImage
-            src={images[zoomIndex].url}
-            alt={images[zoomIndex].alt}
-            width={1400}
-            height={1400}
-            sizes="96vw"
-            className="mx-auto max-h-[90dvh] w-auto rounded-md bg-surface-light object-contain"
-          />
-          <button type="button" onClick={() => zoom.current?.close()} className={cn(control, "absolute right-3 top-3")}>
-            <X aria-hidden size={22} strokeWidth={1.75} />
-            <span className="sr-only">Cerrar foto</span>
-          </button>
-          {images.length > 1 && (
-            <>
-              <button type="button" onClick={() => step(-1)} className={cn(control, "absolute left-3 top-1/2 -translate-y-1/2")}>
-                <ChevronLeft aria-hidden size={22} strokeWidth={1.75} />
-                <span className="sr-only">Foto anterior</span>
-              </button>
-              <button type="button" onClick={() => step(1)} className={cn(control, "absolute right-3 top-1/2 -translate-y-1/2")}>
-                <ChevronRight aria-hidden size={22} strokeWidth={1.75} />
-                <span className="sr-only">Foto siguiente</span>
-              </button>
-            </>
-          )}
+        <div className="flex flex-col gap-3">
+          <div className="flex items-center justify-between gap-3 pl-1">
+            <p className="font-medium">{images.length > 1 ? `Foto ${zoomIndex + 1} de ${images.length}` : "Foto del producto"}</p>
+            <button type="button" onClick={() => zoom.current?.close()} className={cn(control, "shrink-0 border border-border")} autoFocus>
+              <X aria-hidden size={22} strokeWidth={1.75} />
+              <span className="sr-only">Cerrar foto</span>
+            </button>
+          </div>
+          {/* Espacio fijo para la foto: llena el ancho en celular y no se encoge según el tamaño del archivo */}
+          <div
+            className="relative flex h-[min(78dvh,88vw,56rem)] w-full items-center justify-center overflow-hidden rounded-md bg-surface-light"
+            onTouchStart={(e) => {
+              swipeStart.current = e.touches[0].clientX;
+            }}
+            onTouchEnd={(e) => {
+              const start = swipeStart.current;
+              swipeStart.current = null;
+              if (start === null || images.length < 2) return;
+              const dx = e.changedTouches[0].clientX - start;
+              if (Math.abs(dx) > 40) step(dx < 0 ? 1 : -1);
+            }}
+          >
+            <CatalogImage
+              src={images[zoomIndex].url}
+              alt={images[zoomIndex].alt}
+              width={1400}
+              height={1400}
+              sizes="(min-width: 1024px) 60rem, 96vw"
+              className="size-full object-contain"
+            />
+            {images.length > 1 && (
+              <>
+                <button type="button" onClick={() => step(-1)} className={cn(control, "absolute left-2 top-1/2 -translate-y-1/2 border border-border shadow-md")}>
+                  <ChevronLeft aria-hidden size={22} strokeWidth={1.75} />
+                  <span className="sr-only">Foto anterior</span>
+                </button>
+                <button type="button" onClick={() => step(1)} className={cn(control, "absolute right-2 top-1/2 -translate-y-1/2 border border-border shadow-md")}>
+                  <ChevronRight aria-hidden size={22} strokeWidth={1.75} />
+                  <span className="sr-only">Foto siguiente</span>
+                </button>
+              </>
+            )}
+          </div>
         </div>
       </dialog>
     </div>

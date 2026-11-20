@@ -1,4 +1,5 @@
 import { db } from "../db";
+import { coverFirst } from "../catalog/cover";
 import { Prisma } from "../generated/prisma/client";
 import { availableUnits } from "../availability";
 import { buildSearchText } from "../search";
@@ -61,6 +62,8 @@ export async function listAdminProducts(f: ProductFilters) {
         isSample: true,
         category: { select: { name: true } },
         brand: { select: { name: true } },
+        // Miniatura de la lista: la misma foto de portada que ve el cliente en las tarjetas.
+        images: { orderBy: coverFirst, take: 1, select: { url: true } },
         variants: { select: { price: true, stock: true, reservedStock: true, isActive: true, lowStockThreshold: true } },
       },
     }),
@@ -74,6 +77,7 @@ export async function listAdminProducts(f: ProductFilters) {
       return {
         ...p,
         variantCount: p.variants.length,
+        thumbnail: p.images[0]?.url ?? null,
         minPrice: active.length ? Math.min(...active.map((v) => v.price)) : null,
         available: active.reduce((n, v) => n + availableUnits(v), 0),
         lowStock: active.some((v) => availableUnits(v) <= v.lowStockThreshold),

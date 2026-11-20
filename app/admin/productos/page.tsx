@@ -1,5 +1,7 @@
 import type { Metadata } from "next";
 import Link from "next/link";
+import { ImageOff } from "lucide-react";
+import { CatalogImage } from "@/components/catalog-image";
 import { EmptyRow, PageHeader, table, ScrollRegion } from "@/components/admin/ui";
 import { Pagination } from "@/components/catalog/pagination";
 import { buttonStyles } from "@/components/ui/button";
@@ -91,15 +93,27 @@ export default async function AdminProductsPage({ searchParams }: { searchParams
             {rows.length === 0 && <EmptyRow colSpan={5}>{active ? "Ningún producto cumple esos filtros." : "Todavía no hay productos."}</EmptyRow>}
             {rows.map((p) => (
               <tr key={p.id} className={table.row}>
-                <th scope="row" className={`${table.td} font-medium`}>
-                  <Link href={`/admin/productos/${p.id}`} className="underline underline-offset-2">
-                    {p.name}
-                  </Link>
-                  <span className="block text-sm font-normal text-text-muted">
-                    {p.variantCount} {p.variantCount === 1 ? "variante" : "variantes"}
-                    {p.brand ? ` · ${p.brand.name}` : ""}
-                  </span>
-                  {p.isSample && <span className="mt-1 inline-block rounded-sm bg-surface-dark-alt px-2 py-0.5 text-sm font-normal text-text-on-dark">Ejemplo</span>}
+                <th scope="row" className={`${table.td} min-w-64 font-medium`}>
+                  <div className="flex items-start gap-3">
+                    {p.thumbnail ? (
+                      <CatalogImage src={p.thumbnail} alt="" width={56} height={56} sizes="56px" className="size-14 shrink-0 rounded-md border border-border bg-surface-light object-cover" />
+                    ) : (
+                      <span aria-hidden className="inline-flex size-14 shrink-0 items-center justify-center rounded-md border border-dashed border-border-strong bg-surface-light-alt text-text-muted">
+                        <ImageOff size={20} strokeWidth={1.75} />
+                      </span>
+                    )}
+                    <div className="min-w-0">
+                      <Link href={`/admin/productos/${p.id}`} className="underline underline-offset-2">
+                        {p.name}
+                      </Link>
+                      <span className="block text-sm font-normal text-text-muted">
+                        {p.variantCount} {p.variantCount === 1 ? "variante" : "variantes"}
+                        {p.brand ? ` · ${p.brand.name}` : ""}
+                        {!p.thumbnail && " · Sin foto"}
+                      </span>
+                      {p.isSample && <span className="mt-1 inline-block rounded-sm bg-surface-dark-alt px-2 py-0.5 text-sm font-normal text-text-on-dark">Ejemplo</span>}
+                    </div>
+                  </div>
                 </th>
                 <td className={table.td}>{p.category.name}</td>
                 <td className={`${table.td} text-right`}>{p.minPrice !== null ? formatGTQ(p.minPrice) : "—"}</td>

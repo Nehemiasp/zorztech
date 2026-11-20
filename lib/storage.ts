@@ -37,14 +37,23 @@ export async function saveImage(file: File): Promise<SaveResult> {
   if (!type) return { ok: false, message: "Sube una imagen JPG, PNG, WebP o AVIF." };
   const name = `${randomBytes(12).toString("hex")}.${extensions[type]}`;
 
-  if (process.env.BLOB_READ_WRITE_TOKEN) {
-    const { put } = await import("@vercel/blob");
-    const blob = await put(`productos/${name}`, Buffer.from(bytes), { access: "public", contentType: type, addRandomSuffix: false });
-    return { ok: true, url: blob.url };
+  // Vercel conecta Blob con una llave (BLOB_READ_WRITE_TOKEN) o, en los almacenamientos nuevos, con OIDC (BLOB_STORE_ID).
+  if (process.env.BLOB_READ_WRITE_TOKEN || process.env.BLOB_STORE_ID) {
+    try {
+      const { put } = await import("@vercel/blob");
+      const blob = await put(`productos/${name}`, Buffer.from(bytes), { access: "public", contentType: type, addRandomSuffix: false });
+      return { ok: true, url: blob.url };
+    } catch (error) {
+      console.error("[imagenes] Vercel Blob no guardó la imagen", error instanceof Error ? error.message : error);
+      return {
+        ok: false,
+        message: "No se pudo guardar la imagen en Vercel Blob. Revisa que el almacenamiento sea público (Public) y esté conectado a este proyecto.",
+      };
+    }
   }
   // Sin Blob solo se guarda en disco en desarrollo, o si se pide a propósito (pruebas contra la compilación).
   if (process.env.NODE_ENV === "production" && process.env.ALLOW_LOCAL_UPLOADS !== "1") {
-    return { ok: false, message: "Falta configurar el almacenamiento de imágenes (BLOB_READ_WRITE_TOKEN)." };
+    return { ok: false, message: "Falta conectar el almacenamiento de imágenes (Vercel Blob) al proyecto." };
   }
   await mkdir(LOCAL_DIR, { recursive: true });
   await writeFile(path.join(LOCAL_DIR, name), bytes);

@@ -76,6 +76,7 @@ export function ProductForm({ initial, categories, brands, created, storefrontUr
   const [state, action, pending] = useActionState<ProductFormState, FormData>(saveProductAction, {});
   const [uploadError, setUploadError] = useState<string | null>(null);
   const [uploading, setUploading] = useState(false);
+  const [uploadedCount, setUploadedCount] = useState(0);
   const fileInput = useRef<HTMLInputElement>(null);
   const errors = state.fields ?? {};
   const set = <K extends keyof ProductState>(key: K, value: ProductState[K]) => setProduct((p) => ({ ...p, [key]: value }));
@@ -86,6 +87,9 @@ export function ProductForm({ initial, categories, brands, created, storefrontUr
     if (!files || files.length === 0) return;
     setUploading(true);
     setUploadError(null);
+    setUploadedCount(0);
+    // La descripción es obligatoria al guardar: se propone el nombre del producto y se puede cambiar.
+    const defaultAlt = product.name.trim() || "Foto del producto";
     const added: ImageState[] = [];
     for (const file of Array.from(files)) {
       const body = new FormData();
@@ -97,12 +101,13 @@ export function ProductForm({ initial, categories, brands, created, storefrontUr
           setUploadError(`${file.name}: ${data.error ?? "no se pudo subir."}`);
           continue;
         }
-        added.push({ url: data.url, alt: "", variantSku: null });
+        added.push({ url: data.url, alt: defaultAlt, variantSku: null });
       } catch {
         setUploadError(`${file.name}: no pudimos conectar.`);
       }
     }
     setProduct((p) => ({ ...p, images: [...p.images, ...added] }));
+    setUploadedCount(added.length);
     setUploading(false);
     if (fileInput.current) fileInput.current.value = "";
   }
@@ -250,6 +255,11 @@ export function ProductForm({ initial, categories, brands, created, storefrontUr
             <Upload aria-hidden size={18} strokeWidth={1.75} />
             {uploading ? "Subiendo…" : "Subir imágenes"}
           </label>
+          {uploadedCount > 0 && (
+            <p role="status" className="mt-2 text-state-success">
+              {uploadedCount === 1 ? "Foto subida." : `${uploadedCount} fotos subidas.`} Toca «{product.id ? "Guardar cambios" : "Crear producto"}» para que se vean en la tienda.
+            </p>
+          )}
           {uploadError && (
             <p role="alert" className="mt-2 text-state-error">
               {uploadError}

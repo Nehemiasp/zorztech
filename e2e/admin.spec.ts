@@ -241,8 +241,11 @@ test.describe("catálogo en el panel", () => {
     await expect(page.getByRole("alert").filter({ hasText: "Sube una imagen JPG, PNG, WebP o AVIF." })).toBeVisible();
     // Un PNG de verdad (1×1) se acepta.
     const png = Buffer.from("iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR4nGP4z8DwHwAFAAH/q842iQAAAABJRU5ErkJggg==", "base64");
+    await page.getByLabel("Nombre", { exact: true }).fill("Bocina de prueba");
     await page.locator("#subir-imagenes").setInputFiles({ name: "pixel.png", mimeType: "image/png", buffer: png });
-    await expect(page.getByLabel("Descripción de la imagen")).toBeVisible();
+    // La descripción viene propuesta con el nombre del producto y se recuerda que falta guardar.
+    await expect(page.getByLabel("Descripción de la imagen")).toHaveValue("Bocina de prueba");
+    await expect(page.getByRole("status").filter({ hasText: "Foto subida. Toca «Crear producto» para que se vean en la tienda." })).toBeVisible();
   });
 });
 
